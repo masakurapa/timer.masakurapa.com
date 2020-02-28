@@ -1,20 +1,35 @@
-<script>
-    // タイマーの設定オブジェクト
-    const timerObj = {
-        title: '',
-        time: 0,
-        hour: 0,
-        minute: 0,
-        second: 0,
-    };
+<main>
+    <div>Repeat: {repeatCount}</div>
+    <div class="title">{$timerSettings[index] !== undefined ? $timerSettings[index].title : ''}</div>
+    <div class="timer">{timerText}</div>
 
-    // ループさせるタイマーのリスト
-    // デフォルトはは一個の空タイマーをセット
-    let timers = [Object.assign({}, timerObj)];
+    {#if !isTimerStarted}
+        <button
+            class="start-btn"
+            on:click="{start}"
+        >START</button>
+    {:else}
+        <button
+            class="stop-btn"
+            on:click="{stop}"
+        >STOP</button>
+    {/if}
+    <button
+        class="reset-btn"
+        on:click="{clear}"
+        disabled={isTimerStarted}
+    >RESET</button>
+
+    <hr>
+    <Setting {isTimerStarted}/>
+</main>
+
+<script>
+    import { repeat, timerSettings } from './store.js';
+    import Setting from './Setting.svelte';
+
     // setInterval/clearIntervalするためのオブジェクトの保持
     let interval;
-    // 設定を繰り返す数
-    let repeat = 0;
     // 繰り返した数
     let repeatCount = 0;
     // タイマー設定の位置
@@ -26,19 +41,21 @@
 
     // reactive
     $: {
-        const t = timers[index];
-        const baseTime = (t.hour * 60 * 60) + (t.minute * 60) + t.second - t.time;
-        const h = Math.floor((baseTime) / (60 * 60));
-        const m = Math.floor((baseTime - (h * 60 * 60)) / 60);
-        const s = (baseTime - (h * 60 * 60) - (m * 60));
-        timerText = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        const t = $timerSettings[index];
+        if (t !== undefined) {
+            const baseTime = (t.hour * 60 * 60) + (t.minute * 60) + t.second - t.time;
+            const h = Math.floor((baseTime) / (60 * 60));
+            const m = Math.floor((baseTime - (h * 60 * 60)) / 60);
+            const s = (baseTime - (h * 60 * 60) - (m * 60));
+            timerText = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
     }
 
     // タイマーの開始
     const start = () => {
         isTimerStarted = true;
         interval = setInterval(() => {
-            const t = timers[index];
+            const t = $timerSettings[index];
             const baseTime = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
 
             if (t.time + 1 > baseTime) {
@@ -46,17 +63,17 @@
                 return;
             }
 
-            timers[index].time = t.time + 1;
+            $timerSettings[index].time = t.time + 1;
         }, 1000);
     }
 
     // 次のタイマーに行くための処理
     const next = () => {
         // 一周したらループ数をカウントアップ
-        if (index + 1 === timers.length) {
+        if (index + 1 === $timerSettings.length) {
             // ただしループの上限に達してたらタイマーは止めて次のステップに進まない
-            if (repeatCount === repeat) {
-                stop();
+            if (repeatCount === parseInt($repeat, 10)) {
+                clear();
                 return;
             }
 
@@ -65,9 +82,9 @@
 
         // 次のタイマー設定に移動する
         // 自分のカウントアップ値はとりあえずクリア
-        timers[index].time = 0;
+        $timerSettings[index].time = 0;
         // タイマー設定の位置をずらす
-        index = index + 1 === timers.length ? 0 : index + 1;
+        index = index + 1 === $timerSettings.length ? 0 : index + 1;
     }
 
     // タイマーの一時停止
@@ -81,104 +98,88 @@
         stop();
         repeatCount = 0;
         index = 0;
-        timers.forEach(t => {
-            t.time = 0;
+        timerSettings.update(settings => {
+            settings.forEach(t => {
+                t.time = 0;
+            });
+            return settings;
         });
-        timers = timers;
     }
-
-    // 上に追加
-    const addAbove = (i) => {
-        timers.splice(i, 0, Object.assign({}, timerObj))
-        timers = timers;
-    };
-
-    // 下に追加
-    const addBelow = (i) => {
-        timers.splice(i + 1, 0, Object.assign({}, timerObj))
-        timers = timers;
-    };
-
-    // 指定行のタイマー設定を削除
-    const remove = (i) => {
-        timers.splice(i, 1)
-        timers = timers;
-    };
 </script>
-
-<main>
-    <div>Repeat: {repeatCount}</div>
-    <div class="title">{timers[index].title}</div>
-    <div class="timer">{timerText}</div>
-
-    {#if !isTimerStarted}
-        <button on:click="{start}">start</button>
-    {:else}
-        <button on:click="{stop}">stop</button>
-    {/if}
-    <button on:click="{clear}" disabled={isTimerStarted}>clear</button>
-
-    <hr>
-    <h2>Setting</h2>
-    <div>
-        Repeat Count: <input type="number" max="23" min="0" disabled={isTimerStarted} bind:value={repeat}>
-    </div>
-
-    <div class="setting">
-        <div class="head input-text">Title</div>
-        <div class="head input-number">Hour</div>
-        <div class="head input-number">Minute</div>
-        <div class="head input-number">Second</div>
-    </div>
-
-    {#each timers as obj, i}
-        <div class="setting">
-            <div class="input-text">
-                <input type="text" disabled={isTimerStarted} bind:value={obj.title}>
-            </div>
-            <div class="input-number">
-                <input type="number" max="99" min="0" disabled={isTimerStarted} bind:value={obj.hour}>&nbsp;:&nbsp;
-            </div>
-            <div class="input-number">
-                <input type="number" max="59" min="0" disabled={isTimerStarted} bind:value={obj.minute}>&nbsp;:&nbsp;
-            </div>
-            <div class="input-number">
-                <input type="number" max="59" min="0" disabled={isTimerStarted} bind:value={obj.second}>
-            </div>
-
-            <button disabled={isTimerStarted} on:click="{() => addAbove(i)}">add above↑</button>
-            <button disabled={isTimerStarted} on:click="{() => addBelow(i)}">add below↓</button>
-            <button
-                on:click="{() => remove(i)}"
-                disabled={isTimerStarted || timers.length === 1}
-            >remove</button>
-        </div>
-    {/each}
-</main>
 
 <style>
     main {
-        padding: 1em;
-        width: 100%;
+        padding: 16px 16px 52px 16px;
+
     }
 
     .title {
         font-size: 30px;
     }
     .timer {
-        font-size: 100px;
+        font-size: 120px;
     }
 
-    .setting {
-        display: flex;
+    /* ボタン系 */
+    button {
+        padding: 8px;
+        height: 40px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        color: #FFFFFF;
     }
-    .head {
-        font-weight: bold;
+    button:disabled {
+        background-color: #999999;
     }
-    .input-text {
+
+    .start-btn {
         width: 200px;
+        height: 50px;
+        margin-right: 16px;
+        background-color: #1E90FF;
     }
-    .input-number {
-        width: 80px;
+    .start-btn:forcus {
+        background-color: #1872CC;
+    }
+    .start-btn:hover {
+        background-color: #1872CC;
+    }
+    .start-btn:not(:disabled):active {
+        margin-right: 8px;
+        background-color: #1872CC;
+    }
+
+    .stop-btn {
+        width: 200px;
+        height: 50px;
+        margin-right: 8px;
+        background-color: #DC143C;
+    }
+    .stop-btn:forcus {
+        background-color: #CC1237;
+    }
+    .stop-btn:hover {
+        background-color: #CC1237;
+    }
+    .stop-btn:not(:disabled):active {
+        margin-right: 8px;
+        background-color: #CC1237;
+    }
+
+    .reset-btn {
+        width: 100px;
+        height: 50px;
+        background-color: #FFB833;
+    }
+    .reset-btn:forcus {
+        background-color: #FFA500;
+    }
+    .reset-btn:not(:disabled):hover {
+        background-color: #FFA500;
+    }
+    .reset-btn:not(:disabled):active {
+        margin-right: 8px;
+        background-color: #FFA500;
     }
 </style>
