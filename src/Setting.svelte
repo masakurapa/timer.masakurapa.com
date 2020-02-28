@@ -87,6 +87,7 @@
     import { onMount } from 'svelte';
     import { repeat, timerSettings } from './store.js';
 
+    // タイマー起動中か
     export let isTimerStarted = false;
 
     // 数値エリアの最小値（今は全部同じだから共通にしておく

@@ -3,7 +3,12 @@
     <div class="title">{$timerSettings[index] !== undefined ? $timerSettings[index].title : ''}</div>
     <div class="timer">{timerText}</div>
 
-    {#if !isTimerStarted}
+    {#if isPlayAudio}
+        <button
+            class="start-btn"
+            on:click="{pauseAudio}"
+        >STOP SOUND</button>
+    {:else if !isTimerStarted}
         <button
             class="start-btn"
             on:click="{start}"
@@ -16,7 +21,7 @@
     {/if}
     <button
         class="reset-btn"
-        on:click="{clear}"
+        on:click="{reset}"
         disabled={isTimerStarted}
     >RESET</button>
 
@@ -24,7 +29,10 @@
     <Setting {isTimerStarted}/>
 </main>
 
+<audio src="/warning1.mp3" loop bind:this={audio}></audio>
+
 <script>
+    import { onMount } from 'svelte';
     import { repeat, timerSettings } from './store.js';
     import Setting from './Setting.svelte';
 
@@ -38,6 +46,12 @@
     let timerText = '00:00:00';
     // タイマー開始／停止のフラグ
     let isTimerStarted = false;
+    // オーディオの実行中か
+    let isPlayAudio = false;
+    // ウィンドウにフォーカスがあるかのフラグ
+    let focused = true;
+    // オーディオ
+    let audio;
 
     // reactive
     $: {
@@ -51,14 +65,42 @@
         }
     }
 
+
+    window.onfocus = function() {
+        focused = true;
+    };
+    window.onblur = function() {
+        focused = false;
+    };
+
+    onMount(() => {
+        // 通知の許可を求める
+        if ('Notification' in window) {
+            const permission = Notification.permission;
+            if (permission === "denied" || permission === "granted") {
+               return;
+            }
+            Notification.requestPermission();
+        }
+    });
+
     // タイマーの開始
     const start = () => {
+        pauseAudio();
         isTimerStarted = true;
         interval = setInterval(() => {
             const t = $timerSettings[index];
             const baseTime = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
 
             if (t.time + 1 > baseTime) {
+                // 終了音を流す
+                audio.play();
+                isPlayAudio = true;
+
+                // タイマーのウィンドウにフォーカスがないときだけ通知
+                if (!focused) {
+                    Notification.requestPermission().then(() => new Notification('Time is up!!'));
+                }
                 next();
                 return;
             }
@@ -69,6 +111,8 @@
 
     // 次のタイマーに行くための処理
     const next = () => {
+        stop();
+
         // 一周したらループ数をカウントアップ
         if (index + 1 === $timerSettings.length) {
             // ただしループの上限に達してたらタイマーは止めて次のステップに進まない
@@ -93,6 +137,12 @@
         isTimerStarted = false;
     };
 
+    // リセット
+    const reset = () => {
+        pauseAudio();
+        clear();
+    };
+
     // タイマーをクリア
     const clear = () => {
         stop();
@@ -105,6 +155,13 @@
             return settings;
         });
     }
+
+    // 音を止める
+    const pauseAudio = () => {
+        audio.pause();
+        audio.currentTime = 0;
+        isPlayAudio = false;
+    };
 </script>
 
 <style>
@@ -146,14 +203,13 @@
         background-color: #1872CC;
     }
     .start-btn:not(:disabled):active {
-        margin-right: 8px;
         background-color: #1872CC;
     }
 
     .stop-btn {
         width: 200px;
         height: 50px;
-        margin-right: 8px;
+        margin-right: 16px;
         background-color: #DC143C;
     }
     .stop-btn:forcus {
@@ -163,7 +219,6 @@
         background-color: #CC1237;
     }
     .stop-btn:not(:disabled):active {
-        margin-right: 8px;
         background-color: #CC1237;
     }
 
