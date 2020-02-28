@@ -1,0 +1,39 @@
+language: node_js
+node_js:
+  - 10.15.3
+
+stages:
+  - syntax
+  - deploy
+
+before_script:
+  - npm install
+
+jobs:
+  include:
+    - stage: syntax
+      name: Syntax Check
+      script:
+        - npm run lint
+    - stage: deploy
+      name: Deploy
+      if: branch = master
+      script: skip
+      deploy:
+        provider: s3
+        access_key_id: $AWS_ACCESS_KEY
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: $AWS_BUCKET
+        region: $AWS_REGION
+        skip_cleanup: true
+        local_dir: public
+        on:
+          tags: true
+      before_deploy:
+        - npm run build
+        - rm public/bundle.css.map public/bundle.js.map
+
+cache:
+  directories:
+    - $HOME/.npm
+    - src/node_modules
