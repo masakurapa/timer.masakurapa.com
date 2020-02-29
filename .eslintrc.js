@@ -18,6 +18,8 @@ module.exports = {
         indent: ['error', 4],
         semi: ['error', 'always'],
         'comma-dangle': ['error', 'always-multiline'],
+        // TODO: 本当は1にしたいが.Svelteで何故かエラーになるので2にしている
+        'no-multiple-empty-lines': ['error', {'max': 2}],
     },
     settings: {},
     overrides: [
