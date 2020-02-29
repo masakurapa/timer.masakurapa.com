@@ -3,7 +3,7 @@ node_js:
   - 10.15.3
 
 stages:
-  # - syntax
+  - syntax
   - deploy
 
 before_script:
@@ -11,10 +11,10 @@ before_script:
 
 jobs:
   include:
-    # - stage: syntax
-    #   name: Syntax Check
-    #   script:
-    #     - npm run lint
+    - stage: syntax
+      name: Syntax Check
+      script:
+        - npm run lint
     - stage: deploy
       name: Deploy
       script: skip

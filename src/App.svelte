@@ -65,11 +65,11 @@
         }
     }
 
-
-    window.onfocus = function() {
+    window.onfocus = () => {
         focused = true;
     };
-    window.onblur = function() {
+
+    window.onblur = () => {
         focused = false;
     };
 
@@ -77,8 +77,8 @@
         // 通知の許可を求める
         if ('Notification' in window) {
             const permission = Notification.permission;
-            if (permission === "denied" || permission === "granted") {
-               return;
+            if (permission === 'denied' || permission === 'granted') {
+                return;
             }
             Notification.requestPermission();
         }
@@ -107,7 +107,7 @@
 
             $timerSettings[index].time = t.time + 1;
         }, 1000);
-    }
+    };
 
     // 次のタイマーに行くための処理
     const next = () => {
@@ -129,11 +129,11 @@
         $timerSettings[index].time = 0;
         // タイマー設定の位置をずらす
         index = index + 1 === $timerSettings.length ? 0 : index + 1;
-    }
+    };
 
     // タイマーの一時停止
     const stop = () => {
-        clearInterval(interval)
+        clearInterval(interval);
         isTimerStarted = false;
     };
 
@@ -154,7 +154,7 @@
             });
             return settings;
         });
-    }
+    };
 
     // 音を止める
     const pauseAudio = () => {

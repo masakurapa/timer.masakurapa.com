@@ -16,6 +16,7 @@ module.exports = {
     ],
     rules: {
         indent: ['error', 4],
+        semi: ['error', 'always'],
         'comma-dangle': ['error', 'always-multiline'],
     },
     settings: {},

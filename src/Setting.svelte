@@ -122,12 +122,12 @@
             return;
         }
         const nval = parseInt(val, 10);
-        if (val < NUMBER_MIN) {
+        if (nval < NUMBER_MIN) {
             repeat.set(NUMBER_MIN);
-        } else if (val > HOUR_MAX) {
+        } else if (nval > HOUR_MAX) {
             repeat.set(REPEAT_MAX);
         } else {
-            repeat.set(val);
+            repeat.set(nval);
         }
     };
 
@@ -153,14 +153,14 @@
             return;
         }
         const nval = parseInt(val, 10);
-        if (val < min) {
+        if (nval < min) {
             $timerSettings[index][key] = min;
-        } else if (val > max) {
+        } else if (nval > max) {
             $timerSettings[index][key] = max;
         } else {
-            $timerSettings[index][key] = val;
+            $timerSettings[index][key] = nval;
         }
-    }
+    };
 
     // 上に追加
     const addAbove = (i) => {
