@@ -3,7 +3,6 @@
     <div>
         <input
             type="number"
-            class="input-number"
             bind:value={$repeat}
             min="{MIN}"
             max="{MAX}"
@@ -48,7 +47,6 @@
     input {
         padding: 8px;
         height: 40px;
-        border-radius: 8px;
         text-align: center;
     }
     input:focus {

@@ -32,7 +32,25 @@
 </script>
 
 <style>
-    main {
-        padding: 16px 16px 52px 16px;
+    :global(html, body) {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    :global(body) {
+        color: #333;
+        margin: 0;
+        padding: 24px 24px 60px 24px;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    }
+    :global(input, button) {
+        font-family: inherit;
+        font-size: inherit;
+        padding: 0.4em;
+        margin: 0 0 0.5em 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
     }
 </style>

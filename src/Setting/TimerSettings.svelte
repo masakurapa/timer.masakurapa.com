@@ -140,7 +140,6 @@
     button {
         height: 40px;
         padding: 0px;
-        border-radius: 8px;
         background-color: #FFFFFF;
         border: none;
         outline: none;

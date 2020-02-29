@@ -15,7 +15,6 @@
     button {
         padding: 8px;
         height: 40px;
-        border-radius: 8px;
         border: none;
         outline: none;
         color: #FFFFFF;

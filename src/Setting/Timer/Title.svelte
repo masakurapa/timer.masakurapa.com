@@ -23,7 +23,6 @@
     input {
         padding: 8px;
         height: 40px;
-        border-radius: 8px;
         width: 100%;
     }
     input:focus {
