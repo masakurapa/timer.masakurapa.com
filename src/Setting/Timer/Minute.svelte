@@ -46,4 +46,8 @@
     input:focus {
         outline: none;
     }
+    input:disabled {
+        background-color: #EEEEEE;
+        color: #999999;
+    }
 </style>
