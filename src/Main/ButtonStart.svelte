@@ -8,6 +8,11 @@
     import { timerIndex, repeatCount, isTimeUp, interval } from './store.js';
     import { repeat, timerSettings, isTimerStarting, isWindowFocus } from '../store.js';
 
+    let focus = true;
+    isWindowFocus.subscribe(flag => {
+        focus = flag;
+    });
+
     // タイマーの開始
     const start = () => {
         isTimeUp.set(false);
@@ -20,11 +25,11 @@
             $timerSettings[index].time = t.time + 1;
 
             const baseTime = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
-            if (t.time + 1 >= baseTime) {
+            if (t.time + 1 > baseTime) {
                 isTimeUp.set(true);
 
                 // タイマーのウィンドウにフォーカスがないときだけ通知
-                if (!$isWindowFocus) {
+                if (!focus) {
                     Notification.requestPermission().then(() => new Notification('Time is up!!'));
                 }
                 next();

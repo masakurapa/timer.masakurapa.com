@@ -13,10 +13,12 @@
 
     window.onfocus = () => {
         isWindowFocus.set(true);
+        console.log('focus', $isWindowFocus);
     };
 
     window.onblur = () => {
         isWindowFocus.set(false);
+        console.log('blur', $isWindowFocus);
     };
 
     onMount(() => {

@@ -3,10 +3,8 @@
 </div>
 
 <script>
+    import { timerIndex } from './store.js';
     import { timerSettings } from '../store.js';
-
-    // 使用するタイマー設定の位置
-    export let index;
 
     let hour = '00';
     let minute = '00';
@@ -19,7 +17,7 @@
 
     // reactive
     $: {
-        const t = $timerSettings[index];
+        const t = $timerSettings[$timerIndex];
         if (t !== undefined) {
             const baseTime = (t.hour * 60 * 60) + (t.minute * 60) + t.second - t.time;
             const h = Math.floor((baseTime) / (60 * 60));

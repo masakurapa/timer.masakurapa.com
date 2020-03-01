@@ -7,4 +7,4 @@ export const timerSettings = writable([]);
 // タイマー開始／停止のフラグ
 export const isTimerStarting = writable(false);
 // ウィンドウにフォーカスがあるかのフラグ
-export const isWindowFocus = writable(false);
+export const isWindowFocus = writable(true);
