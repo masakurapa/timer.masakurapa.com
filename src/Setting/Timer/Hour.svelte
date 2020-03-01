@@ -40,7 +40,7 @@
         padding: 8px;
         height: 40px;
         text-align: center;
-        width: 40px;
+        width: 52px;
     }
     input:focus {
         outline: none;
@@ -48,5 +48,11 @@
     input:disabled {
         background-color: #EEEEEE;
         color: #999999;
+    }
+
+    @media screen and (max-width: 480px) {
+        input {
+            width: 40px;
+        }
     }
 </style>
