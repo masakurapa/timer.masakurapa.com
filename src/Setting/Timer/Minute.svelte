@@ -1,8 +1,8 @@
 <input
-    type="number"
+    type="tel"
     bind:value={value}
-    min="{MIN}"
-    max="{MAX}"
+    minlength="1"
+    maxlength="2"
     disabled={$isTimerStarting}
     on:change={onChange}
 >
@@ -19,20 +19,18 @@
     const MAX = 59;
 
     const onChange = (e) => {
-        const val = e.target.value;
-        if (typeof val === 'string' && val.length === 0) {
-            dispatch('change', { value: val });
+        const val = parseInt(e.target.value, 10);
+        if (isNaN(val)) {
+            dispatch('change', { value: 0 });
             return;
         }
 
-        const nval = parseInt(val, 10);
-        let ret = nval;
-        if (nval < MIN) {
+        let ret = val;
+        if (val < MIN) {
             ret = MIN;
-        } else if (nval > MAX) {
+        } else if (val > MAX) {
             ret = MAX;
         }
-
         dispatch('change', { value: ret });
     };
 </script>
@@ -42,6 +40,7 @@
         padding: 8px;
         height: 40px;
         text-align: center;
+        width: 40px;
     }
     input:focus {
         outline: none;
