@@ -16,7 +16,7 @@
         timerIndex.set(0);
         timerSettings.update(settings => {
             settings.forEach(t => {
-                t.time = 0;
+                t.time = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
             });
             return settings;
         });
