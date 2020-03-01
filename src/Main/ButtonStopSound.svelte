@@ -20,19 +20,19 @@
         color: #FFFFFF;
         width: 200px;
         height: 50px;
-        background-color: #1E90FF;
+        background-color: #3CB371;
     }
     button:disabled {
         background-color: #999999;
     }
     button:forcus {
-        background-color: #1872CC;
+        background-color: #349961;
     }
     button:hover {
-        background-color: #1872CC;
+        background-color: #349961;
     }
     button:not(:disabled):active {
-        background-color: #1872CC;
+        background-color: #349961;
     }
 
     @media screen and (max-width: 480px) {
