@@ -32,19 +32,10 @@
 </script>
 
 <style>
-    :global(html, body) {
-        position: relative;
-        width: 100%;
-        height: 100%;
+    main {
+        padding: 24px;
     }
 
-    :global(body) {
-        color: #333;
-        margin: 0;
-        padding: 24px 24px 60px 24px;
-        box-sizing: border-box;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-    }
     :global(input, button) {
         font-family: inherit;
         font-size: inherit;

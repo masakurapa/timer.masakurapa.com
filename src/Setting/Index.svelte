@@ -1,8 +1,6 @@
 <h2>Setting</h2>
-<div class="wrapper">
-    <Repeat/>
-    <TimerSettings/>
-</div>
+<Repeat/>
+<TimerSettings/>
 
 <script>
     import Repeat from './Repeat.svelte';
@@ -10,7 +8,4 @@
 </script>
 
 <style>
-    .wrapper {
-        margin-bottom: 16px;
-    }
 </style>
