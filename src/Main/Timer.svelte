@@ -37,4 +37,10 @@
     .timer {
         font-size: 120px;
     }
+
+    @media screen and (max-width: 480px) {
+        .timer {
+            font-size: 80px;
+        }
+    }
 </style>

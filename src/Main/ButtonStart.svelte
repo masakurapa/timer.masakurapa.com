@@ -60,7 +60,6 @@
 <style>
     button {
         padding: 8px;
-        height: 40px;
         border: none;
         outline: none;
         color: #FFFFFF;
@@ -79,5 +78,12 @@
     }
     button:not(:disabled):active {
         background-color: #1872CC;
+    }
+
+    @media screen and (max-width: 480px) {
+        button {
+            width: 150px;
+            height: 40px;
+        }
     }
 </style>

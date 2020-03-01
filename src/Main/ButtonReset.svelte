@@ -26,7 +26,6 @@
 <style>
     button {
         padding: 8px;
-        height: 40px;
         border: none;
         outline: none;
         color: #FFFFFF;
@@ -46,5 +45,12 @@
     button:not(:disabled):active {
         margin-right: 8px;
         background-color: #FFA500;
+    }
+
+    @media screen and (max-width: 480px) {
+        button {
+            width: 80px;
+            height: 40px;
+        }
     }
 </style>

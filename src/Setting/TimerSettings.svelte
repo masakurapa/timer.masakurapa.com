@@ -3,6 +3,7 @@
     <div class="number-wrapper">Hour</div>
     <div class="number-wrapper">Min</div>
     <div class="number-wrapper">Sec</div>
+    <div class="btn-wrapper">&nbsp;</div>
 </div>
 
 {#each $timerSettings as obj, i}
@@ -32,23 +33,21 @@
             />
         </div>
 
-        <button
-            class="add-above-btn"
-            disabled={$isTimerStarting}
-            on:click="{() => addAbove(i)}"
-        ><i class="fas fa-plus-circle"></i> <i class="fas fa-arrow-up"></i></button>
-        <button
-            class="add-below-btn"
-            disabled={$isTimerStarting}
-            on:click="{() => addBelow(i)}"
-        ><i class="fas fa-plus-circle"></i> <i class="fas fa-arrow-down"></i></button>
-        <button
-            class="remove-btn"
-            disabled={$isTimerStarting || $timerSettings.length === 1}
-            on:click="{() => remove(i)}"
-        ><i class="fas fa-minus-circle"></i></button>
+        <div class="btn-wrapper">
+            <button
+                class="remove-btn"
+                disabled={$isTimerStarting || $timerSettings.length === 1}
+                on:click="{() => remove(i)}"
+            ><i class="fas fa-minus-circle fa-2x"></i></button>
+        </div>
     </div>
 {/each}
+
+<button
+    class="add-btn"
+    disabled={$isTimerStarting}
+    on:click="{add}"
+><i class="fas fa-plus-circle fa-2x"></i></button>
 
 <script>
     import { onMount } from 'svelte';
@@ -93,18 +92,10 @@
         $timerSettings[index].second = e.detail.value;
     };
 
-    // 上に追加
-    const addAbove = (i) => {
+    // 一番下に設定を追加
+    const add = () => {
         timerSettings.update(settings => {
-            settings.splice(i, 0, Object.assign({}, timerObj));
-            return settings;
-        });
-    };
-
-    // 下に追加
-    const addBelow = (i) => {
-        timerSettings.update(settings => {
-            settings.splice(i + 1, 0, Object.assign({}, timerObj));
+            settings.splice(settings.length + 1, 0, Object.assign({}, timerObj));
             return settings;
         });
     };
@@ -122,6 +113,7 @@
     /* 全体のレイアウト */
     .wrapper {
         display: flex;
+        margin-bottom: 8px;
     }
     .header {
         font-weight: bold;
@@ -134,6 +126,9 @@
     }
     .number-wrapper {
         width: 70px;
+    }
+    .btn-wrapper {
+        width: 40px;
     }
 
     /* ボタン系 */
@@ -154,15 +149,20 @@
         background-color: #FFFFFF;
     }
 
-    .add-above-btn {
-        margin-right: 8px;
-        color: #1E90FF;
-    }
-    .add-below-btn {
-        margin-right: 8px;
+    .add-btn {
         color: #1E90FF;
     }
     .remove-btn {
         color: #DC143C;
+    }
+
+    @media screen and (max-width: 480px) {
+        .text-wrapper {
+            width: 130px;
+            margin-right: 8px;
+        }
+        .number-wrapper {
+            width: 60px;
+        }
     }
 </style>

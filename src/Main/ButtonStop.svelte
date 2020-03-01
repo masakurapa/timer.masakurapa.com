@@ -37,4 +37,11 @@
     button:not(:disabled):active {
         background-color: #CC1237;
     }
+
+    @media screen and (max-width: 480px) {
+        button {
+            width: 150px;
+            height: 40px;
+        }
+    }
 </style>

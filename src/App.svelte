@@ -52,5 +52,6 @@
         margin: 0 0 0.5em 0;
         box-sizing: border-box;
         border: 1px solid #ccc;
+        border-radius: 8px;
     }
 </style>
