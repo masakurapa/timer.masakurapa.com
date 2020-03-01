@@ -5,12 +5,32 @@
 
 
 <script>
-    import { timerIndex, repeatCount, isTimeUp, interval } from './store.js';
+    import { timerIndex, repeatCount, isTimeUp, isTimeUpAll, interval } from './store.js';
     import { repeat, timerSettings, isTimerStarting, isWindowFocus } from '../store.js';
 
     let focus = true;
     isWindowFocus.subscribe(flag => {
         focus = flag;
+    });
+
+    let timeUp = false;
+    isTimeUp.subscribe(flag => {
+        timeUp = flag;
+    });
+
+    let repCnt;
+    repeatCount.subscribe(cnt => {
+        repCnt = parseInt(cnt, 10);
+    });
+
+    let intervalNum;
+    interval.subscribe(num => {
+        intervalNum = num;
+    });
+
+    let index = 0;
+    timerIndex.subscribe(i => {
+        index = i;
     });
 
     // タイマーの開始
@@ -19,45 +39,50 @@
         isTimerStarting.set(true);
 
         interval.set(setInterval(() => {
-            const index = $timerIndex;
             const t = $timerSettings[index];
-            const time = t.time - 1 < 0 ? 0 : t.time - 1;
-            $timerSettings[index].time = time;
-            if (time === 0) {
-                isTimeUp.set(true);
 
-                // タイマーのウィンドウにフォーカスがないときだけ通知
-                if (!focus) {
-                    Notification.requestPermission().then(() => new Notification('Time is up!!'));
-                }
-                next();
-            }
-        }, 1000));
-    };
+            // 1つのタイマーが終わったことを検知
+            if (timeUp) {
+                isTimeUp.set(false);
 
-    // 次のタイマーに行くための処理
-    const next = () => {
-        clearInterval($interval);
-        isTimerStarting.set(false);
+                // カウントダウン用の値は元に戻しておく
+                $timerSettings[index].time = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
 
-        const index = $timerIndex;
-        const t = $timerSettings[index];
-
-        // 一周したらループ数をカウントアップ
-        if (index + 1 === $timerSettings.length) {
-            if (parseInt($repeatCount, 10) === parseInt($repeat, 10)) {
+                // タイマー設定の位置をずらして次のタイマーに移動する
+                timerIndex.update(i => {
+                    return i + 1 === $timerSettings.length ? 0 : i + 1;
+                });
                 return;
             }
-            repeatCount.update(count => count + 1);
-        }
 
-        // 次のタイマー設定に移動する
-        $timerSettings[index].time = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
+            // 最小値が0になるようにデクリメント
+            const time = t.time - 1 < 0 ? 0 : t.time - 1;
+            $timerSettings[index].time = time;
 
-        // タイマー設定の位置をずらす
-        timerIndex.update(i => {
-            return i + 1 === $timerSettings.length ? 0 : i + 1;
-        });
+            if (time > 0) {
+                return;
+            }
+
+            // 時間切れの処理
+            // タイマーのウィンドウにフォーカスがないときだけ通知
+            if (!focus) {
+                Notification.requestPermission().then(() => new Notification('Time is up!!'));
+            }
+
+            // 一周したらループ数をカウントアップ
+            // 設定したループ数に達した場合はタイマー停止
+            if (index + 1 === $timerSettings.length) {
+                if (repCnt === parseInt($repeat, 10)) {
+                    clearInterval(intervalNum);
+                    isTimerStarting.set(false);
+                    isTimeUpAll.set(true);
+                    return;
+                }
+                repeatCount.update(count => count + 1);
+            }
+
+            isTimeUp.set(true);
+        }, 1000));
     };
 </script>
 
@@ -77,7 +102,7 @@
     button:forcus {
         background-color: #1872CC;
     }
-    button:hover {
+    button:not(:disabled):hover {
         background-color: #1872CC;
     }
     button:not(:disabled):active {

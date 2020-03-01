@@ -3,7 +3,7 @@
 
 <Timer/>
 
-{#if $isTimeUp}
+{#if $isTimeUpAll}
     <ButtonStopSound/>
 {:else if !$isTimerStarting}
     <ButtonStart/>
@@ -16,7 +16,7 @@
 
 <script>
     import { timerSettings, isTimerStarting } from '../store.js';
-    import { repeatCount, timerIndex, isTimeUp } from './store.js';
+    import { repeatCount, timerIndex, isTimeUpAll } from './store.js';
 
     import Audio from './Audio.svelte';
     import ButtonReset from './ButtonReset.svelte';

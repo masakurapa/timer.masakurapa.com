@@ -1,13 +1,13 @@
 <button
     on:click="{onClick}"
-    disabled={!$isTimeUp}
+    disabled={!$isTimeUpAll}
 >STOP SOUND</button>
 
 <script>
-    import { isTimeUp } from './store.js';
+    import { isTimeUpAll } from './store.js';
 
     const onClick = () => {
-        isTimeUp.set(false);
+        isTimeUpAll.set(false);
     };
 </script>
 
@@ -28,7 +28,7 @@
     button:forcus {
         background-color: #349961;
     }
-    button:hover {
+    button:not(:disabled):hover {
         background-color: #349961;
     }
     button:not(:disabled):active {

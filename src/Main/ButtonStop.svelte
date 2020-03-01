@@ -31,7 +31,7 @@
     button:forcus {
         background-color: #CC1237;
     }
-    button:hover {
+    button:not(:disabled):hover {
         background-color: #CC1237;
     }
     button:not(:disabled):active {
