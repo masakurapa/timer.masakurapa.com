@@ -21,11 +21,9 @@
         interval.set(setInterval(() => {
             const index = $timerIndex;
             const t = $timerSettings[index];
-
-            $timerSettings[index].time = t.time + 1;
-
-            const baseTime = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
-            if (t.time + 1 > baseTime) {
+            const time = t.time - 1 < 0 ? 0 : t.time - 1;
+            $timerSettings[index].time = time;
+            if (time === 0) {
                 isTimeUp.set(true);
 
                 // タイマーのウィンドウにフォーカスがないときだけ通知
@@ -43,6 +41,7 @@
         isTimerStarting.set(false);
 
         const index = $timerIndex;
+        const t = $timerSettings[index];
 
         // 一周したらループ数をカウントアップ
         if (index + 1 === $timerSettings.length) {
@@ -53,8 +52,8 @@
         }
 
         // 次のタイマー設定に移動する
-        // 自分のカウントアップ値はとりあえずクリア
-        $timerSettings[index].time = 0;
+        $timerSettings[index].time = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
+
         // タイマー設定の位置をずらす
         timerIndex.update(i => {
             return i + 1 === $timerSettings.length ? 0 : i + 1;

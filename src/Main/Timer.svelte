@@ -19,7 +19,7 @@
     $: {
         const t = $timerSettings[$timerIndex];
         if (t !== undefined) {
-            const baseTime = (t.hour * 60 * 60) + (t.minute * 60) + t.second - t.time;
+            const baseTime = t.time;
             const h = Math.floor((baseTime) / (60 * 60));
             const m = Math.floor((baseTime - (h * 60 * 60)) / 60);
             const s = (baseTime - (h * 60 * 60) - (m * 60));

@@ -80,16 +80,29 @@
     // タイマー(時)のonChangeイベント
     const onChangeHour = (e, index) => {
         $timerSettings[index].hour = e.detail.value;
+        recalculation();
     };
 
     // タイマー(分)のonChangeイベント
     const onChangeMinute = (e, index) => {
         $timerSettings[index].minute = e.detail.value;
+        recalculation();
     };
 
     // タイマー(秒)のonChangeイベント
     const onChangeSecond = (e, index) => {
         $timerSettings[index].second = e.detail.value;
+        recalculation();
+    };
+
+    // タイマー値の再計算
+    const recalculation = () => {
+        timerSettings.update(settings => {
+            settings.forEach(t => {
+                t.time = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
+            });
+            return settings;
+        });
     };
 
     // 一番下に設定を追加
