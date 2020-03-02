@@ -12,6 +12,7 @@
         isTimeUp,
         interval,
     } from '../store.js';
+    import { calcTotalSec } from '../util.js';
 
     const onClick = () => {
         clearInterval($interval);
@@ -22,7 +23,7 @@
         timerIndex.set(0);
         timerSettings.update(settings => {
             settings.forEach(t => {
-                t.time = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
+                t.time = calcTotalSec(t.hour, t.minute, t.second);
             });
             return settings;
         });

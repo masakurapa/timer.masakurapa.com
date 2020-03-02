@@ -16,6 +16,7 @@
         isTimeUpAll,
         interval,
     } from '../store.js';
+    import { calcTotalSec } from '../util.js';
 
     let focus = true;
     isWindowFocus.subscribe(flag => {
@@ -55,7 +56,7 @@
                 isTimeUp.set(false);
 
                 // カウントダウン用の値は元に戻しておく
-                $timerSettings[index].time = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
+                $timerSettings[index].time = calcTotalSec(t.hour, t.minute, t.second);
 
                 // タイマー設定の位置をずらして次のタイマーに移動する
                 timerIndex.update(i => {
