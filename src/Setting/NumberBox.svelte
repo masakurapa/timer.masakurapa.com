@@ -22,7 +22,7 @@
     const onChange = (e) => {
         const val = parseInt(e.target.value, 10);
         if (isNaN(val)) {
-            dispatch('change', { value: min });
+            dispatch('change', { value: 0 });
             return;
         }
 

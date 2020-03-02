@@ -23,24 +23,24 @@
         <div class="number-wrapper">
             <NumberBox
                 value={$timerSettings[i].hour}
-                min="0"
-                max="24"
+                min="{0}"
+                max="{24}"
                 on:change={e => onChangeTime(e, i, 'hour')}
             />&nbsp;:&nbsp;
         </div>
         <div class="number-wrapper">
             <NumberBox
                 value={$timerSettings[i].minute}
-                min="0"
-                max="59"
+                min="{0}"
+                max="{59}"
                 on:change={e => onChangeTime(e, i, 'minute')}
             />&nbsp;:&nbsp;
         </div>
         <div class="number-wrapper">
             <NumberBox
                 value={$timerSettings[i].second}
-                min="0"
-                max="59"
+                min="{0}"
+                max="{59}"
                 on:change={e => onChangeTime(e, i, 'second')}
             />&nbsp;:&nbsp;
         </div>

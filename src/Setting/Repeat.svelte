@@ -3,9 +3,9 @@
     <div>
         <NumberBox
             value={$repeat}
-            min="0"
-            max="100"
-            maxlength="3"
+            min="{0}"
+            max="{100}"
+            maxlength="{3}"
             on:change={e => onChange(e)}
         />
     </div>
