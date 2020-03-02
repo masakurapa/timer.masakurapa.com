@@ -43,6 +43,14 @@
     </div>
 {/each}
 
+<div class="wrapper">
+    <div class="text-wrapper">Total Time:</div>
+    <div class="number-wrapper total">{totalHour}&nbsp;:&nbsp;</div>
+    <div class="number-wrapper total">{totalMinute}&nbsp;:&nbsp;</div>
+    <div class="number-wrapper total">{totalSecond}</div>
+    <div class="btn-wrapper">&nbsp;</div>
+</div>
+
 <button
     class="add-btn"
     disabled={$isTimerStarting}
@@ -57,6 +65,10 @@
     import Minute from './Timer/Minute.svelte';
     import Second from './Timer/Second.svelte';
     import Title from './Timer/Title.svelte';
+
+    let totalHour = '00';
+    let totalMinute = '00';
+    let totalSecond = '00';
 
     // タイマーの設定オブジェクト
     const timerObj = {
@@ -81,18 +93,21 @@
     const onChangeHour = (e, index) => {
         $timerSettings[index].hour = e.detail.value;
         recalculation();
+        calculateTotal();
     };
 
     // タイマー(分)のonChangeイベント
     const onChangeMinute = (e, index) => {
         $timerSettings[index].minute = e.detail.value;
         recalculation();
+        calculateTotal();
     };
 
     // タイマー(秒)のonChangeイベント
     const onChangeSecond = (e, index) => {
         $timerSettings[index].second = e.detail.value;
         recalculation();
+        calculateTotal();
     };
 
     // タイマー値の再計算
@@ -119,6 +134,30 @@
             settings.splice(i, 1);
             return settings;
         });
+        calculateTotal();
+    };
+
+    // 合計時間を求める
+    const calculateTotal = () => {
+        let total = 0;
+        $timerSettings.forEach(t => {
+            total += t.hour * 60 * 60;
+            total += t.minute * 60;
+            total += t.second;
+        });
+
+        const h = Math.floor((total) / (60 * 60));
+        const m = Math.floor((total - (h * 60 * 60)) / 60);
+        const s = (total - (h * 60 * 60) - (m * 60));
+
+        totalHour = padding(h);
+        totalMinute = padding(m);
+        totalSecond = padding(s);
+    };
+
+    // ゼロパディングする
+    const padding = (val) => {
+        return val.toString().padStart(2, '0');
     };
 </script>
 
@@ -142,6 +181,10 @@
     }
     .btn-wrapper {
         width: 40px;
+    }
+
+    .total {
+        text-align: center;
     }
 
     /* ボタン系 */
