@@ -21,3 +21,5 @@ export const isWindowFocus = writable(true);
 export const isTimeUp = writable(false);
 // 全てのタイマーが0になったことの通知用フラグ
 export const isTimeUpAll = writable(false);
+// これ以上タイマーを起動できない状態
+export const isFinish = writable(false);

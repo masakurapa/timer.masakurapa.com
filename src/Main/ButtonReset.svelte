@@ -10,6 +10,7 @@
         timerIndex,
         repeatCount,
         isTimeUp,
+        isFinish,
         interval,
     } from '../store.js';
     import { calcTotalSec } from '../util.js';
@@ -18,6 +19,7 @@
         clearInterval($interval);
 
         isTimeUp.set(false);
+        isFinish.set(false);
         isTimerStarting.set(false);
         repeatCount.set(0);
         timerIndex.set(0);

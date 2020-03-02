@@ -1,8 +1,7 @@
 <button
     on:click="{start}"
-    disabled="{$isTimerStarting}"
+    {disabled}
 >START</button>
-
 
 <script>
     import {
@@ -14,10 +13,14 @@
         repeatCount,
         isTimeUp,
         isTimeUpAll,
+        isFinish,
         interval,
     } from '../store.js';
     import { calcTotalSec } from '../util.js';
 
+    $: disabled = $isTimerStarting || $isFinish;
+
+    // ここから先のsubscribeはsetInterval()のスコープで使いたい変数たち
     let focus = true;
     isWindowFocus.subscribe(flag => {
         focus = flag;
@@ -86,6 +89,7 @@
                     clearInterval(intervalNum);
                     isTimerStarting.set(false);
                     isTimeUpAll.set(true);
+                    isFinish.set(true);
                     return;
                 }
                 repeatCount.update(count => count + 1);
