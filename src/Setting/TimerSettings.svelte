@@ -47,7 +47,7 @@
     <div class="text-wrapper">Total Time:</div>
     <div class="number-wrapper total">{totalHour}&nbsp;:&nbsp;</div>
     <div class="number-wrapper total">{totalMinute}&nbsp;:&nbsp;</div>
-    <div class="number-wrapper total">{totalSecond}</div>
+    <div class="number-wrapper total">{totalSecond}&nbsp;&nbsp;&nbsp;</div>
     <div class="btn-wrapper">&nbsp;</div>
 </div>
 
@@ -60,6 +60,7 @@
 <script>
     import { onMount } from 'svelte';
     import { timerSettings, isTimerStarting } from '../store.js';
+    import { padding, calcTotalSec, totalSecToHMS } from '../util.js';
 
     import Hour from './Timer/Hour.svelte';
     import Minute from './Timer/Minute.svelte';
@@ -114,7 +115,7 @@
     const recalculation = () => {
         timerSettings.update(settings => {
             settings.forEach(t => {
-                t.time = (t.hour * 60 * 60) + (t.minute * 60) + t.second;
+                t.time = calcTotalSec(t.hour, t.minute, t.second);
             });
             return settings;
         });
@@ -141,23 +142,12 @@
     const calculateTotal = () => {
         let total = 0;
         $timerSettings.forEach(t => {
-            total += t.hour * 60 * 60;
-            total += t.minute * 60;
-            total += t.second;
+            total += calcTotalSec(t.hour, t.minute, t.second);
         });
-
-        const h = Math.floor((total) / (60 * 60));
-        const m = Math.floor((total - (h * 60 * 60)) / 60);
-        const s = (total - (h * 60 * 60) - (m * 60));
-
-        totalHour = padding(h);
-        totalMinute = padding(m);
-        totalSecond = padding(s);
-    };
-
-    // ゼロパディングする
-    const padding = (val) => {
-        return val.toString().padStart(2, '0');
+        const t = totalSecToHMS(total);
+        totalHour = padding(t.hour);
+        totalMinute = padding(t.minute);
+        totalSecond = padding(t.second);
     };
 </script>
 

@@ -5,28 +5,20 @@
 <script>
     import { timerIndex } from './store.js';
     import { timerSettings } from '../store.js';
+    import { padding, totalSecToHMS } from '../util.js';
 
     let hour = '00';
     let minute = '00';
     let second = '00';
 
-    // ゼロパディングする
-    const padding = (val) => {
-        return val.toString().padStart(2, '0');
-    };
-
     // reactive
     $: {
         const t = $timerSettings[$timerIndex];
         if (t !== undefined) {
-            const baseTime = t.time;
-            const h = Math.floor((baseTime) / (60 * 60));
-            const m = Math.floor((baseTime - (h * 60 * 60)) / 60);
-            const s = (baseTime - (h * 60 * 60) - (m * 60));
-
-            hour = padding(h);
-            minute = padding(m);
-            second = padding(s);
+            const obj = totalSecToHMS(t.time);
+            hour = padding(obj.hour);
+            minute = padding(obj.minute);
+            second = padding(obj.second);
         }
     }
 </script>
