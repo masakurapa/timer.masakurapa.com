@@ -55,6 +55,12 @@
     </div>
 {/each}
 
+<button
+    class="add-btn"
+    disabled={$isTimerStarting}
+    on:click="{add}"
+><i class="fas fa-plus-circle fa-2x"></i></button>
+
 <div class="wrapper">
     <div class="current-wrapper">&nbsp;</div>
     <div class="text-wrapper">Total Time:</div>
@@ -63,12 +69,6 @@
     <div class="number-wrapper total">{totalSecond}&nbsp;&nbsp;&nbsp;</div>
     <div class="btn-wrapper">&nbsp;</div>
 </div>
-
-<button
-    class="add-btn"
-    disabled={$isTimerStarting}
-    on:click="{add}"
-><i class="fas fa-plus-circle fa-2x"></i></button>
 
 <script>
     import { onMount } from 'svelte';
@@ -202,7 +202,7 @@
 
     .add-btn {
         color: #1E90FF;
-        margin-left: 32px;
+        margin: 0 0 8px 32px;
     }
     .remove-btn {
         color: #DC143C;
