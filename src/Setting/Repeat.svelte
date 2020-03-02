@@ -22,7 +22,7 @@
 
 <style>
     .wrapper {
-        margin-bottom: 20px;
+        margin: 0 0 20px 32px;
     }
     label {
         display: block;

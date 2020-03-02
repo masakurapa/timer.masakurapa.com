@@ -1,4 +1,5 @@
 <div class="wrapper header">
+    <div class="current-wrapper">&nbsp;</div>
     <div class="text-wrapper">Title</div>
     <div class="number-wrapper">Hour</div>
     <div class="number-wrapper">Min</div>
@@ -8,6 +9,11 @@
 
 {#each $timerSettings as obj, i}
     <div class="wrapper">
+        <div class="current-wrapper">
+            {#if $timerIndex === i}
+                <i class="fas fa-angle-double-right fa-2x"></i>
+            {/if}
+        </div>
         <div class="text-wrapper">
             <Title
                 value={$timerSettings[i].title}
@@ -50,6 +56,7 @@
 {/each}
 
 <div class="wrapper">
+    <div class="current-wrapper">&nbsp;</div>
     <div class="text-wrapper">Total Time:</div>
     <div class="number-wrapper total">{totalHour}&nbsp;:&nbsp;</div>
     <div class="number-wrapper total">{totalMinute}&nbsp;:&nbsp;</div>
@@ -65,7 +72,11 @@
 
 <script>
     import { onMount } from 'svelte';
-    import { timerSettings, isTimerStarting } from '../store.js';
+    import {
+        timerIndex,
+        timerSettings,
+        isTimerStarting,
+    } from '../store.js';
     import { padding, calcTotalSec, totalSecToHMS } from '../util.js';
 
     import NumberBox from './NumberBox.svelte';
@@ -144,12 +155,18 @@
     .wrapper {
         display: flex;
         margin-bottom: 8px;
+        padding: 4px;
+        align-items: center;
     }
     .header {
         font-weight: bold;
         margin-bottom: 8px;
     }
 
+    .current-wrapper {
+        width: 32px;
+        color: #228B22;
+    }
     .text-wrapper {
         width: 300px;
         margin-right: 16px;
@@ -158,7 +175,7 @@
         width: 70px;
     }
     .btn-wrapper {
-        width: 40px;
+        width: 32px;
     }
 
     .total {
@@ -185,6 +202,7 @@
 
     .add-btn {
         color: #1E90FF;
+        margin-left: 32px;
     }
     .remove-btn {
         color: #DC143C;
