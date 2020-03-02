@@ -5,8 +5,17 @@
 
 
 <script>
-    import { timerIndex, repeatCount, isTimeUp, isTimeUpAll, interval } from './store.js';
-    import { repeat, timerSettings, isTimerStarting, isWindowFocus } from '../store.js';
+    import {
+        repeat,
+        timerSettings,
+        isTimerStarting,
+        isWindowFocus,
+        timerIndex,
+        repeatCount,
+        isTimeUp,
+        isTimeUpAll,
+        interval,
+    } from '../store.js';
 
     let focus = true;
     isWindowFocus.subscribe(flag => {

@@ -3,8 +3,10 @@
 </div>
 
 <script>
-    import { timerIndex } from './store.js';
-    import { timerSettings } from '../store.js';
+    import {
+        timerIndex,
+        timerSettings,
+    } from '../store.js';
     import { padding, totalSecToHMS } from '../util.js';
 
     let hour = '00';

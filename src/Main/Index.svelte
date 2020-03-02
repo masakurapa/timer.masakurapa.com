@@ -15,8 +15,14 @@
 <Audio/>
 
 <script>
-    import { timerSettings, isTimerStarting } from '../store.js';
-    import { repeatCount, timerIndex, isTimeUpAll } from './store.js';
+    import {
+        timerSettings,
+        isTimerStarting,
+        timerIndex,
+        repeatCount,
+        isTimeUpAll,
+    } from '../store.js';
+
 
     import Audio from './Audio.svelte';
     import ButtonReset from './ButtonReset.svelte';

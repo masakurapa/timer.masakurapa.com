@@ -2,7 +2,10 @@
 <audio src="/warning1.mp3" loop bind:this={audio2}></audio>
 
 <script>
-    import { isTimeUp, isTimeUpAll } from './store.js';
+    import {
+        isTimeUp,
+        isTimeUpAll,
+    } from '../store.js';
 
     let audio1;
     let audio2;

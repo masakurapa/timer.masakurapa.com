@@ -4,7 +4,9 @@
 >STOP SOUND</button>
 
 <script>
-    import { isTimeUpAll } from './store.js';
+    import {
+        isTimeUpAll,
+    } from '../store.js';
 
     const onClick = () => {
         isTimeUpAll.set(false);

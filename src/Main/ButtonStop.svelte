@@ -4,8 +4,10 @@
 >PAUSE</button>
 
 <script>
-    import { interval } from './store.js';
-    import { isTimerStarting } from '../store.js';
+    import {
+        isTimerStarting,
+        interval,
+    } from '../store.js';
 
     // タイマーの一時停止
     const onClick = () => {

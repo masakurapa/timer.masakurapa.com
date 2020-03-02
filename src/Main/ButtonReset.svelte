@@ -4,8 +4,14 @@
 >RESET</button>
 
 <script>
-    import { timerIndex, repeatCount, isTimeUp, interval } from './store.js';
-    import { timerSettings, isTimerStarting } from '../store.js';
+    import {
+        timerSettings,
+        isTimerStarting,
+        timerIndex,
+        repeatCount,
+        isTimeUp,
+        interval,
+    } from '../store.js';
 
     const onClick = () => {
         clearInterval($interval);
