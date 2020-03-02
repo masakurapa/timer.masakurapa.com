@@ -135,6 +135,9 @@
             return settings;
         });
         calculateTotal();
+
+        // 無条件で一番上のタイマーに戻しておく
+        timerIndex.set(0);
     };
 
     // 合計時間を求める
@@ -189,12 +192,14 @@
         background-color: #FFFFFF;
         border: none;
         outline: none;
+        cursor: pointer;
     }
     button:forcus {
         background-color: #FFFFFF;
     }
     button:disabled {
         color: #999999;
+        cursor: default;
     }
     button:not(:disabled):active {
         background-color: #FFFFFF;

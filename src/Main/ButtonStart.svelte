@@ -105,9 +105,11 @@
         width: 200px;
         height: 50px;
         background-color: #1E90FF;
+        cursor: pointer;
     }
     button:disabled {
         background-color: #999999;
+        cursor: default;
     }
     button:forcus {
         background-color: #1872CC;
