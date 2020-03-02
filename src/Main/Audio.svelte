@@ -26,9 +26,11 @@
         if (audio1 === undefined) {
             return;
         }
-        if (!flag) {
-            return;
+        if (flag) {
+            audio1.play();
+        } else {
+            audio1.pause();
+            audio1.currentTime = 0;
         }
-        audio1.play();
     });
 </script>
