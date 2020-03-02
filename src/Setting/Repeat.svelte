@@ -1,37 +1,22 @@
 <div class="wrapper">
     <label>Repeat Count</label>
     <div>
-        <input
-            type="number"
-            bind:value={$repeat}
-            min="{MIN}"
-            max="{MAX}"
-            disabled={$isTimerStarting}
-            on:change={(e) => onChange(e.target.value)}
-        >
+        <NumberBox
+            value={$repeat}
+            min="0"
+            max="100"
+            maxlength="3"
+            on:change={e => onChange(e)}
+        />
     </div>
 </div>
 
 <script>
-    import { repeat, isTimerStarting } from '../store.js';
+    import { repeat } from '../store.js';
+    import NumberBox from './NumberBox.svelte';
 
-    const MIN = 0;
-    const MAX = 100;
-
-    // 繰り返し回数のonChangeイベント
-    const onChange = (val) => {
-        if (val.length === 0) {
-            repeat.set(MIN);
-            return;
-        }
-        const nval = parseInt(val, 10);
-        if (nval < MIN) {
-            repeat.set(MIN);
-        } else if (nval > MAX) {
-            repeat.set(MAX);
-        } else {
-            repeat.set(nval);
-        }
+    const onChange = (e) => {
+        repeat.set(e.detail.value);
     };
 </script>
 
@@ -43,17 +28,5 @@
         display: block;
         font-weight: bold;
         margin-bottom: 8px;
-    }
-    input {
-        padding: 8px;
-        height: 40px;
-        text-align: center;
-    }
-    input:focus {
-        outline: none;
-    }
-    input:disabled {
-        background-color: #EEEEEE;
-        color: #999999;
     }
 </style>

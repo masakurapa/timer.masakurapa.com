@@ -15,22 +15,28 @@
             />
         </div>
         <div class="number-wrapper">
-            <Hour
+            <NumberBox
                 value={$timerSettings[i].hour}
-                on:change={e => onChangeHour(e, i)}
+                min="0"
+                max="24"
+                on:change={e => onChangeTime(e, i, 'hour')}
             />&nbsp;:&nbsp;
         </div>
         <div class="number-wrapper">
-            <Minute
+            <NumberBox
                 value={$timerSettings[i].minute}
-                on:change={e => onChangeMinute(e, i)}
+                min="0"
+                max="59"
+                on:change={e => onChangeTime(e, i, 'minute')}
             />&nbsp;:&nbsp;
         </div>
         <div class="number-wrapper">
-            <Second
+            <NumberBox
                 value={$timerSettings[i].second}
-                on:change={e => onChangeSecond(e, i)}
-            />
+                min="0"
+                max="59"
+                on:change={e => onChangeTime(e, i, 'second')}
+            />&nbsp;:&nbsp;
         </div>
 
         <div class="btn-wrapper">
@@ -62,9 +68,7 @@
     import { timerSettings, isTimerStarting } from '../store.js';
     import { padding, calcTotalSec, totalSecToHMS } from '../util.js';
 
-    import Hour from './Timer/Hour.svelte';
-    import Minute from './Timer/Minute.svelte';
-    import Second from './Timer/Second.svelte';
+    import NumberBox from './NumberBox.svelte';
     import Title from './Timer/Title.svelte';
 
     let totalHour = '00';
@@ -90,35 +94,19 @@
         $timerSettings[index].title = e.detail.value;
     };
 
-    // タイマー(時)のonChangeイベント
-    const onChangeHour = (e, index) => {
-        $timerSettings[index].hour = e.detail.value;
-        recalculation();
-        calculateTotal();
-    };
+    // タイマーのonChangeイベント
+    const onChangeTime = (e, index, key) => {
+        $timerSettings[index][key] = e.detail.value;
 
-    // タイマー(分)のonChangeイベント
-    const onChangeMinute = (e, index) => {
-        $timerSettings[index].minute = e.detail.value;
-        recalculation();
-        calculateTotal();
-    };
-
-    // タイマー(秒)のonChangeイベント
-    const onChangeSecond = (e, index) => {
-        $timerSettings[index].second = e.detail.value;
-        recalculation();
-        calculateTotal();
-    };
-
-    // タイマー値の再計算
-    const recalculation = () => {
+        // タイマー値の再計算
         timerSettings.update(settings => {
             settings.forEach(t => {
                 t.time = calcTotalSec(t.hour, t.minute, t.second);
             });
             return settings;
         });
+
+        calculateTotal();
     };
 
     // 一番下に設定を追加
