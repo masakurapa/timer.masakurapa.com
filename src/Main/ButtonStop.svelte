@@ -1,7 +1,7 @@
 <button
     on:click="{onClick}"
     disabled={!$isTimerStarting}
->STOP</button>
+>PAUSE</button>
 
 <script>
     import { interval } from './store.js';
