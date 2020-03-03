@@ -108,17 +108,17 @@
 
     onMount(() => {
         const idx = getCurrent();
-        const settings = getTimerSetting();
+        const storage = getTimerSetting();
 
         // ローカルストレージの情報がなければ、デフォルト値として一個の空タイマーをセット
-        if (settings[idx] === undefined) {
+        if (storage[idx] === undefined) {
             timerSettings.set([Object.assign({}, timerObj)]);
             return;
         }
 
         // ローカルストレージの情報を詰め直す
         const objs = [];
-        settings[idx].forEach(t => {
+        storage[idx].settings.forEach(t => {
             const obj = Object.assign({}, timerObj);
             obj.title = t.title;
             obj.hour = t.hour;
