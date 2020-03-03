@@ -118,7 +118,7 @@
 
         // ローカルストレージの情報を詰め直す
         const objs = [];
-        settings.forEach(t => {
+        settings[idx].forEach(t => {
             const obj = Object.assign({}, timerObj);
             obj.title = t.title;
             obj.hour = t.hour;
@@ -172,7 +172,7 @@
             obj.second = t.second;
             settings.push(obj);
         });
-        setTimerSettings(settings);
+        setTimerSettings(getCurrent(), settings);
     };
 
     // 一番下に設定を追加

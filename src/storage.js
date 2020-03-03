@@ -13,8 +13,10 @@ export const getCurrent = () => {
 };
 
 // タイマーの設定リストをローカルストレージに保存する
-export const setTimerSettings = (settings) => {
-    return setItem(SETTINGS_KEY, JSON.stringify(settings));
+export const setTimerSettings = (index, settings) => {
+    const storage = getTimerSetting();
+    storage[index] = settings;
+    return setItem(SETTINGS_KEY, JSON.stringify(storage));
 };
 
 // ローカルストレージからタイマーの設定リストを取得する
@@ -23,8 +25,8 @@ export const getTimerSetting = () => {
     if (val === null) {
         return [];
     }
-    const userList = JSON.parse(val);
-    return userList !== null ? userList : [];
+    const settings = JSON.parse(val);
+    return settings !== null ? settings : [];
 };
 
 // ローカルストレージに保存
