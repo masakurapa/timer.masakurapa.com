@@ -42,7 +42,7 @@
                 min="{0}"
                 max="{59}"
                 on:change={e => onChangeTime(e, i, 'second')}
-            />&nbsp;:&nbsp;
+            />
         </div>
 
         <div class="btn-wrapper">
