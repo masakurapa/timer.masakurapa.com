@@ -73,6 +73,7 @@
 <script>
     import { onMount } from 'svelte';
     import {
+        repeat,
         timerIndex,
         timerSettings,
         isTimerStarting,
@@ -98,6 +99,14 @@
     // マウント時にデフォルト値として一個の空タイマーをセット
     onMount(() => {
         timerSettings.set([Object.assign({}, timerObj)]);
+    });
+
+    let rep = 0;
+    repeat.subscribe(n => {
+        if (rep !== n) {
+            rep = n;
+            calculateTotal();
+        }
     });
 
     // タイトルのonChangeイベント
@@ -146,6 +155,8 @@
         $timerSettings.forEach(t => {
             total += calcTotalSec(t.hour, t.minute, t.second);
         });
+        total = total * ($repeat + 1);
+
         const t = totalSecToHMS(total);
         totalHour = padding(t.hour);
         totalMinute = padding(t.minute);
