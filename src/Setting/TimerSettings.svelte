@@ -78,7 +78,17 @@
         timerSettings,
         isTimerStarting,
     } from '../store.js';
-    import { padding, calcTotalSec, totalSecToHMS } from '../util.js';
+    import {
+        padding,
+        calcTotalSec,
+        totalSecToHMS,
+    } from '../util.js';
+    import {
+        getCurrent,
+        setTimerSettings,
+        getTimerSetting,
+    } from '../storage.js';
+
 
     import NumberBox from './NumberBox.svelte';
     import Title from './Timer/Title.svelte';
@@ -96,9 +106,29 @@
         second: 0,
     };
 
-    // マウント時にデフォルト値として一個の空タイマーをセット
     onMount(() => {
-        timerSettings.set([Object.assign({}, timerObj)]);
+        const idx = getCurrent();
+        const settings = getTimerSetting();
+
+        // ローカルストレージの情報がなければ、デフォルト値として一個の空タイマーをセット
+        if (settings[idx] === undefined) {
+            timerSettings.set([Object.assign({}, timerObj)]);
+            return;
+        }
+
+        // ローカルストレージの情報を詰め直す
+        const objs = [];
+        settings.forEach(t => {
+            const obj = Object.assign({}, timerObj);
+            obj.title = t.title;
+            obj.hour = t.hour;
+            obj.minute = t.minute;
+            obj.second = t.second;
+            obj.time = calcTotalSec(t.hour, t.minute, t.second);
+            objs.push(obj);
+        });
+        timerSettings.set(objs);
+        calculateTotal();
     });
 
     let rep = 0;
@@ -112,11 +142,13 @@
     // タイトルのonChangeイベント
     const onChangeTitle = (e, index) => {
         $timerSettings[index].title = e.detail.value;
+        setStorage();
     };
 
     // タイマーのonChangeイベント
     const onChangeTime = (e, index, key) => {
         $timerSettings[index][key] = e.detail.value;
+        setStorage();
 
         // タイマー値の再計算
         timerSettings.update(settings => {
@@ -129,12 +161,27 @@
         calculateTotal();
     };
 
+    // ローカルストレージにタイマー設定を保存する
+    const setStorage = () => {
+        const settings = [];
+        $timerSettings.forEach(t => {
+            const obj = Object.assign({}, timerObj);
+            obj.title = t.title;
+            obj.hour = t.hour;
+            obj.minute = t.minute;
+            obj.second = t.second;
+            settings.push(obj);
+        });
+        setTimerSettings(settings);
+    };
+
     // 一番下に設定を追加
     const add = () => {
         timerSettings.update(settings => {
             settings.splice(settings.length + 1, 0, Object.assign({}, timerObj));
             return settings;
         });
+        setStorage();
     };
 
     // 指定行のタイマー設定を削除
@@ -143,6 +190,7 @@
             settings.splice(i, 1);
             return settings;
         });
+        setStorage();
         calculateTotal();
 
         // 無条件で一番上のタイマーに戻しておく
