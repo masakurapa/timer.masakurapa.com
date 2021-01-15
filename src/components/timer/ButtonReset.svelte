@@ -3,7 +3,7 @@
     disabled={$isTimerStarting}
 >RESET</button>
 
-<script>
+<script lang="ts">
     import {
         timerSettings,
         isTimerStarting,
@@ -12,10 +12,10 @@
         isTimeUp,
         isFinish,
         interval,
-    } from '../store.js';
-    import { calcTotalSec } from '../util.js';
+    } from '../../store.js';
+    import { calcTotalSec } from '../../util.js';
 
-    const onClick = () => {
+    const onClick = (): void => {
         clearInterval($interval);
 
         isTimeUp.set(false);

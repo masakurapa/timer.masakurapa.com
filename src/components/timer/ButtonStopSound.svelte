@@ -3,14 +3,12 @@
     disabled={!$isTimeUpAll}
 >STOP SOUND</button>
 
-<script>
+<script lang="ts">
     import {
         isTimeUpAll,
-    } from '../store.js';
+    } from '../../store.js';
 
-    const onClick = () => {
-        isTimeUpAll.set(false);
-    };
+    const onClick = (): void => isTimeUpAll.set(false);
 </script>
 
 <style>

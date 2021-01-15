@@ -3,7 +3,7 @@
     {disabled}
 >START</button>
 
-<script>
+<script lang="ts">
     import {
         repeat,
         timerSettings,
@@ -15,39 +15,29 @@
         isTimeUpAll,
         isFinish,
         interval,
-    } from '../store.js';
-    import { calcTotalSec } from '../util.js';
+    } from '../../store.js';
+    import { calcTotalSec } from '../../util.js';
 
     $: disabled = $isTimerStarting || $isFinish;
 
     // ここから先のsubscribeはsetInterval()のスコープで使いたい変数たち
     let focus = true;
-    isWindowFocus.subscribe(flag => {
-        focus = flag;
-    });
+    isWindowFocus.subscribe(flag => focus = flag);
 
     let timeUp = false;
-    isTimeUp.subscribe(flag => {
-        timeUp = flag;
-    });
+    isTimeUp.subscribe(flag => timeUp = flag);
 
-    let repCnt;
-    repeatCount.subscribe(cnt => {
-        repCnt = parseInt(cnt, 10);
-    });
+    let repCnt: number;
+    repeatCount.subscribe(cnt => repCnt = cnt);
 
-    let intervalNum;
-    interval.subscribe(num => {
-        intervalNum = num;
-    });
+    let intervalNum: number;
+    interval.subscribe(num => intervalNum = num);
 
     let index = 0;
-    timerIndex.subscribe(i => {
-        index = i;
-    });
+    timerIndex.subscribe(i => index = i);
 
     // タイマーの開始
-    const start = () => {
+    const start = (): void => {
         isTimeUp.set(false);
         isTimerStarting.set(true);
 
@@ -85,7 +75,7 @@
             // 一周したらループ数をカウントアップ
             // 設定したループ数に達した場合はタイマー停止
             if (index + 1 === $timerSettings.length) {
-                if (repCnt === parseInt($repeat, 10)) {
+                if (repCnt === $repeat) {
                     clearInterval(intervalNum);
                     isTimerStarting.set(false);
                     isTimeUpAll.set(true);

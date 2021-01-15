@@ -1,5 +1,7 @@
 <div>Repeat: {$repeatCount}</div>
-<div class="title">{$timerSettings[$timerIndex] !== undefined ? $timerSettings[$timerIndex].title : ''}</div>
+<div class="title">
+    {$timerSettings[$timerIndex] !== undefined ? $timerSettings[$timerIndex].title : ''}
+</div>
 
 <Timer/>
 
@@ -21,14 +23,14 @@
 
 <Audio/>
 
-<script>
+<script lang="ts">
     import {
         timerSettings,
         isTimerStarting,
         timerIndex,
         repeatCount,
         isTimeUpAll,
-    } from '../store.js';
+    } from '../../store';
 
 
     import Audio from './Audio.svelte';

@@ -7,19 +7,19 @@
     on:change={onChange}
 >
 
-<script>
+<script lang="ts">
     import { createEventDispatcher } from 'svelte';
-    import { isTimerStarting } from '../store.js';
+    import { isTimerStarting } from '../../store';
 
-    export let value;
-    export let min;
-    export let max;
+    export let value: number;
+    export let min: number;
+    export let max: number;
     export let minlength = 1;
     export let maxlength = 2;
 
     const dispatch = createEventDispatcher();
 
-    const onChange = (e) => {
+    const onChange = (e: any): void => {
         const val = parseInt(e.target.value, 10);
         if (isNaN(val)) {
             dispatch('change', { value: 0 });

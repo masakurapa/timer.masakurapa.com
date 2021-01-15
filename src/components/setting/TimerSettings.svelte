@@ -7,7 +7,7 @@
     <div class="btn-wrapper">&nbsp;</div>
 </div>
 
-{#each $timerSettings as obj, i}
+{#each $timerSettings as _, i}
     <div class="wrapper">
         <div class="current-wrapper">
             {#if $timerIndex === i}
@@ -70,25 +70,26 @@
     <div class="btn-wrapper">&nbsp;</div>
 </div>
 
-<script>
+<script lang="ts">
+    import type { timerSetting } from '../../types';
+
     import { onMount } from 'svelte';
     import {
         repeat,
         timerIndex,
         timerSettings,
         isTimerStarting,
-    } from '../store.js';
+    } from '../../store';
     import {
         padding,
         calcTotalSec,
         totalSecToHMS,
-    } from '../util.js';
+    } from '../../util';
     import {
         getCurrent,
         setTimerSettings,
         getTimerSetting,
-    } from '../storage.js';
-
+    } from '../../storage';
 
     import NumberBox from './NumberBox.svelte';
     import Title from './Timer/Title.svelte';
@@ -98,7 +99,7 @@
     let totalSecond = '00';
 
     // タイマーの設定オブジェクト
-    const timerObj = {
+    const timerObj: timerSetting = {
         title: '',
         time: 0,
         hour: 0,
@@ -117,8 +118,8 @@
         }
 
         // ローカルストレージの情報を詰め直す
-        const objs = [];
-        storage[idx].settings.forEach(t => {
+        const objs: timerSetting[] = [];
+        storage[idx].settings.forEach((t: timerSetting) => {
             const obj = Object.assign({}, timerObj);
             obj.title = t.title;
             obj.hour = t.hour;
@@ -140,13 +141,13 @@
     });
 
     // タイトルのonChangeイベント
-    const onChangeTitle = (e, index) => {
+    const onChangeTitle = (e: any, index: number) => {
         $timerSettings[index].title = e.detail.value;
         setStorage();
     };
 
     // タイマーのonChangeイベント
-    const onChangeTime = (e, index, key) => {
+    const onChangeTime = (e: any, index: number, key: string) => {
         $timerSettings[index][key] = e.detail.value;
         setStorage();
 
@@ -162,7 +163,7 @@
     };
 
     // ローカルストレージにタイマー設定を保存する
-    const setStorage = () => {
+    const setStorage = (): void => {
         const settings = [];
         $timerSettings.forEach(t => {
             const obj = Object.assign({}, timerObj);
@@ -176,7 +177,7 @@
     };
 
     // 一番下に設定を追加
-    const add = () => {
+    const add = (): void => {
         timerSettings.update(settings => {
             settings.splice(settings.length + 1, 0, Object.assign({}, timerObj));
             return settings;
@@ -185,7 +186,7 @@
     };
 
     // 指定行のタイマー設定を削除
-    const remove = (i) => {
+    const remove = (i: number): void => {
         timerSettings.update(settings => {
             settings.splice(i, 1);
             return settings;
@@ -198,7 +199,7 @@
     };
 
     // 合計時間を求める
-    const calculateTotal = () => {
+    const calculateTotal = (): void => {
         let total = 0;
         $timerSettings.forEach(t => {
             total += calcTotalSec(t.hour, t.minute, t.second);

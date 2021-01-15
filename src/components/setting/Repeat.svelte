@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <label>Repeat Count</label>
+    <div class="label">Repeat Count</div>
     <div>
         <NumberBox
             value={$repeat}
@@ -11,11 +11,11 @@
     </div>
 </div>
 
-<script>
-    import { repeat } from '../store.js';
+<script lang="ts">
+    import { repeat } from '../../store';
     import NumberBox from './NumberBox.svelte';
 
-    const onChange = (e) => {
+    const onChange = (e: any): void => {
         repeat.set(e.detail.value);
     };
 </script>
@@ -24,7 +24,7 @@
     .wrapper {
         margin: 0 0 20px 32px;
     }
-    label {
+    .label {
         display: block;
         font-weight: bold;
         margin-bottom: 8px;

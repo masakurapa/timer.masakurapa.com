@@ -1,3 +1,4 @@
+import type { timerSetting } from './types';
 import { writable } from 'svelte/store';
 
 // 繰り返し回数の設定値
@@ -6,12 +7,12 @@ export const repeat = writable(0);
 export const repeatCount = writable(0);
 
 // タイマーの設定リスト
-export const timerSettings = writable([]);
+export const timerSettings = writable<timerSetting[]>([]);
 // 現在のタイマー設定の位置
 export const timerIndex = writable(0);
 
 // タイマー起動時のsetInterval()戻り値
-export const interval = writable(null);
+export const interval = writable(null); // FIXME: type
 
 // タイマー開始／停止のフラグ
 export const isTimerStarting = writable(false);

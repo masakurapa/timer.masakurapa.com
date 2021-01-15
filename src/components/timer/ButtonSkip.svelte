@@ -3,20 +3,20 @@
     {disabled}
 >SKIP</button>
 
-<script>
+<script lang="ts">
     import {
         timerIndex,
         timerSettings,
         repeat,
         repeatCount,
         isTimerStarting,
-    } from '../store.js';
-    import { calcTotalSec } from '../util.js';
+    } from '../../store.js';
+    import { calcTotalSec } from '../../util.js';
 
     $: disabled = $isTimerStarting ||
         ($timerIndex + 1 === $timerSettings.length && $repeat === $repeatCount);
 
-    const onClick = () => {
+    const onClick = (): void => {
         // 一応disabledの条件を再判定しておく
         if ($timerIndex + 1 === $timerSettings.length && $repeat === $repeatCount) {
             return;

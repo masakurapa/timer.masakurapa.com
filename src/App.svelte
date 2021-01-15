@@ -1,25 +1,20 @@
 <main>
-    <MainIndex/>
+    <Timer/>
     <hr>
-    <SettingIndex/>
+    <Setting/>
 </main>
 
-<script>
+<script lang="ts">
     import { onMount } from 'svelte';
     import { isWindowFocus } from './store.js';
 
-    import MainIndex from './Main/Index.svelte';
-    import SettingIndex from './Setting/Index.svelte';
+    import Timer from './components/timer/Index.svelte';
+    import Setting from './components/setting/Index.svelte';
 
-    window.onfocus = () => {
-        isWindowFocus.set(true);
-    };
+    window.onfocus = (): void => isWindowFocus.set(true);
+    window.onblur = (): void => isWindowFocus.set(false);
 
-    window.onblur = () => {
-        isWindowFocus.set(false);
-    };
-
-    onMount(() => {
+    onMount((): void => {
         // 通知の許可を求める
         if ('Notification' in window) {
             const permission = Notification.permission;

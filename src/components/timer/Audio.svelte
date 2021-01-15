@@ -1,14 +1,14 @@
-<audio src="/decision4.mp3" bind:this={audio1}></audio>
-<audio src="/warning1.mp3" loop bind:this={audio2}></audio>
+<audio src="/decision4.mp3" bind:this={audio1}><track kind="captions"/></audio>
+<audio src="/warning1.mp3" loop bind:this={audio2}><track kind="captions"/></audio>
 
-<script>
+<script lang="ts">
     import {
         isTimeUp,
         isTimeUpAll,
-    } from '../store.js';
+    } from '../../store.js';
 
-    let audio1;
-    let audio2;
+    let audio1: HTMLMediaElement;
+    let audio2: HTMLMediaElement;
 
     isTimeUpAll.subscribe(flag => {
         if (audio2 === undefined) {

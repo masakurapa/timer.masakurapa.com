@@ -3,14 +3,14 @@
     disabled={!$isTimerStarting}
 >PAUSE</button>
 
-<script>
+<script lang="ts">
     import {
         isTimerStarting,
         interval,
-    } from '../store.js';
+    } from '../../store.js';
 
     // タイマーの一時停止
-    const onClick = () => {
+    const onClick = (): void => {
         clearInterval($interval);
         isTimerStarting.set(false);
     };

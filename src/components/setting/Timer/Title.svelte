@@ -5,15 +5,15 @@
     on:change={onChange}
 >
 
-<script>
+<script lang="ts">
     import { createEventDispatcher } from 'svelte';
-    import { isTimerStarting } from '../../store.js';
+    import { isTimerStarting } from '../../../store.js';
 
-    export let value;
+    export let value: string;
 
     const dispatch = createEventDispatcher();
 
-    const onChange = (e) => {
+    const onChange = (e: any): void => {
         const val = e.target.value;
         dispatch('change', { value: val });
     };

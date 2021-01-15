@@ -1,18 +1,11 @@
 {
-    // .svelteのeslint用の設定
-    "files.associations": {
-        "*.svelte": "html"
-    },
-
     "eslint.validate": [
-        "javascript",
-        "javascriptreact",
-        "html",
+        "typescript",
     ],
 
     // node_modulesがある場所を指定する
     "eslint.workingDirectories": [
-        "./src"
+        "./v2"
     ],
 
     "jshint.options": {

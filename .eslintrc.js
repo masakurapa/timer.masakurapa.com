@@ -1,5 +1,6 @@
 module.exports = {
     root: true,
+    parser: "@typescript-eslint/parser",
     parserOptions: {
         ecmaVersion: 2019,
         sourceType: 'module',
@@ -7,22 +8,46 @@ module.exports = {
     env: {
         es6: true,
         browser: true,
+        node: true,
     },
-    extends: [
-        'standard',
-    ],
     plugins: [
         'svelte3',
     ],
+    extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+    ],
     rules: {
         indent: ['error', 4],
-        semi: ['error', 'always'],
         'comma-dangle': ['error', 'always-multiline'],
-        // TODO: 本当は1にしたいが.Svelteで何故かエラーになるので2にしている
-        'no-multiple-empty-lines': ['error', {'max': 2}],
+        'semi': ['error', 'always'],
     },
-    settings: {},
+    settings: {
+        'import/core-modules': ['svelte'],
+        'import/resolver': {
+            alias: {
+                map: [
+                    ['@app', './app'],
+                    ['@components', './app/components'],
+                    ['@stores', './app/stores'],
+                    ['@utils', './app/utils'],
+                ],
+                extensions: ['.ts', '.svelte'],
+            },
+            typescript: {},
+        },
+    },
     overrides: [
+        {
+            "files": ["**/*.ts"],
+            "extends": [
+                "plugin:import/typescript",
+                "plugin:@typescript-eslint/recommended",
+            ],
+            "plugins": [
+                "@typescript-eslint",
+            ],
+        },
         {
             files: ['**/*.svelte'],
             processor: 'svelte3/svelte3',
@@ -33,4 +58,4 @@ module.exports = {
             },
         },
     ],
-}
+};
