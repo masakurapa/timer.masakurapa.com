@@ -1,6 +1,11 @@
+{#if hasTitle}
 <div class="current-phase">
     {$timerSettings[$timerIndex] !== undefined ? $timerSettings[$timerIndex].title : ''}
 </div>
+<div class="next-phase">
+    Next: {$timerSettings[$timerIndex + 1] !== undefined ? $timerSettings[$timerIndex + 1].title : '-'}
+</div>
+{/if}
 
 <Timer/>
 
@@ -31,7 +36,6 @@
         isTimeUpAll,
     } from '../../store';
 
-
     import Audio from './Audio.svelte';
     import ButtonReset from './button/Reset.svelte';
     import ButtonNext from './button/Next.svelte';
@@ -40,12 +44,21 @@
     import ButtonStopSound from './button/StopSound.svelte';
     import SoundSetting from './SoundSetting.svelte';
     import Timer from './Timer.svelte';
+
+    let hasTitle = false;
+    timerSettings.subscribe((settings): void => {
+        hasTitle = settings.some(setting => setting.title !== "");
+    });
 </script>
 
 <style>
     .current-phase {
         font-size: 30px;
         height: 50px;
+    }
+    .next-phase {
+        font-size: 15px;
+        height: 30px;
     }
 
     .btn-wrapper {
