@@ -31,7 +31,7 @@ jobs:
           branch: master
       before_deploy:
         - npm run build
-        - rm public/build/bundle.css.map public/build/bundle.js.map
+        - rm public/build/bundle.js.map
 
 cache:
   directories:
