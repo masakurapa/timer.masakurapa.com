@@ -1,19 +1,18 @@
 <button
     on:click="{onClick}"
     disabled={$isTimerStarting}
->RESET</button>
+>RESET PHASE</button>
 
 <script lang="ts">
     import {
         timerSettings,
         isTimerStarting,
         timerIndex,
-        repeatCount,
         isTimeUp,
         isFinish,
         interval,
-    } from '../../store.js';
-    import { calcTotalSec } from '../../util.js';
+    } from '../../../store';
+    import { calcTotalSec } from '../../../util';
 
     const onClick = (): void => {
         clearInterval($interval);
@@ -21,7 +20,6 @@
         isTimeUp.set(false);
         isFinish.set(false);
         isTimerStarting.set(false);
-        repeatCount.set(0);
         timerIndex.set(0);
         timerSettings.update(settings => {
             settings.forEach(t => {
@@ -61,7 +59,6 @@
     @media screen and (max-width: 480px) {
         button {
             width: 80px;
-            height: 40px;
         }
     }
 </style>

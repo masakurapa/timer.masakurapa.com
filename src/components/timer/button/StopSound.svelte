@@ -1,31 +1,25 @@
 <button
     on:click="{onClick}"
-    disabled={!$isTimerStarting}
->PAUSE</button>
+    disabled={!$isTimeUpAll}
+>STOP SOUND</button>
 
 <script lang="ts">
     import {
-        isTimerStarting,
-        interval,
-    } from '../../store.js';
+        isTimeUpAll,
+    } from '../../../store';
 
-    // タイマーの一時停止
-    const onClick = (): void => {
-        clearInterval($interval);
-        isTimerStarting.set(false);
-    };
+    const onClick = (): void => isTimeUpAll.set(false);
 </script>
 
 <style>
     button {
         padding: 8px;
-        height: 40px;
         border: none;
         outline: none;
         color: #FFFFFF;
         width: 200px;
         height: 50px;
-        background-color: #DC143C;
+        background-color: #3CB371;
         cursor: pointer;
     }
     button:disabled {
@@ -33,19 +27,18 @@
         cursor: default;
     }
     button:forcus {
-        background-color: #CC1237;
+        background-color: #349961;
     }
     button:not(:disabled):hover {
-        background-color: #CC1237;
+        background-color: #349961;
     }
     button:not(:disabled):active {
-        background-color: #CC1237;
+        background-color: #349961;
     }
 
     @media screen and (max-width: 480px) {
         button {
             width: 150px;
-            height: 40px;
         }
     }
 </style>

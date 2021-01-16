@@ -1,24 +1,21 @@
 <button
     on:click="{onClick}"
     {disabled}
->SKIP</button>
+>NEXT<br>PHASE</button>
 
 <script lang="ts">
     import {
         timerIndex,
         timerSettings,
-        repeat,
-        repeatCount,
         isTimerStarting,
-    } from '../../store.js';
-    import { calcTotalSec } from '../../util.js';
+    } from '../../../store';
+    import { calcTotalSec } from '../../../util';
 
-    $: disabled = $isTimerStarting ||
-        ($timerIndex + 1 === $timerSettings.length && $repeat === $repeatCount);
+    $: disabled = $isTimerStarting || ($timerIndex + 1 === $timerSettings.length);
 
     const onClick = (): void => {
         // 一応disabledの条件を再判定しておく
-        if ($timerIndex + 1 === $timerSettings.length && $repeat === $repeatCount) {
+        if ($timerIndex + 1 === $timerSettings.length) {
             return;
         }
 
@@ -28,7 +25,6 @@
 
         // 一番最後のタイマーまできている
         if (index + 1 === $timerSettings.length) {
-            repeatCount.update(n => n + 1);
             timerIndex.set(0);
             return;
         }
@@ -41,7 +37,6 @@
 <style>
     button {
         padding: 8px;
-        height: 40px;
         border: none;
         outline: none;
         color: #FFFFFF;
@@ -67,7 +62,6 @@
     @media screen and (max-width: 480px) {
         button {
             width: 80px;
-            height: 40px;
         }
     }
 </style>

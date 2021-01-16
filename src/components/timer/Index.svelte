@@ -1,5 +1,4 @@
-<div>Repeat: {$repeatCount}</div>
-<div class="title">
+<div class="current-phase">
     {$timerSettings[$timerIndex] !== undefined ? $timerSettings[$timerIndex].title : ''}
 </div>
 
@@ -16,7 +15,7 @@
         {/if}
     </div>
     <div class="sub-btn-wrapper">
-        <ButtonSkip/>
+        <ButtonNext/>
         <ButtonReset/>
     </div>
 </div>
@@ -28,23 +27,23 @@
         timerSettings,
         isTimerStarting,
         timerIndex,
-        repeatCount,
         isTimeUpAll,
     } from '../../store';
 
 
     import Audio from './Audio.svelte';
-    import ButtonReset from './ButtonReset.svelte';
-    import ButtonSkip from './ButtonSkip.svelte';
-    import ButtonStart from './ButtonStart.svelte';
-    import ButtonStop from './ButtonStop.svelte';
-    import ButtonStopSound from './ButtonStopSound.svelte';
+    import ButtonReset from './button/Reset.svelte';
+    import ButtonNext from './button/Next.svelte';
+    import ButtonStart from './button/Start.svelte';
+    import ButtonStop from './button/Stop.svelte';
+    import ButtonStopSound from './button/StopSound.svelte';
     import Timer from './Timer.svelte';
 </script>
 
 <style>
-    .title {
+    .current-phase {
         font-size: 30px;
+        height: 50px;
     }
 
     .btn-wrapper {

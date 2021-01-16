@@ -5,18 +5,16 @@
 
 <script lang="ts">
     import {
-        repeat,
         timerSettings,
         isTimerStarting,
         isWindowFocus,
         timerIndex,
-        repeatCount,
         isTimeUp,
         isTimeUpAll,
         isFinish,
         interval,
-    } from '../../store.js';
-    import { calcTotalSec } from '../../util.js';
+    } from '../../../store';
+    import { calcTotalSec } from '../../../util';
 
     $: disabled = $isTimerStarting || $isFinish;
 
@@ -26,9 +24,6 @@
 
     let timeUp = false;
     isTimeUp.subscribe(flag => timeUp = flag);
-
-    let repCnt: number;
-    repeatCount.subscribe(cnt => repCnt = cnt);
 
     let intervalNum: number;
     interval.subscribe(num => intervalNum = num);
@@ -72,17 +67,12 @@
                 Notification.requestPermission().then(() => new Notification('Time is up!!'));
             }
 
-            // 一周したらループ数をカウントアップ
-            // 設定したループ数に達した場合はタイマー停止
             if (index + 1 === $timerSettings.length) {
-                if (repCnt === $repeat) {
-                    clearInterval(intervalNum);
-                    isTimerStarting.set(false);
-                    isTimeUpAll.set(true);
-                    isFinish.set(true);
-                    return;
-                }
-                repeatCount.update(count => count + 1);
+                clearInterval(intervalNum);
+                isTimerStarting.set(false);
+                isTimeUpAll.set(true);
+                isFinish.set(true);
+                return;
             }
 
             isTimeUp.set(true);
@@ -118,7 +108,6 @@
     @media screen and (max-width: 480px) {
         button {
             width: 150px;
-            height: 40px;
         }
     }
 </style>

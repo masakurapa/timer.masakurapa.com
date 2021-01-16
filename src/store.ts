@@ -1,11 +1,6 @@
 import type { timerSetting } from './types';
 import { writable } from 'svelte/store';
 
-// 繰り返し回数の設定値
-export const repeat = writable(0);
-// 現在のループ数
-export const repeatCount = writable(0);
-
 // タイマーの設定リスト
 export const timerSettings = writable<timerSetting[]>([]);
 // 現在のタイマー設定の位置

@@ -75,7 +75,6 @@
 
     import { onMount } from 'svelte';
     import {
-        repeat,
         timerIndex,
         timerSettings,
         isTimerStarting,
@@ -130,14 +129,6 @@
         });
         timerSettings.set(objs);
         calculateTotal();
-    });
-
-    let rep = 0;
-    repeat.subscribe(n => {
-        if (rep !== n) {
-            rep = n;
-            calculateTotal();
-        }
     });
 
     // タイトルのonChangeイベント
@@ -204,7 +195,6 @@
         $timerSettings.forEach(t => {
             total += calcTotalSec(t.hour, t.minute, t.second);
         });
-        total = total * ($repeat + 1);
 
         const t = totalSecToHMS(total);
         totalHour = padding(t.hour);
