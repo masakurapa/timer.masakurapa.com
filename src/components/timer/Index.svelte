@@ -20,6 +20,7 @@
     </div>
 </div>
 
+<div class="sound-wrapper"><SoundSetting/></div>
 <Audio/>
 
 <script lang="ts">
@@ -37,6 +38,7 @@
     import ButtonStart from './button/Start.svelte';
     import ButtonStop from './button/Stop.svelte';
     import ButtonStopSound from './button/StopSound.svelte';
+    import SoundSetting from './SoundSetting.svelte';
     import Timer from './Timer.svelte';
 </script>
 
@@ -48,8 +50,12 @@
 
     .btn-wrapper {
         display: flex;
+        margin-bottom: 20px;
     }
     .main-btn-wrapper {
         margin-right: 32px;
+    }
+    .sound-wrapper {
+        margin-bottom: 20px;
     }
 </style>

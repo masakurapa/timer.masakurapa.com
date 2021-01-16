@@ -19,3 +19,6 @@ export const isTimeUp = writable(false);
 export const isTimeUpAll = writable(false);
 // これ以上タイマーを起動できない状態
 export const isFinish = writable(false);
+
+// サウンドのON/OFF
+export const isPlaySound = writable(false);

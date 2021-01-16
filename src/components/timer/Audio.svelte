@@ -5,16 +5,25 @@
     import {
         isTimeUp,
         isTimeUpAll,
+        isPlaySound,
     } from '../../store.js';
 
     let audio1: HTMLMediaElement;
     let audio2: HTMLMediaElement;
+
+    isPlaySound.subscribe(flag => {
+        if (audio2 === undefined) {
+            return;
+        }
+        setAudio2Volume(flag);
+    });
 
     isTimeUpAll.subscribe(flag => {
         if (audio2 === undefined) {
             return;
         }
         if (flag) {
+            setAudio2Volume($isPlaySound);
             audio2.play();
         } else {
             audio2.pause();
@@ -23,7 +32,7 @@
     });
 
     isTimeUp.subscribe(flag => {
-        if (audio1 === undefined) {
+        if (audio1 === undefined || !$isPlaySound) {
             return;
         }
         if (flag) {
@@ -33,4 +42,8 @@
             audio1.currentTime = 0;
         }
     });
+
+    const setAudio2Volume = (flag: boolean): void => {
+        audio2.volume = flag ? 1 : 0;
+    };
 </script>
