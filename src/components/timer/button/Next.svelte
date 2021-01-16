@@ -11,7 +11,7 @@
     } from '../../../store';
     import { calcTotalSec } from '../../../util';
 
-    $: disabled = $isTimerStarting || ($timerIndex + 1 === $timerSettings.length);
+    $: disabled = ($timerIndex + 1 === $timerSettings.length);
 
     const onClick = (): void => {
         // 一応disabledの条件を再判定しておく
