@@ -1,10 +1,10 @@
 {#if hasTitle}
-<div class="current-phase">
-    {$timerSettings[$timerIndex] !== undefined ? $timerSettings[$timerIndex].title : ''}
-</div>
-<div class="next-phase">
-    Next: {$timerSettings[$timerIndex + 1] !== undefined ? $timerSettings[$timerIndex + 1].title : '-'}
-</div>
+    <div class="current-phase">
+        {$timerSettings[$timerIndex] !== undefined ? $timerSettings[$timerIndex].title : ''}
+    </div>
+    <div class="next-phase">
+        Next: {$timerSettings[$timerIndex + 1] !== undefined ? $timerSettings[$timerIndex + 1].title : '-'}
+    </div>
 {/if}
 
 <Timer/>
