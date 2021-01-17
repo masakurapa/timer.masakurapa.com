@@ -7,7 +7,7 @@ export const timerSettings = writable<timerSetting[]>([]);
 export const timerIndex = writable(0);
 
 // タイマー起動時のsetInterval()戻り値
-export const interval = writable(null); // FIXME: type
+export const interval = writable<number|null>(null);
 
 // タイマー開始／停止のフラグ
 export const isTimerStarting = writable(false);

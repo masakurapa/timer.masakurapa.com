@@ -8,7 +8,7 @@ export type time = {
 // タイマーの設定
 export type timerSetting = {
     title: string;
-    // hmsの合計秒数
+    // hmsの合計秒数（残り秒数）
     time: number;
     hour: number;
     minute: number;

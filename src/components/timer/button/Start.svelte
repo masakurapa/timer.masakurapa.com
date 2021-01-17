@@ -36,7 +36,7 @@
         isTimeUp.set(false);
         isTimerStarting.set(true);
 
-        interval.set(setInterval(() => {
+        interval.set(setInterval((): number => {
             const t = $timerSettings[index];
 
             // 1つのタイマーが終わったことを検知

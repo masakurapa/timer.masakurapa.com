@@ -5,10 +5,31 @@
 
 <script lang="ts">
     import {
+        timerSettings,
+        isTimerStarting,
+        timerIndex,
+        isTimeUp,
+        isFinish,
         isTimeUpAll,
+        interval,
     } from '../../../store';
+    import { calcTotalSec } from '../../../util';
 
-    const onClick = (): void => isTimeUpAll.set(false);
+    const onClick = (): void => {
+        clearInterval($interval);
+
+        isTimeUp.set(false);
+        isFinish.set(false);
+        isTimerStarting.set(false);
+        isTimeUpAll.set(false);
+        timerIndex.set(0);
+        timerSettings.update(settings => {
+            settings.forEach(t => {
+                t.time = calcTotalSec(t.hour, t.minute, t.second);
+            });
+            return settings;
+        });
+    };
 </script>
 
 <style>

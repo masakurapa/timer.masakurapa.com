@@ -1,6 +1,6 @@
 <button
     on:click="{onClick}"
-    disabled={$isTimerStarting}
+    disabled={$isTimerStarting || $isTimeUpAll}
 >RESET PHASE</button>
 
 <script lang="ts">
@@ -10,6 +10,7 @@
         timerIndex,
         isTimeUp,
         isFinish,
+        isTimeUpAll,
         interval,
     } from '../../../store';
     import { calcTotalSec } from '../../../util';
@@ -20,6 +21,7 @@
         isTimeUp.set(false);
         isFinish.set(false);
         isTimerStarting.set(false);
+        isTimeUpAll.set(false);
         timerIndex.set(0);
         timerSettings.update(settings => {
             settings.forEach(t => {

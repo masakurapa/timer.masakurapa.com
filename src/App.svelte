@@ -1,3 +1,4 @@
+<Head/>
 <main>
     <Timer/>
     <hr>
@@ -8,6 +9,7 @@
     import { onMount } from 'svelte';
     import { isWindowFocus } from './store.js';
 
+    import Head from './Head.svelte';
     import Timer from './components/timer/Index.svelte';
     import Setting from './components/setting/Index.svelte';
 
