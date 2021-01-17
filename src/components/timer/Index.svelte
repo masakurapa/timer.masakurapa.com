@@ -1,9 +1,9 @@
 {#if hasTitle}
     <div class="current-phase">
-        {$timerSettings[$timerIndex] !== undefined ? $timerSettings[$timerIndex].title : ''}
+        {makePhageStr($timerSettings, $timerIndex, '')}
     </div>
     <div class="next-phase">
-        Next: {$timerSettings[$timerIndex + 1] !== undefined ? $timerSettings[$timerIndex + 1].title : '-'}
+        Next: {makePhageStr($timerSettings, $timerIndex + 1, '-')}
     </div>
 {/if}
 
@@ -29,12 +29,14 @@
 <Audio/>
 
 <script lang="ts">
+    import type { timerSetting } from '../../types';
     import {
         timerSettings,
         isTimerStarting,
         timerIndex,
         isTimeUpAll,
     } from '../../store';
+    import { padding } from '../../util.js';
 
     import Audio from './Audio.svelte';
     import ButtonReset from './button/Reset.svelte';
@@ -49,6 +51,16 @@
     timerSettings.subscribe((settings): void => {
         hasTitle = settings.some(setting => setting.title !== "");
     });
+
+    // フェーズの表示情報を返す
+    const makePhageStr = (settings: timerSetting[], index: number, defaultTitle: string): string => {
+        if (index >= settings.length) {
+            return defaultTitle;
+        }
+
+        const t = settings[index];
+        return `${t.title} (${padding(t.hour)}:${padding(t.minute)}:${padding(t.second)})`;
+    };
 </script>
 
 <style>
