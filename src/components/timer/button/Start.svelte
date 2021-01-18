@@ -31,12 +31,21 @@
     let index = 0;
     timerIndex.subscribe(i => index = i);
 
+    // タイマーの切り替わり処理を行うためのフラグ
+    let switching = false;
+
     // タイマーの開始
     const start = (): void => {
         isTimeUp.set(false);
         isTimerStarting.set(true);
 
         interval.set(setInterval((): number => {
+            if (switching) {
+                // 切り替わり時に1秒スリープを入れるため一度戻す
+                switching = false;
+                return;
+            }
+
             const t = $timerSettings[index];
 
             // 1つのタイマーが終わったことを検知
@@ -76,6 +85,7 @@
             }
 
             isTimeUp.set(true);
+            switching = true;
         }, 1000));
     };
 </script>
