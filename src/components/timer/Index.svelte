@@ -1,11 +1,9 @@
-{#if hasTitle}
-    <div class="current-phase">
-        {makePhageStr($timerSettings, $timerIndex, '')}
-    </div>
-    <div class="next-phase">
-        Next: {makePhageStr($timerSettings, $timerIndex + 1, '-')}
-    </div>
-{/if}
+<div class="current-phase">
+    {makePhageStr($timerSettings, $timerIndex, '')}
+</div>
+<div class="next-phase">
+    Next: {makePhageStr($timerSettings, $timerIndex + 1, '-')}
+</div>
 
 <Timer/>
 
@@ -46,11 +44,6 @@
     import ButtonStopSound from './button/StopSound.svelte';
     import SoundSetting from './SoundSetting.svelte';
     import Timer from './Timer.svelte';
-
-    let hasTitle = false;
-    timerSettings.subscribe((settings): void => {
-        hasTitle = settings.some(setting => setting.title !== "");
-    });
 
     // フェーズの表示情報を返す
     const makePhageStr = (settings: timerSetting[], index: number, defaultTitle: string): string => {
