@@ -1,7 +1,7 @@
 <button
     disabled={$isTimerStarting || $timerSettings.length === 1}
     on:click="{remove}"
-><i class="fas fa-trash-alt fa-2x"></i></button>
+><i class="fas fa-bomb fa-2x"></i></button>
 
 <script lang="ts">
     import {
@@ -9,16 +9,15 @@
         timerSettings,
         isTimerStarting,
     } from '../../../store';
-    import { storeTimerSettings } from '../storage';
+    import { getDefaultTimerSetting, storeTimerSettings } from '../storage';
 
-    export let index: number;
-
-    // 指定行のタイマー設定を削除
+    // 全タイマー設定を削除
     const remove = (): void => {
-        timerSettings.update(settings => {
-            settings.splice(index, 1);
-            return settings;
-        });
+        if (!confirm('Are you sure you want to remove all settings?')) {
+            return;
+        }
+
+        timerSettings.set([getDefaultTimerSetting()]);
         storeTimerSettings($timerSettings);
 
         // 無条件で一番上のタイマーに戻しておく

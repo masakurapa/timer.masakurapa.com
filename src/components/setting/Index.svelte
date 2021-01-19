@@ -1,7 +1,8 @@
 <h2>Setting</h2>
+<div class="wrapper">
 
 {#each $timerSettings as _, i}
-    <div class="wrapper">
+    <div class="setting-wrapper">
         <div class="form-wrapper title-wrapper">
             <div class="current-wrapper">
                 {#if $timerIndex === i}
@@ -41,18 +42,18 @@
             >Second:</NumberBox>
         </div>
 
-        <div class="btn-group">
-            <div class="btn-wrapper"><ClearSetting index={i}/></div>
-            <div class="btn-wrapper"><RemoveSetting index={i}/></div>
+        <div class="flex-end-wrapper">
+            <div class="first-btn"><ClearSetting index={i}/></div>
+            <div><RemoveSetting index={i}/></div>
         </div>
     </div>
 {/each}
 
-<div class="add-setting-wrapper">
-    <AddSetting/>
-</div>
-<div class="add-setting-wrapper">
-    <Total/>
+    <div class="flex-end-wrapper"><Total/></div>
+    <div class="flex-end-wrapper">
+        <div class="first-btn"><AddSetting/></div>
+        <div><RemoveAllSetting/></div>
+    </div>
 </div>
 
 <script lang="ts">
@@ -72,6 +73,7 @@
 
     import AddSetting from './Button/AddSetting.svelte';
     import ClearSetting from './Button/ClearSetting.svelte';
+    import RemoveAllSetting from './Button/RemoveAllSetting.svelte';
     import RemoveSetting from './Button/RemoveSetting.svelte';
     import NumberBox from './Input/NumberBox.svelte';
     import Title from './Input/Title.svelte';
@@ -104,9 +106,11 @@
 
 <style>
     .wrapper {
+        max-width: 600px;
+    }
+    .setting-wrapper {
         margin-bottom: 16px;
         border-bottom: 0.5px dotted #888888;
-        max-width: 600px;
     }
     .form-wrapper {
         margin-bottom: 8px;
@@ -124,19 +128,12 @@
         color: #228B22;
     }
 
-    .btn-group {
+    .flex-end-wrapper {
         display: flex;
-        margin-left: 32px;
+        margin-bottom: 16px;
         justify-content: flex-end;
     }
-    .btn-wrapper {
-        width: 32px;
-    }
-    .btn-wrapper:first-child {
+    .first-btn {
         margin-right: 32px;
-    }
-
-    .add-setting-wrapper {
-        margin: 0 0 16px 32px;
     }
 </style>
