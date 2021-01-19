@@ -1,8 +1,7 @@
-<svelte:window bind:scrollY={y}/>
 <button
     disabled={$isTimerStarting}
-    on:click="{add}"
-><i class="fas fa-plus-circle fa-2x"></i></button>
+    on:click="{clear}"
+><i class="fas fa-eraser fa-2x"></i></button>
 
 <script lang="ts">
     import {
@@ -11,22 +10,19 @@
     } from '../../../store';
     import { getDefaultTimerSetting, storeTimerSettings } from '../storage';
 
-    let y: number;
+    export let index: number;
 
-    // 一番下に設定を追加
-    const add = (): void => {
+    const clear = (): void => {
         timerSettings.update(settings => {
-            settings.splice(settings.length + 1, 0, getDefaultTimerSetting());
+            settings[index] = getDefaultTimerSetting();
             return settings;
         });
         storeTimerSettings($timerSettings);
-
-        // ウィンドウの高さをタイマーの設定領域+α下げる
-        y += 400;
     };
 </script>
 
 <style>
+    /* ボタン系 */
     button {
         height: 40px;
         padding: 0px;
@@ -34,7 +30,7 @@
         border: none;
         outline: none;
         cursor: pointer;
-        color: #1E90FF;
+        color: #FFB833;
     }
     button:forcus {
         background-color: #FFFFFF;

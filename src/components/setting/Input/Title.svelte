@@ -5,7 +5,7 @@
             type="text"
             bind:value={value}
             disabled={$isTimerStarting}
-            on:change={onChange}
+            on:input="{onInput}"
         >
     </div>
 </div>
@@ -20,7 +20,8 @@
     export let value: string;
     export let index: number;
 
-    const onChange = (e: any): void => {
+    const onInput = (e: any): void => {
+        console.log(e);
         $timerSettings[index].title = e.target.value;
         storeTimerSettings($timerSettings);
     };
@@ -36,7 +37,7 @@
         width: 80px;
     }
     .text-wrapper {
-        width: 300px;
+        width: 350px;
     }
 
     input {

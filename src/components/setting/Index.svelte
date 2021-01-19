@@ -12,9 +12,6 @@
                 value={$timerSettings[i].title}
                 index={i}
             >Title:</Title>
-            <div class="remove-btn-wrapper">
-                <RemoveSetting index={i}/>
-            </div>
         </div>
         <div class="form-wrapper number-wrapper">
             <NumberBox
@@ -43,6 +40,11 @@
                 key="second"
             >Second:</NumberBox>
         </div>
+
+        <div class="btn-group">
+            <div class="btn-wrapper"><ClearSetting index={i}/></div>
+            <div class="btn-wrapper"><RemoveSetting index={i}/></div>
+        </div>
     </div>
 {/each}
 
@@ -66,21 +68,14 @@
         getCurrent,
         getTimerSetting,
     } from '../../storage';
+    import { getDefaultTimerSetting } from './storage';
 
     import AddSetting from './Button/AddSetting.svelte';
+    import ClearSetting from './Button/ClearSetting.svelte';
     import RemoveSetting from './Button/RemoveSetting.svelte';
     import NumberBox from './Input/NumberBox.svelte';
     import Title from './Input/Title.svelte';
     import Total from './Total/Index.svelte';
-
-    // タイマーの設定オブジェクト
-    const timerObj: timerSetting = {
-        title: '',
-        time: 0,
-        hour: 0,
-        minute: 0,
-        second: 0,
-    };
 
     onMount(() => {
         const idx = getCurrent();
@@ -88,14 +83,14 @@
 
         // ローカルストレージの情報がなければ、デフォルト値として一個の空タイマーをセット
         if (storage[idx] === undefined) {
-            timerSettings.set([Object.assign({}, timerObj)]);
+            timerSettings.set([getDefaultTimerSetting()]);
             return;
         }
 
         // ローカルストレージの情報を詰め直す
         const objs: timerSetting[] = [];
         storage[idx].settings.forEach((t: timerSetting) => {
-            const obj = Object.assign({}, timerObj);
+            const obj = getDefaultTimerSetting();
             obj.title = t.title;
             obj.hour = t.hour;
             obj.minute = t.minute;
@@ -111,6 +106,7 @@
     .wrapper {
         margin-bottom: 16px;
         border-bottom: 0.5px dotted #888888;
+        max-width: 600px;
     }
     .form-wrapper {
         margin-bottom: 8px;
@@ -127,9 +123,17 @@
         width: 32px;
         color: #228B22;
     }
-    .remove-btn-wrapper {
+
+    .btn-group {
+        display: flex;
+        margin-left: 32px;
+        justify-content: flex-end;
+    }
+    .btn-wrapper {
         width: 32px;
-        margin-left: 16px;
+    }
+    .btn-wrapper:first-child {
+        margin-right: 32px;
     }
 
     .add-setting-wrapper {

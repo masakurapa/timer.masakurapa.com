@@ -7,7 +7,6 @@
     import {
         timerIndex,
         timerSettings,
-        isTimerStarting,
     } from '../../../store';
     import { calcTotalSec } from '../../../util';
 
