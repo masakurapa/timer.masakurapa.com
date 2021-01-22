@@ -1,7 +1,7 @@
-<div class="current-phase">
+<div class="phase current">
     {makePhageStr($timerSettings, $timerIndex, '')}
 </div>
-<div class="next-phase">
+<div class="phase next">
     Next: {makePhageStr($timerSettings, $timerIndex + 1, '-')}
 </div>
 
@@ -57,13 +57,16 @@
 </script>
 
 <style>
-    .current-phase {
-        font-size: 30px;
-        height: 50px;
+    .phase {
+        word-wrap: break-word;
     }
-    .next-phase {
+    .current {
+        font-size: 30px;
+        min-height: 50px;
+    }
+    .next {
         font-size: 15px;
-        height: 30px;
+        min-height: 30px;
     }
 
     .btn-wrapper {
