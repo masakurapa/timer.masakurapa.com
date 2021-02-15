@@ -9,10 +9,9 @@
     "build": "tsc --outDir ./built src/*.ts"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.71",
-    "@types/node": "^14.14.22",
-    "aws-sdk": "^2.833.0",
-    "nanoid": "^3.1.20",
-    "typescript": "^3.9.3"
+    "@types/aws-lambda": "^8.10.72",
+    "@types/node": "^14.14.28",
+    "aws-sdk": "^2.843.0",
+    "typescript": "^4.1.5"
   }
 }
