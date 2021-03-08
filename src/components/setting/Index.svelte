@@ -113,7 +113,7 @@
         }
     };
 
-    onMount(() => {
+    onMount(async () => {
         const idx = getCurrent();
         const storage = getTimerSetting();
 
@@ -128,7 +128,7 @@
 
         // getパラメータがあれば優先して使う、なければローカルストレージの情報を使う
         if (parmas.has('id')) {
-            setSharedTimerSetting(parmas.get('id'))
+            await setSharedTimerSetting(parmas.get('id'))
             return;
         }
 
