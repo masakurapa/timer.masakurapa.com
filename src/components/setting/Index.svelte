@@ -57,9 +57,9 @@
 </div>
 
 <script lang="ts">
-    import type { timerSetting } from '../../types';
-
     import { onMount } from 'svelte';
+    import * as axios from 'axios';
+
     import {
         timerIndex,
         timerSettings,
@@ -70,6 +70,7 @@
         getTimerSetting,
     } from '../../storage';
     import { getDefaultTimerSetting } from './storage';
+    import type { timerSetting, storageTimerSetting } from '../../types';
 
     import AddSetting from './Button/AddSetting.svelte';
     import ClearSetting from './Button/ClearSetting.svelte';
@@ -79,17 +80,59 @@
     import Title from './Input/Title.svelte';
     import Total from './Total/Index.svelte';
 
+    // タイマー設定のデフォルト値を設定します
+    const setDefaultTimerSetting = () => {
+        timerSettings.set([getDefaultTimerSetting()]);
+    };
+
+    // 共有された設定情報を取得して設定します
+    const setSharedTimerSetting = async (id: string) => {
+        try {
+            const resp = await axios.default.get<string>(`https://timer.masakurapa.com/share/${id}.json`);
+            if (resp.status !== 200) {
+                setDefaultTimerSetting();
+                return;
+            }
+
+            const body: storageTimerSetting = JSON.parse(resp.data);
+            const objs: timerSetting[] = [];
+            body.settings.forEach((t: timerSetting) => {
+                const obj = getDefaultTimerSetting();
+                obj.title = t.title;
+                obj.hour = t.hour;
+                obj.minute = t.minute;
+                obj.second = t.second;
+                obj.time = calcTotalSec(t.hour, t.minute, t.second);
+                objs.push(obj);
+            });
+            timerSettings.set(objs);
+        } catch (err) {
+            // エラー時はデフォルト設定を利用
+            console.error(err);
+            setDefaultTimerSetting();
+        }
+    };
+
     onMount(() => {
         const idx = getCurrent();
         const storage = getTimerSetting();
 
-        // ローカルストレージの情報がなければ、デフォルト値として一個の空タイマーをセット
-        if (storage[idx] === undefined) {
-            timerSettings.set([getDefaultTimerSetting()]);
+        // getパラメータ
+        const parmas = (new URL(document.location.toString())).searchParams;
+
+        // Getパラメータなし、ローカルストレージの情報なしなら、デフォルト値として一個の空タイマーをセット
+        if (!parmas.has('id') && storage[idx] === undefined) {
+            setDefaultTimerSetting();
             return;
         }
 
-        // ローカルストレージの情報を詰め直す
+        // getパラメータがあれば優先して使う、なければローカルストレージの情報を使う
+        if (parmas.has('id')) {
+            setSharedTimerSetting(parmas.get('id'))
+            return;
+        }
+
+        // getパラメータがなければローカルストレージの情報を詰め直す
         const objs: timerSetting[] = [];
         storage[idx].settings.forEach((t: timerSetting) => {
             const obj = getDefaultTimerSetting();
