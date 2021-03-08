@@ -88,15 +88,14 @@
     // 共有された設定情報を取得して設定します
     const setSharedTimerSetting = async (id: string) => {
         try {
-            const resp = await axios.default.get<string>(`https://timer.masakurapa.com/share/${id}.json`);
+            const resp = await axios.default.get<storageTimerSetting>(`/share/${id}.json`);
             if (resp.status !== 200) {
                 setDefaultTimerSetting();
                 return;
             }
 
-            const body: storageTimerSetting = JSON.parse(resp.data);
             const objs: timerSetting[] = [];
-            body.settings.forEach((t: timerSetting) => {
+            resp.data.settings.forEach((t: timerSetting) => {
                 const obj = getDefaultTimerSetting();
                 obj.title = t.title;
                 obj.hour = t.hour;
