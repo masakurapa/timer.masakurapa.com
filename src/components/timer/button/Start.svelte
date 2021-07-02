@@ -25,7 +25,7 @@
     let timeUp = false;
     isTimeUp.subscribe(flag => timeUp = flag);
 
-    let intervalNum: number;
+    let intervalNum: NodeJS.Timeout;
     interval.subscribe(num => intervalNum = num);
 
     let index = 0;
@@ -39,7 +39,7 @@
         isTimeUp.set(false);
         isTimerStarting.set(true);
 
-        interval.set(setInterval((): number => {
+        interval.set(setInterval((): void => {
             if (switching) {
                 // 切り替わり時に1秒スリープを入れるため一度戻す
                 switching = false;

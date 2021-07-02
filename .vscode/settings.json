@@ -1,18 +1,26 @@
 {
-    "eslint.validate": [
-        "typescript",
-    ],
+    // "eslint.validate": [
+    //     "typescript",
+    // ],
 
     // node_modulesがある場所を指定する
-    "eslint.workingDirectories": [
-        "./v2"
-    ],
+    // "eslint.workingDirectories": [
+    //     "./v2"
+    // ],
+
+    "[svelte]": {
+        "editor.defaultFormatter": "svelte.svelte-vscode"
+    },
 
     "jshint.options": {
-        "esversion": 6,
+        "esversion": 9,
         "asi": true,
     },
 
     "css.lint.emptyRules": "ignore",
     "html.validate.styles": false,
+
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
 }

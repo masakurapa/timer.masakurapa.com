@@ -33,7 +33,16 @@
         padding: 24px;
     }
 
-    :global(input, button) {
+    :global(input) {
+        font-family: inherit;
+        font-size: inherit;
+        padding: 0.4em;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+    }
+
+    :global(button) {
         font-family: inherit;
         font-size: inherit;
         padding: 0.4em;
