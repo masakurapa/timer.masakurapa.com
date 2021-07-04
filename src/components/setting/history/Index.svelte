@@ -1,5 +1,6 @@
 <div class="wrapper">
     <h3>Local Settings</h3>
+    <div>
     {#each localSettings as data (data.id)}
         <div class="setting-row">
             <div class="icon-text-wrapper">
@@ -18,10 +19,12 @@
             </div>
         </div>
     {/each}
+    </div>
 </div>
 
 <div class="wrapper">
     <h3>Shared Settings</h3>
+    <div>
     {#each sharedSettings as data (data.id)}
         <div class="setting-row">
             <div class="icon-text-wrapper">
@@ -48,6 +51,7 @@
             </div>
         </div>
     {/each}
+    </div>
 </div>
 
 <script lang="ts">
@@ -76,6 +80,9 @@
         min-height: 50px;
         border: 1px solid #000000;
         padding: 12px;
+    }
+    .setting-row:not(:first-child) {
+        border-top: none;
     }
 
     .icon-text-wrapper {
