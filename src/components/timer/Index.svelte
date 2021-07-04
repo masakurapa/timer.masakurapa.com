@@ -1,74 +1,31 @@
-<div class="phase current">
-    {makePhageStr($timerSettings, $timerIndex, '')}
-</div>
-<div class="phase next">
-    Next: {makePhageStr($timerSettings, $timerIndex + 1, '-')}
-</div>
-
 <Timer/>
 
 <div class="btn-wrapper">
     <div class="main-btn-wrapper">
-        {#if $isTimeUpAll}
-            <ButtonStopSound/>
-        {:else if !$isTimerStarting}
-            <ButtonStart/>
-        {:else}
-            <ButtonStop/>
-        {/if}
+        <StartButton/>
     </div>
     <div class="sub-btn-wrapper">
-        <ButtonNext/>
-        <ButtonReset/>
+        <PrevButton/>
+        <NextButton/>
+        <ResetButton/>
     </div>
 </div>
 
-<div class="sound-wrapper"><SoundSetting/></div>
-<Audio/>
+<div class="sound-wrapper">
+    <Sound/>
+</div>
 
 <script lang="ts">
-    import type { timerSetting } from '../../types';
-    import {
-        timerSettings,
-        isTimerStarting,
-        timerIndex,
-        isTimeUpAll,
-    } from '../../store';
-    import { padding } from '../../util.js';
-
-    import Audio from './Audio.svelte';
-    import ButtonReset from './button/Reset.svelte';
-    import ButtonNext from './button/Next.svelte';
-    import ButtonStart from './button/Start.svelte';
-    import ButtonStop from './button/Stop.svelte';
-    import ButtonStopSound from './button/StopSound.svelte';
-    import SoundSetting from './SoundSetting.svelte';
     import Timer from './Timer.svelte';
+    import Sound from './Sound.svelte';
 
-    // フェーズの表示情報を返す
-    const makePhageStr = (settings: timerSetting[], index: number, defaultTitle: string): string => {
-        if (index >= settings.length) {
-            return defaultTitle;
-        }
-
-        const t = settings[index];
-        return `${t.title} (${padding(t.hour)}:${padding(t.minute)}:${padding(t.second)})`;
-    };
+    import StartButton from './button/StartButton.svelte';
+    import PrevButton from './button/PrevButton.svelte';
+    import NextButton from './button/NextButton.svelte';
+    import ResetButton from './button/ResetButton.svelte';
 </script>
 
 <style>
-    .phase {
-        word-wrap: break-word;
-    }
-    .current {
-        font-size: 30px;
-        min-height: 50px;
-    }
-    .next {
-        font-size: 15px;
-        min-height: 30px;
-    }
-
     .btn-wrapper {
         display: flex;
         margin-bottom: 20px;
@@ -76,7 +33,21 @@
     .main-btn-wrapper {
         margin-right: 32px;
     }
+    .sub-btn-wrapper {
+        min-width: 400px;
+    }
+
     .sound-wrapper {
         margin-bottom: 20px;
+    }
+
+    @media (max-width: 650px) {
+        .btn-wrapper {
+            display: block;
+        }
+        .main-btn-wrapper {
+            margin-right: 0px;
+            margin-bottom: 8px;
+        }
     }
 </style>

@@ -1,14 +1,14 @@
 <div>
     <p on:click={onClick}>
-        Sound <i class="fas fa-2x" class:fa-toggle-on={$isPlaySound} class:fa-toggle-off={!$isPlaySound}></i>
+        Sound <i class="fas fa-2x" class:fa-toggle-on={isPlaySound} class:fa-toggle-off={!isPlaySound}></i>
     </p>
 </div>
 
 <script lang="ts">
-    import { isPlaySound } from '../../store';
+    let isPlaySound = false;
 
     const onClick = () => {
-        isPlaySound.set(!$isPlaySound);
+        isPlaySound = !isPlaySound;
     };
 </script>
 
