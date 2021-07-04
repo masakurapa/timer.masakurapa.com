@@ -1,8 +1,18 @@
 <div class="wrapper">
+    <div class="setting-name-wrapper">
+        <div>Setting Name:</div>
+        <input type="text" class="setting-name" value="">
+    </div>
+
     <div class="button-wrapper">
         <button class="save-btn">Save LocalStorage</button>
         <div class="share-button-wrapper">
-            <button class="save-btn" on:click="{onClickShareBtn}">Share Setting</button>
+            <button
+                class="save-btn"
+                on:click="{onClickShareBtn}"
+            >
+                {#if shared}Update Shared Setting{:else}Share Setting{/if}
+            </button>
         </div>
     </div>
 
@@ -26,6 +36,9 @@
 <style>
     .wrapper {
         margin-bottom: 32px;
+    }
+    .setting-name-wrapper {
+        margin-bottom: 12px;
     }
     .button-wrapper {
         display: flex;
@@ -55,6 +68,11 @@
         cursor: default;
     }
 
+    .setting-name {
+        height: 24px;
+        width: 350px;
+        padding: 4px;
+    }
     .shere-url {
         height: 30px;
         width: 350px;
@@ -64,6 +82,9 @@
         .save-btn {
             width: 150px;
             min-width: 150px;
+        }
+        .setting-name {
+            width: 250px;
         }
         .shere-url {
             width: 250px;
