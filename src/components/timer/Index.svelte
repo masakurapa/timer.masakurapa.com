@@ -1,4 +1,6 @@
-<Timer/>
+<div class="timer-wrapper">
+    <Timer/>
+</div>
 
 <div class="btn-wrapper">
     <div class="main-btn-wrapper">
@@ -26,6 +28,9 @@
 </script>
 
 <style>
+    .timer-wrapper {
+        margin-bottom: 20px;
+    }
     .btn-wrapper {
         display: flex;
         margin-bottom: 20px;
