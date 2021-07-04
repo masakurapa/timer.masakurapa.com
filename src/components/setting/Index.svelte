@@ -12,7 +12,17 @@
     </div>
 </div>
 
+<svelte:component this={components[activeBtnNo]}/>
+
 <script lang="ts">
+    import TimerSetting from './timer_setting/Index.svelte';
+    import History from './history/Index.svelte';
+
+    const components = {
+        1: TimerSetting,
+        2: History,
+    };
+
     let activeBtnNo = 0;
 
     const onClick = (no: number): void => {
@@ -25,6 +35,7 @@
 <style>
     .button-wrapper {
         display: flex;
+        margin-bottom: 32px;
     }
     .hisotry-button-wrapper {
         margin-left: 32px;
