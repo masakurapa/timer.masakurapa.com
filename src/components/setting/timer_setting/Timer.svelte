@@ -8,6 +8,12 @@
     </div>
 
     <div>
+        <div class="setting-add-wrapper">
+            <div class="setting-add-btn-wrapper">
+                <i class="fas fa-plus-circle fa-2x"></i>
+            </div>
+        </div>
+
         <div class="setting-row">
             <div class="setting-row-remove-btn-wrapper">
                 <i class="fas fa-times fa-2x"></i>
@@ -43,6 +49,12 @@
                 </div>
             </div>
         </div>
+
+        <div class="setting-add-wrapper">
+            <div class="setting-add-btn-wrapper">
+                <i class="fas fa-plus-circle fa-2x"></i>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -76,11 +88,36 @@
     }
 
     /**
+     * 設定の追加領域
+     */
+     .setting-add-wrapper {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+     }
+     .setting-add-wrapper::after {
+        content: '';
+        height: 1px;
+        background-size: 8px 1px;
+        background-image: linear-gradient(to right, #333, #333 3px, transparent 3px, transparent 8px);
+        background-repeat: repeat-x;
+        flex-grow: 1;
+        margin-left: 8px;
+    }
+
+     .setting-add-btn-wrapper {
+        width: 32px;
+        color: #1E90FF;
+        cursor: pointer;
+    }
+
+    /**
      * 設定の1行
      */
     .setting-row {
         display: flex;
         padding-left: 12px;
+        margin-bottom: 12px;
         align-items: center;
     }
     .setting-row-remove-btn-wrapper {
