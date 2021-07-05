@@ -33,6 +33,7 @@
         height: 24px;
         padding: 4px;
         width: 350px;
+        font-size: 16px;
         outline: none;
         border: 1px solid #767676;
         -webkit-border-radius: 4px;
