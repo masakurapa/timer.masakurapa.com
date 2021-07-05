@@ -1,4 +1,3 @@
-<div style="margin: auto;">
 <div class="button-wrapper">
     <button
         class:active={activeBtnNo === 1}
@@ -14,7 +13,6 @@
 </div>
 
 <svelte:component this={components[activeBtnNo]}/>
-</div>
 
 <script lang="ts">
     import TimerSetting from './timer_setting/Index.svelte';
