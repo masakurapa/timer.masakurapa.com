@@ -25,26 +25,35 @@
 
                 <div class="setting-row-input-group">
                     <div class="setting-row-input-label">Title:</div>
-                    <div class="setting-row-input-row">
+                    <div class="setting-row-input-text">
                         <input type="text" class="setting-row-input-title">
                     </div>
                 </div>
                 <div class="setting-row-input-group">
                     <div class="setting-row-input-label">Hours:</div>
-                    <div class="setting-row-input-row">
+                    <div class="setting-row-input-number">
                         <input type="number" min="0" max="24" value="0">
+                    </div>
+                    <div class="setting-row-input-range">
+                        <input type="range" min="0" max="24" step="1" value="0">
                     </div>
                 </div>
                 <div class="setting-row-input-group">
                     <div class="setting-row-input-label">Minutes:</div>
-                    <div class="setting-row-input-row">
+                    <div class="setting-row-input-number">
                         <input type="number" min="0" max="59" value="0">
+                    </div>
+                    <div class="setting-row-input-range">
+                        <input type="range" min="0" max="24" step="1" value="0">
                     </div>
                 </div>
                 <div class="setting-row-input-group">
                     <div class="setting-row-input-label">Seconds:</div>
-                    <div class="setting-row-input-row">
+                    <div class="setting-row-input-number">
                         <input type="number" min="0" max="59" value="0">
+                    </div>
+                    <div class="setting-row-input-range">
+                        <input type="range" min="0" max="24" step="1" value="0">
                     </div>
                 </div>
             </div>
@@ -136,7 +145,7 @@
     }
     .clear-btn-wrapper {
         position: absolute;
-        right: 20px;
+        right: 12px;
         bottom: 12px;
         color: #FFB833;
         cursor: pointer;
@@ -147,8 +156,14 @@
         align-items: center;
         margin-bottom: 8px;
     }
-    .setting-row-input-row {
+    .setting-row-input-text {
         width: 70%;
+    }
+    .setting-row-input-number {
+        width: 60px;
+    }
+    .setting-row-input-range {
+        width: 50%;
     }
     .setting-row-input-group:last-child {
         margin-bottom: 0px;
@@ -160,14 +175,50 @@
         width: calc(100% - 40px);
     }
 
-
-
-
+    /**
+     * スライダー
+     */
+    input[type=range] {
+        width: 100%;
+        -webkit-appearance: none;
+        border: none;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 300px;
+        height: 1em;
+        background: #ddd;
+        border: none;
+        border-radius: 3px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: #1976d2;
+        margin-top: -5px;
+    }
+    input[type=range]:disabled::-webkit-slider-thumb {
+        background: #eee;
+    }
+    input[type=range]:focus {
+        outline: none;
+    }
+    input[type=range]:focus::-webkit-slider-runnable-track {
+        background: #ccc;
+    }
 
     @media (max-width: 500px) {
         .remove-all-btn {
             width: 150px;
             min-width: 150px;
+        }
+    }
+
+    @media (max-width: 550px) {
+        input[type=range] {
+            width: 100px;
         }
     }
 </style>
