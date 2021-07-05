@@ -38,6 +38,7 @@
         margin-bottom: 32px;
         border: 1px solid #000000;
         padding: 12px;
+        max-width: 600px;
     }
     .setting-name-wrapper {
         margin-bottom: 12px;

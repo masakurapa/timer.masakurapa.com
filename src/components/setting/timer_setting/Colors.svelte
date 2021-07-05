@@ -58,6 +58,7 @@
         margin-bottom: 32px;
         border: 1px solid #000000;
         padding: 12px;
+        max-width: 600px;
     }
     .input-wrapper {
         display: flex;
