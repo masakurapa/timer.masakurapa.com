@@ -57,6 +57,7 @@
     .wrapper {
         margin-bottom: 32px;
         border: 1px solid #000000;
+        border-radius: 8px;
         padding: 12px;
         max-width: 600px;
     }
@@ -99,5 +100,6 @@
         height: 32px;
         margin-left: 4px;
         border: 1px solid #000000;
+        border-radius: 8px;
     }
 </style>

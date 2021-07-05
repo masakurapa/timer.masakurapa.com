@@ -81,8 +81,14 @@
         border: 1px solid #000000;
         padding: 12px;
     }
+    .setting-row:first-child {
+        border-radius: 8px 8px 0 0;
+    }
     .setting-row:not(:first-child) {
         border-top: none;
+    }
+    .setting-row:last-child {
+        border-radius: 0 0 8px 8px;
     }
 
     .icon-text-wrapper {
