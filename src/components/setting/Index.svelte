@@ -24,7 +24,7 @@
     };
 
     // FIXME: あとで0に戻す
-    let activeBtnNo = 2;
+    let activeBtnNo = 1;
 
     const onClick = (no: number): void => {
         // 現在アクティブな番号と同じならアクティブなボタンを無くす

@@ -28,4 +28,15 @@
         border-radius: 8px;
         cursor: pointer;
     }
+
+    :global(input[type="text"]) {
+        height: 24px;
+        padding: 4px;
+        width: 350px;
+        outline: none;
+        border: 1px solid #767676;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+    }
 </style>

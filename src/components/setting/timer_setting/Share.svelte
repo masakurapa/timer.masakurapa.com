@@ -1,6 +1,6 @@
 <div class="wrapper">
     <div class="setting-name-wrapper">
-        <div>Setting Name:</div>
+        <div class="label">Setting Name:</div>
         <input type="text" class="setting-name" value="">
     </div>
 
@@ -18,7 +18,7 @@
 
     {#if shared}
         <div class="share-url-wrapper">
-            <div>Share URL:</div>
+            <div class="label">Share URL:</div>
             <input type="text" class="shere-url" value="https://timer.masakurapa.com/?sid=12345" disabled>
             <button class="share-btn">COPY</button>
         </div>
@@ -36,6 +36,8 @@
 <style>
     .wrapper {
         margin-bottom: 32px;
+        border: 1px solid #000000;
+        padding: 12px;
     }
     .setting-name-wrapper {
         margin-bottom: 12px;
@@ -68,14 +70,8 @@
         cursor: default;
     }
 
-    .setting-name {
-        height: 24px;
-        width: 350px;
-        padding: 4px;
-    }
-    .shere-url {
-        height: 30px;
-        width: 350px;
+    .label {
+        margin-bottom: 4px;
     }
 
     @media (max-width: 500px) {
