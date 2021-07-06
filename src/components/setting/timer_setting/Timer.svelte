@@ -1,10 +1,12 @@
 <h2>Timer Setting</h2>
 
 <div class="wrapper">
-    <div class="total">Tolal: 00:00:00</div>
-
     <div class="remove-all-btn-wrapper">
         <button class="remove-all-btn" on:click="{onClickRemoveAll}">Remove All</button>
+    </div>
+
+    <div class="total">
+        Tolal: {padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}
     </div>
 
     <div>
@@ -45,7 +47,7 @@
                             <input type="number" min="0" max="59" bind:value="{setting.timer.minute}">
                         </div>
                         <div class="setting-row-input-range">
-                            <input type="range" min="0" max="24" step="1" bind:value="{setting.timer.minute}">
+                            <input type="range" min="0" max="59" step="1" bind:value="{setting.timer.minute}">
                         </div>
                     </div>
                     <div class="setting-row-input-group">
@@ -54,7 +56,7 @@
                             <input type="number" min="0" max="59" bind:value="{setting.timer.second}">
                         </div>
                         <div class="setting-row-input-range">
-                            <input type="range" min="0" max="24" step="1" bind:value="{setting.timer.second}">
+                            <input type="range" min="0" max="59" step="1" bind:value="{setting.timer.second}">
                         </div>
                     </div>
                 </div>
@@ -71,8 +73,12 @@
 
 <script lang="ts">
     import { onMount } from 'svelte';
-    import type { TimerSetting } from '../../../types/local_timer';
+    import type { TimerSetting, Timer } from '../../../types/local_timer';
     import { timerSettings } from '../../../store/setting';
+    import { padding, calcTotalTime } from '../../../util';
+
+    // 全タイマーの合計時間
+    let totalTime: Timer = { hour: 0, minute: 0, second: 0 };
 
     /**
      * 指定位置にタイマーの設定を追加します
@@ -81,7 +87,7 @@
         timerSettings.update(settings => {
             const defaultTimerSetting: TimerSetting = {
                 title: '',
-                timer: {hour: 0, minute: 0, second: 0},
+                timer: { hour: 0, minute: 0, second: 0 },
             };
 
             if (no === 0) {
@@ -101,7 +107,7 @@
     const onClickEraseSetting = (no: number): void => {
         timerSettings.update(settings => {
             settings[no].title = '';
-            settings[no].timer = {hour: 0, minute: 0, second: 0};
+            settings[no].timer = { hour: 0, minute: 0, second: 0 };
             return settings;
         });
     }
@@ -136,11 +142,36 @@
             addTimerSetting(0);
         }
     });
+
+    timerSettings.subscribe(settings => {
+        // 全設定の合計時間を求める
+        totalTime = calcTotalTime(settings);
+    });
 </script>
 
 <style>
     .wrapper {
         max-width: 800px;
+    }
+
+    /**
+     * 合計時間
+     */
+    .total {
+        height: 32px;
+        line-height: 32px;
+        width: 180px;
+        margin-left: auto;
+        padding: 8px;
+        border: 1px solid #000000;
+        border-radius: 8px;
+        background-color: #faf0e6;
+        font-size: 24px;
+        text-align: center;
+        position: -webkit-sticky;
+        position: sticky;
+        top: 20px;
+        z-index: 1;
     }
 
     /**
