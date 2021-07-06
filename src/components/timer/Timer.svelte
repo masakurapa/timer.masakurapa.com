@@ -2,7 +2,7 @@
     <div class="phase-title">Phase Title</div>
 
     <div class="timer">
-        00:00:00
+        {padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}
     </div>
 
     <div class="next-phase">
@@ -13,6 +13,16 @@
 </div>
 
 <script lang="ts">
+    import type { Timer } from '../../types/local_timer';
+    import { timerSettings } from '../../store/setting';
+    import { padding, calcTotalTime } from '../../util';
+
+    let totalTime: Timer = { hour: 0, minute: 0, second: 0 };
+
+    timerSettings.subscribe(settings => {
+        // 全設定の合計時間を求める
+        totalTime = calcTotalTime(settings);
+    });
 </script>
 
 <style>
