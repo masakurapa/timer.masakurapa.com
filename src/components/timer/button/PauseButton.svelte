@@ -17,8 +17,4 @@
     button:hover {
         background-color: #CB032B;
     }
-    button:disabled {
-        background-color: #999999;
-        cursor: default;
-    }
 </style>

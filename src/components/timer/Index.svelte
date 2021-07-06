@@ -2,8 +2,12 @@
 
 <div class="btn-wrapper">
     <div class="main-btn-wrapper">
-        {#if $isTimerRunning}
-            <PauseButton/>
+        {#if $isTimerRunning === true}
+            {#if $isTimeUpAll === true}
+                <StopSoundButton/>
+            {:else}
+                <PauseButton/>
+            {/if}
         {:else}
             <StartButton/>
         {/if}
@@ -20,13 +24,14 @@
 </div>
 
 <script lang="ts">
-    import { isTimerRunning } from '../../store/state';
+    import { isTimerRunning, isTimeUpAll } from '../../store/state';
 
     import Timer from './Timer.svelte';
     import Sound from './Sound.svelte';
 
     import StartButton from './button/StartButton.svelte';
     import PauseButton from './button/PauseButton.svelte';
+    import StopSoundButton from './button/StopSoundButton.svelte';
     import PrevButton from './button/PrevButton.svelte';
     import NextButton from './button/NextButton.svelte';
     import ResetButton from './button/ResetButton.svelte';

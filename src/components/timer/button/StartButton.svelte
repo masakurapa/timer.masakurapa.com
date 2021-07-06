@@ -1,11 +1,14 @@
-<button on:click="{onClick}">START</button>
+<button on:click="{onClick}" {disabled}>START</button>
 
 <script lang="ts">
-    import { isTimerRunning } from '../../../store/state';
+    import { isTimerRunning, timerSecondsRemaining } from '../../../store/state';
 
     const onClick = (): void => {
         isTimerRunning.set(true);
     };
+
+    // 残り秒数が0ならボタン非活性
+    $: disabled = $timerSecondsRemaining === 0;
 </script>
 
 <style>

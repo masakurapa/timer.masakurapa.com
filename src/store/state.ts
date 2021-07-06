@@ -6,6 +6,16 @@ import { writable } from 'svelte/store';
 export const isTimerRunning = writable(false);
 
 /**
+ * 1つのタイマー設定が時間切れになった場合にtrueになります
+ */
+export const isTimeUp = writable(false);
+
+/**
+ * 全てのタイマー設定が時間切れになった場合にtrueになります
+ */
+export const isTimeUpAll = writable(false);
+
+/**
  * 現在のタイマーの設定位置
  */
 export const currentTimerPosition = writable(0);

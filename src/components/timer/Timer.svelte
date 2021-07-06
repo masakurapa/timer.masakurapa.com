@@ -1,5 +1,9 @@
 <div class="wrapper">
-    <div class="phase-title">Phase Title</div>
+    <div class="phase-title">
+        {#if hasCurrentSetting}
+            {getTitle($timerSettings[$currentTimerPosition].title, $currentTimerPosition)}
+        {/if}
+    </div>
 
     <div class="timer">
         {padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}
@@ -8,8 +12,8 @@
     <div class="next-phase">
         {#if hasNextSetting}
             <div>Next:</div>
-            <div>(00:00:00)</div>
-            <div>Next Phase Title</div>
+            <div>({padding(nextSetting.timer.hour)}:{padding(nextSetting.timer.minute)}:{padding(nextSetting.timer.second)})</div>
+            {getTitle(nextSetting.title, $currentTimerPosition + 1)}
         {/if}
     </div>
 </div>
@@ -19,6 +23,8 @@
     import { timerSettings } from '../../store/setting';
     import {
         isTimerRunning,
+        isTimeUp,
+        isTimeUpAll,
         currentTimerPosition,
         timerSecondsRemaining,
     } from '../../store/state';
@@ -34,12 +40,10 @@
     // タイマーのカウントダウンに必要な変数
     let interval: NodeJS.Timeout;
     let switching = false;
-    let timeUp = false;
-    let finished = false;
 
     // タイマーの開始
     const start = (): void => {
-        timeUp = false;
+        isTimeUp.set(false);
 
         interval = setInterval((): void => {
             // タイマーの設定移行処理
@@ -53,8 +57,8 @@
 
             // 1つのタイマーが終わったことを検知したら
             // タイマー設定の位置をずらして次のタイマーに移動する
-            if (timeUp) {
-                timeUp = false;
+            if ($isTimeUp) {
+                isTimeUp.set(false);
                 // 時間切れの場合の処理で、次のタイマー設定があることは保証されている
                 currentTimerPosition.set(index + 1);
                 return;
@@ -73,20 +77,25 @@
             // 次のタイマー設定が無い場合はタイマーを止めて終わり
             if (index + 1 === $timerSettings.length) {
                 clearInterval(interval);
-                finished = true;
+                isTimeUpAll.set(true);
                 return;
             }
 
             // 次のタイマー設定がある場合は
             // タイマーの設定移行処理のためにフラグをたてる
             switching = true;
-            timeUp = true;
+            isTimeUp.set(true);
         }, 1000);
     };
 
     // タイマーの停止
     const stop = (): void => {
         clearInterval(interval);
+    };
+
+    // タイトルを返します
+    const getTitle = (title: string, pos: number): string => {
+        return title !== '' ? title: `#Phase ${pos + 1}`;
     };
 
     // タイマー設定が更新されたら現在位置の設定秒数を計算用の変数に詰め直す
@@ -127,8 +136,12 @@
         start();
     })
 
+    // 現在の位置に設定情報がある場合にtrueを返します
+    $: hasCurrentSetting = typeof $timerSettings[$currentTimerPosition] !== 'undefined';
     // 次の位置に設定情報がある場合にtrueを返します
     $: hasNextSetting = typeof $timerSettings[$currentTimerPosition + 1] !== 'undefined';
+    // 次の位置の設定情報
+    $: nextSetting = $timerSettings[$currentTimerPosition + 1];
 </script>
 
 <style>
@@ -138,6 +151,7 @@
 
     .phase-title {
         font-size: 40px;
+        min-height: 60px;
         word-wrap: break-word;
     }
 
@@ -146,11 +160,12 @@
     }
 
     .next-phase {
-        height: 32px;
+        min-height: 32px;
         font-size: 20px;
         padding-left: 20px;
         word-wrap: break-word;
         display: flex;
+        align-items: center;
     }
 
     .next-phase > div {
