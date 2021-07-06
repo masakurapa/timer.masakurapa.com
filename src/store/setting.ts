@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { ColorSetting } from '../types/local_timer';
+import type { ColorSetting, TimerSetting } from '../types/local_timer';
 import { DEFAULT_BG_COLOR, DEFAULT_SWITCH_SECONDS } from '../const';
 
 /**
@@ -18,3 +18,8 @@ export const colorSetting = writable<ColorSetting>({
     warning1Seconds: DEFAULT_SWITCH_SECONDS.WARNING,
     warning2Seconds: DEFAULT_SWITCH_SECONDS.DANGER,
 });
+
+/**
+ * タイマー設定
+ */
+export const timerSettings = writable<TimerSetting[]>([]);

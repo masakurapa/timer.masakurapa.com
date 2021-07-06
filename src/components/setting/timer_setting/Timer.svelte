@@ -4,70 +4,138 @@
     <div class="total">Tolal: 00:00:00</div>
 
     <div class="remove-all-btn-wrapper">
-        <button class="remove-all-btn">Remove All</button>
+        <button class="remove-all-btn" on:click="{onClickRemoveAll}">Remove All</button>
     </div>
 
     <div>
         <div class="setting-add-wrapper">
-            <div class="setting-add-btn-wrapper">
+            <div class="setting-add-btn-wrapper" on:click="{() => addTimerSetting(0)}">
                 <i class="fas fa-plus-circle fa-2x"></i>
             </div>
         </div>
 
-        <div class="setting-row">
-            <div class="setting-row-remove-btn-wrapper">
-                <i class="fas fa-times fa-2x"></i>
-            </div>
-            <div class="setting-row-input-wrapper">
-                <div class="clear-btn-wrapper">
-                    <i class="fas fa-eraser fa-2x"></i>
+        {#each $timerSettings as setting, idx (idx)}
+            <div class="setting-row">
+                <div class="setting-row-remove-btn-wrapper" on:click="{() => onClickRemoveSetting(idx)}">
+                    <i class="fas fa-times fa-2x"></i>
                 </div>
+                <div class="setting-row-input-wrapper">
+                    <div class="clear-btn-wrapper" on:click="{() => onClickEraseSetting(idx)}">
+                        <i class="fas fa-eraser fa-2x"></i>
+                    </div>
 
-                <div class="setting-row-input-group">
-                    <div class="setting-row-input-label">Title:</div>
-                    <div class="setting-row-input-text">
-                        <input type="text" class="setting-row-input-title">
+                    <div class="setting-row-input-group">
+                        <div class="setting-row-input-label">Title:</div>
+                        <div class="setting-row-input-text">
+                            <input type="text" class="setting-row-input-title" bind:value="{setting.title}">
+                        </div>
                     </div>
-                </div>
-                <div class="setting-row-input-group">
-                    <div class="setting-row-input-label">Hours:</div>
-                    <div class="setting-row-input-number">
-                        <input type="number" min="0" max="24" value="0">
+                    <div class="setting-row-input-group">
+                        <div class="setting-row-input-label">Hours:</div>
+                        <div class="setting-row-input-number">
+                            <input type="number" min="0" max="24" bind:value="{setting.timer.hour}">
+                        </div>
+                        <div class="setting-row-input-range">
+                            <input type="range" min="0" max="24" step="1" bind:value="{setting.timer.hour}">
+                        </div>
                     </div>
-                    <div class="setting-row-input-range">
-                        <input type="range" min="0" max="24" step="1" value="0">
+                    <div class="setting-row-input-group">
+                        <div class="setting-row-input-label">Minutes:</div>
+                        <div class="setting-row-input-number">
+                            <input type="number" min="0" max="59" bind:value="{setting.timer.minute}">
+                        </div>
+                        <div class="setting-row-input-range">
+                            <input type="range" min="0" max="24" step="1" bind:value="{setting.timer.minute}">
+                        </div>
                     </div>
-                </div>
-                <div class="setting-row-input-group">
-                    <div class="setting-row-input-label">Minutes:</div>
-                    <div class="setting-row-input-number">
-                        <input type="number" min="0" max="59" value="0">
-                    </div>
-                    <div class="setting-row-input-range">
-                        <input type="range" min="0" max="24" step="1" value="0">
-                    </div>
-                </div>
-                <div class="setting-row-input-group">
-                    <div class="setting-row-input-label">Seconds:</div>
-                    <div class="setting-row-input-number">
-                        <input type="number" min="0" max="59" value="0">
-                    </div>
-                    <div class="setting-row-input-range">
-                        <input type="range" min="0" max="24" step="1" value="0">
+                    <div class="setting-row-input-group">
+                        <div class="setting-row-input-label">Seconds:</div>
+                        <div class="setting-row-input-number">
+                            <input type="number" min="0" max="59" bind:value="{setting.timer.second}">
+                        </div>
+                        <div class="setting-row-input-range">
+                            <input type="range" min="0" max="24" step="1" bind:value="{setting.timer.second}">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="setting-add-wrapper">
-            <div class="setting-add-btn-wrapper">
-                <i class="fas fa-plus-circle fa-2x"></i>
+            <div class="setting-add-wrapper">
+                <div class="setting-add-btn-wrapper" on:click="{() => addTimerSetting(idx + 1)}">
+                    <i class="fas fa-plus-circle fa-2x"></i>
+                </div>
             </div>
-        </div>
+        {/each}
     </div>
 </div>
 
 <script lang="ts">
+    import { onMount } from 'svelte';
+    import type { TimerSetting } from '../../../types/local_timer';
+    import { timerSettings } from '../../../store/setting';
+
+    /**
+     * 指定位置にタイマーの設定を追加します
+     */
+    const addTimerSetting = (no: number): void => {
+        timerSettings.update(settings => {
+            const defaultTimerSetting: TimerSetting = {
+                title: '',
+                timer: {hour: 0, minute: 0, second: 0},
+            };
+
+            if (no === 0) {
+                settings.unshift(defaultTimerSetting);
+            } else if (no === settings.length) {
+                settings.push(defaultTimerSetting);
+            } else {
+                settings.splice(no, 0, defaultTimerSetting);
+            }
+            return settings;
+        });
+    };
+
+    /**
+     * 指定位置のタイマー設定をデフォルト値に戻します
+     */
+    const onClickEraseSetting = (no: number): void => {
+        timerSettings.update(settings => {
+            settings[no].title = '';
+            settings[no].timer = {hour: 0, minute: 0, second: 0};
+            return settings;
+        });
+    }
+
+    /**
+     * 指定位置のタイマー設定を削除します
+     */
+     const onClickRemoveSetting = (no: number): void => {
+        timerSettings.update(settings => {
+            settings.splice(no, 1);
+            return settings;
+        });
+    }
+
+    /**
+     * 全てのタイマー設定を削除します
+     * タイマー設定は最低1つ存在するようにするため先頭に行を追加します
+     */
+     const onClickRemoveAll = (): void => {
+        if (!confirm('Delete all settings.\nAre you sure?')) {
+            return;
+        }
+
+        timerSettings.set([]);
+        addTimerSetting(0);
+    }
+
+    // タイマー設定は最低1つ存在するようにするため
+    // マウント時に設定が空なら先頭に行を追加しておく
+    onMount(() => {
+        if ($timerSettings.length === 0) {
+            addTimerSetting(0);
+        }
+    });
 </script>
 
 <style>
