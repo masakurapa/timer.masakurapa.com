@@ -12,18 +12,18 @@ export type LocalTimerSetting = {
  */
 export type ColorSetting = {
     /** タイマー起動中のデフォルト背景色 */
-    runningtColor: string;
+    runningColor: string;
     /** 残り秒数の中間警告色 */
     warning1Color: string;
     /** 残り秒数の最終警告色 */
     warning2Color: string;
     /** 全フェーズ終了時の背景色 */
-    finishedColor: string;
+    finishColor: string;
 
     /** 残り秒数の中間警告色に切り替える残り秒数 */
-    warning1Second: string;
+    warning1Seconds: number;
     /** 残り秒数の最終警告色に切り替える残り秒数 */
-    warning2Second: string;
+    warning2Seconds: number;
 };
 
 /**

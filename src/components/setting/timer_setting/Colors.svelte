@@ -3,54 +3,38 @@
 
     <div class="input-wrapper">
         <div class="label">Running:</div>
-        <input type="text" class="color-input" bind:value="{runningColor}">
-        <div class="color-preview" style="background-color: {runningColor}"></div>
+        <input type="text" class="color-input" bind:value="{$colorSetting.runningColor}">
+        <div class="color-preview" style="background-color: {$colorSetting.runningColor}"></div>
     </div>
     <div class="multi-input-wrapper">
         <div class="input-color-wrapper">
             <div class="label">Warning:</div>
-            <input type="text" class="color-input" bind:value="{warningColor}">
-            <div class="color-preview" style="background-color: {warningColor}"></div>
+            <input type="text" class="color-input" bind:value="{$colorSetting.warning1Color}">
+            <div class="color-preview" style="background-color: {$colorSetting.warning1Color}"></div>
         </div>
         <div class="input-seconds-wrapper">
-            Switch with <input type="text" class="seconds-input" bind:value="{warningSeconds}"> seconds remaining.
+            Switch with <input type="text" class="seconds-input" bind:value="{$colorSetting.warning1Seconds}"> seconds remaining.
         </div>
     </div>
     <div class="multi-input-wrapper">
         <div class="input-color-wrapper">
             <div class="label">Danger:</div>
-            <input type="text" class="color-input" bind:value="{dangerColor}">
-            <div class="color-preview" style="background-color: {dangerColor}"></div>
+            <input type="text" class="color-input" bind:value="{$colorSetting.warning2Color}">
+            <div class="color-preview" style="background-color: {$colorSetting.warning2Color}"></div>
         </div>
         <div class="input-seconds-wrapper">
-            Switch with <input type="text" class="seconds-input" bind:value="{dangerSeconds}"> seconds remaining.
+            Switch with <input type="text" class="seconds-input" bind:value="{$colorSetting.warning2Seconds}"> seconds remaining.
         </div>
     </div>
     <div class="input-wrapper">
         <div class="label">Finish:</div>
-        <input type="text" class="color-input" bind:value="{finishColor}">
-        <div class="color-preview" style="background-color: {finishColor}"></div>
+        <input type="text" class="color-input" bind:value="{$colorSetting.finishColor}">
+        <div class="color-preview" style="background-color: {$colorSetting.finishColor}"></div>
     </div>
 </div>
 
 <script lang="ts">
-    const defaultColor = {
-        running: '#DDFFFF',
-        warning: '#FFFFCC',
-        danger: '#FFDDDD',
-        finish: '#DDFFDD',
-    };
-    const defaultSeconds = {
-        warning: 30,
-        danger: 10,
-    };
-
-    let runningColor = defaultColor.running;
-    let warningColor = defaultColor.warning;
-    let dangerColor = defaultColor.danger;
-    let finishColor = defaultColor.finish;
-    let warningSeconds = defaultSeconds.warning;
-    let dangerSeconds = defaultSeconds.danger;
+    import { colorSetting } from '../../../store/setting';
 </script>
 
 <style>
@@ -88,7 +72,7 @@
         width: 64px;
     }
     .color-input {
-        width: 100px;
+        width: 180px;
         margin-left: 8px;
     }
     .seconds-input {
