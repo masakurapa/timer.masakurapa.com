@@ -168,7 +168,7 @@
     .total {
         height: 32px;
         line-height: 32px;
-        width: 180px;
+        width: 240px;
         margin-left: auto;
         margin-bottom: 16px;
         padding: 8px;
