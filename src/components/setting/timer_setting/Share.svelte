@@ -1,7 +1,7 @@
 <div class="wrapper">
     <div class="setting-name-wrapper">
         <div class="label">Setting Name:</div>
-        <input type="text" class="setting-name" value="">
+        <input type="text" class="setting-name" bind:value="{$settingName}">
     </div>
 
     <div class="button-wrapper">
@@ -26,6 +26,8 @@
 </div>
 
 <script lang="ts">
+    import { settingName } from '../../../store/setting';
+
     let shared = false;
 
     const onClickShareBtn = (): void => {

@@ -3,6 +3,11 @@ import type { ColorSetting } from '../types/local_timer';
 import { DEFAULT_BG_COLOR, DEFAULT_SWITCH_SECONDS } from '../const';
 
 /**
+ * ローカルストレージ保存時、シェア時の設定名
+ */
+export const settingName = writable('');
+
+/**
  * 色設定
  */
 export const colorSetting = writable<ColorSetting>({
