@@ -18,6 +18,7 @@
 
         {#each $timerSettings as setting, idx (idx)}
             <div class="setting-row">
+                <div class="setting-row-number">#{idx + 1}</div>
                 <div class="setting-row-remove-btn-wrapper">
                     <div class="setting-row-remove-btn" class:hide={disabled} on:click="{() => onClickRemoveSetting(idx)}">
                         <i class="fas fa-times fa-2x"></i>
@@ -236,6 +237,11 @@
         padding-left: 12px;
         margin-bottom: 12px;
         align-items: center;
+        position: relative;
+    }
+    .setting-row-number {
+        position: absolute;
+        top: 0;
     }
     .setting-row-remove-btn-wrapper {
         width: 32px;
