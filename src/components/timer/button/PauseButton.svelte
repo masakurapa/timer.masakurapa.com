@@ -1,21 +1,21 @@
-<button on:click="{onClick}">START</button>
+<button on:click="{onClick}">PAUSE</button>
 
 <script lang="ts">
     import { isTimerRunning } from '../../../store/state';
 
     const onClick = (): void => {
-        isTimerRunning.set(true);
+        isTimerRunning.set(false);
     };
 </script>
 
 <style>
     button {
-        background-color: #2288FF;
+        background-color: #DC143C;
         width: 200px;
     }
 
     button:hover {
-        background-color: #1177EE;
+        background-color: #CB032B;
     }
     button:disabled {
         background-color: #999999;

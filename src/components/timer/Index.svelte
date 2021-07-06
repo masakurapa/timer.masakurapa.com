@@ -2,7 +2,11 @@
 
 <div class="btn-wrapper">
     <div class="main-btn-wrapper">
-        <StartButton/>
+        {#if $isTimerRunning}
+            <PauseButton/>
+        {:else}
+            <StartButton/>
+        {/if}
     </div>
     <div class="sub-btn-wrapper">
         <PrevButton/>
@@ -16,10 +20,13 @@
 </div>
 
 <script lang="ts">
+    import { isTimerRunning } from '../../store/state';
+
     import Timer from './Timer.svelte';
     import Sound from './Sound.svelte';
 
     import StartButton from './button/StartButton.svelte';
+    import PauseButton from './button/PauseButton.svelte';
     import PrevButton from './button/PrevButton.svelte';
     import NextButton from './button/NextButton.svelte';
     import ResetButton from './button/ResetButton.svelte';
