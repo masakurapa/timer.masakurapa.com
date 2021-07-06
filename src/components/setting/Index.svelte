@@ -1,13 +1,13 @@
 <div class="button-wrapper">
     <button
-        class:active={activeBtnNo === 1}
-        on:click="{() => onClick(1)}"
+        class:active={activeBtnNo === TIMER_SETTING}
+        on:click="{() => onClick(TIMER_SETTING)}"
     >Settings</button>
 
     <div class="hisotry-button-wrapper">
         <button
-            class:active={activeBtnNo === 2}
-            on:click="{() => onClick(2)}"
+            class:active={activeBtnNo === HISTORY}
+            on:click="{() => onClick(HISTORY)}"
         >Setting History</button>
     </div>
 </div>
@@ -18,18 +18,24 @@
     import TimerSetting from './timer_setting/Index.svelte';
     import History from './history/Index.svelte';
 
+    // アクティブなボタンがない状態
+    const NONE = 0;
+    // タイマー設定がアクティブな状態
+    const TIMER_SETTING = 1;
+    // 設定履歴がアクティブな状態
+    const HISTORY = 2;
+
     const components = {
-        1: TimerSetting,
-        2: History,
+        [TIMER_SETTING]: TimerSetting,
+        [HISTORY]: History,
     };
 
-    // FIXME: あとで0に戻す
-    let activeBtnNo = 1;
+    let activeBtnNo = TIMER_SETTING;
 
     const onClick = (no: number): void => {
         // 現在アクティブな番号と同じならアクティブなボタンを無くす
         // それ以外は渡された番号をアクティブにする
-        activeBtnNo = activeBtnNo === no ? 0 : no;
+        activeBtnNo = activeBtnNo === no ? NONE : no;
     }
 </script>
 
