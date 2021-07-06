@@ -1,7 +1,7 @@
 <h2>Timer Setting</h2>
 
 <div class="wrapper">
-    <div class="remove-all-btn-wrapper">
+    <div class="remove-all-btn-wrapper" class:hide={disabled}>
         <button class="remove-all-btn" on:click="{onClickRemoveAll}">Remove All</button>
     </div>
 
@@ -10,7 +10,7 @@
     </div>
 
     <div>
-        <div class="setting-add-wrapper">
+        <div class="setting-add-wrapper" class:hide={disabled}>
             <div class="setting-add-btn-wrapper" on:click="{() => addTimerSetting(0)}">
                 <i class="fas fa-plus-circle fa-2x"></i>
             </div>
@@ -18,51 +18,53 @@
 
         {#each $timerSettings as setting, idx (idx)}
             <div class="setting-row">
-                <div class="setting-row-remove-btn-wrapper" on:click="{() => onClickRemoveSetting(idx)}">
-                    <i class="fas fa-times fa-2x"></i>
+                <div class="setting-row-remove-btn-wrapper">
+                    <div class="setting-row-remove-btn" class:hide={disabled} on:click="{() => onClickRemoveSetting(idx)}">
+                        <i class="fas fa-times fa-2x"></i>
+                    </div>
                 </div>
                 <div class="setting-row-input-wrapper">
-                    <div class="clear-btn-wrapper" on:click="{() => onClickEraseSetting(idx)}">
+                    <div class="clear-btn-wrapper" class:hide={disabled} on:click="{() => onClickEraseSetting(idx)}">
                         <i class="fas fa-eraser fa-2x"></i>
                     </div>
 
                     <div class="setting-row-input-group">
                         <div class="setting-row-input-label">Title:</div>
                         <div class="setting-row-input-text">
-                            <input type="text" class="setting-row-input-title" bind:value="{setting.title}">
+                            <input type="text" class="setting-row-input-title" bind:value="{setting.title}" {disabled}>
                         </div>
                     </div>
                     <div class="setting-row-input-group">
                         <div class="setting-row-input-label">Hours:</div>
                         <div class="setting-row-input-number">
-                            <input type="number" min="0" max="24" bind:value="{setting.timer.hour}">
+                            <input type="number" min="0" max="24" bind:value="{setting.timer.hour}" {disabled}>
                         </div>
                         <div class="setting-row-input-range">
-                            <input type="range" min="0" max="24" step="1" bind:value="{setting.timer.hour}">
+                            <input type="range" min="0" max="24" step="1" bind:value="{setting.timer.hour}" {disabled}>
                         </div>
                     </div>
                     <div class="setting-row-input-group">
                         <div class="setting-row-input-label">Minutes:</div>
                         <div class="setting-row-input-number">
-                            <input type="number" min="0" max="59" bind:value="{setting.timer.minute}">
+                            <input type="number" min="0" max="59" bind:value="{setting.timer.minute}" {disabled}>
                         </div>
                         <div class="setting-row-input-range">
-                            <input type="range" min="0" max="59" step="1" bind:value="{setting.timer.minute}">
+                            <input type="range" min="0" max="59" step="1" bind:value="{setting.timer.minute}" {disabled}>
                         </div>
                     </div>
                     <div class="setting-row-input-group">
                         <div class="setting-row-input-label">Seconds:</div>
                         <div class="setting-row-input-number">
-                            <input type="number" min="0" max="59" bind:value="{setting.timer.second}">
+                            <input type="number" min="0" max="59" bind:value="{setting.timer.second}" {disabled}>
                         </div>
                         <div class="setting-row-input-range">
-                            <input type="range" min="0" max="59" step="1" bind:value="{setting.timer.second}">
+                            <input type="range" min="0" max="59" step="1" bind:value="{setting.timer.second}" {disabled}>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="setting-add-wrapper">
+            <div class="setting-add-wrapper" class:hide={disabled}>
                 <div class="setting-add-btn-wrapper" on:click="{() => addTimerSetting(idx + 1)}">
                     <i class="fas fa-plus-circle fa-2x"></i>
                 </div>
@@ -75,6 +77,7 @@
     import { onMount } from 'svelte';
     import type { TimerSetting, Timer } from '../../../types/local_timer';
     import { timerSettings } from '../../../store/setting';
+    import { isTimerRunning } from '../../../store/state';
     import { padding, calcTotalTime } from '../../../util';
 
     // 全タイマーの合計時間
@@ -147,11 +150,16 @@
         // 全設定の合計時間を求める
         totalTime = calcTotalTime(settings);
     });
+
+    $: disabled = $isTimerRunning === true;
 </script>
 
 <style>
     .wrapper {
         max-width: 800px;
+    }
+    .hide {
+        display: none !important;
     }
 
     /**
@@ -162,6 +170,7 @@
         line-height: 32px;
         width: 180px;
         margin-left: auto;
+        margin-bottom: 16px;
         padding: 8px;
         border: 1px solid #000000;
         border-radius: 8px;
@@ -230,6 +239,8 @@
     }
     .setting-row-remove-btn-wrapper {
         width: 32px;
+    }
+    .setting-row-remove-btn {
         color: #DC3545;
         cursor: pointer;
     }
@@ -285,7 +296,7 @@
     input[type=range]::-webkit-slider-runnable-track {
         width: 300px;
         height: 1em;
-        background: #ddd;
+        background: #DDDDDD;
         border: none;
         border-radius: 3px;
     }
@@ -295,17 +306,17 @@
         height: 20px;
         width: 20px;
         border-radius: 50%;
-        background: #1976d2;
+        background: #1976D2;
         margin-top: -5px;
     }
     input[type=range]:disabled::-webkit-slider-thumb {
-        background: #eee;
+        background: #EEEEEE;
     }
     input[type=range]:focus {
         outline: none;
     }
     input[type=range]:focus::-webkit-slider-runnable-track {
-        background: #ccc;
+        background: #CCCCCC;
     }
 
     @media (max-width: 500px) {
