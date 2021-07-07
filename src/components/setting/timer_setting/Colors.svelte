@@ -37,6 +37,35 @@
     import { colorSetting } from '../../../store/setting';
     import { isTimerRunning } from '../../../store/state';
 
+    export const DEFAULT_BG_COLOR = {
+        RUNNING: '#DDFFFF',
+        WARNING: '#FFFFCC',
+        DANGER: '#FFDDDD',
+        FINISH: '#DDFFDD',
+    } as const;
+
+    /**
+     * デフォルトの背景色を切り替える秒数
+     */
+    export const DEFAULT_SWITCH_SECONDS = {
+        WARNING: 30,
+        DANGER: 10,
+    } as const;
+
+    colorSetting.subscribe(setting => {
+        if (setting !== null) {
+            return;
+        }
+        colorSetting.set({
+            runningColor: DEFAULT_BG_COLOR.RUNNING,
+            warning1Color: DEFAULT_BG_COLOR.WARNING,
+            warning2Color: DEFAULT_BG_COLOR.DANGER,
+            finishColor: DEFAULT_BG_COLOR.FINISH,
+            warning1Seconds: DEFAULT_SWITCH_SECONDS.WARNING,
+            warning2Seconds: DEFAULT_SWITCH_SECONDS.DANGER,
+        })
+    });
+
     $: disabled = $isTimerRunning === true;
 </script>
 

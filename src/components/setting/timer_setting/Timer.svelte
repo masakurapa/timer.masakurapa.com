@@ -1,10 +1,6 @@
 <h2>Timer Setting</h2>
 
 <div class="wrapper">
-    <div class="remove-all-btn-wrapper" class:hide={disabled}>
-        <button class="remove-all-btn" on:click="{onClickRemoveAll}">Remove All</button>
-    </div>
-
     <div class="total">
         Tolal: {padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}
     </div>
@@ -126,19 +122,6 @@
         });
     }
 
-    /**
-     * 全てのタイマー設定を削除します
-     * タイマー設定は最低1つ存在するようにするため先頭に行を追加します
-     */
-     const onClickRemoveAll = (): void => {
-        if (!confirm('Delete all settings.\nAre you sure?')) {
-            return;
-        }
-
-        timerSettings.set([]);
-        addTimerSetting(0);
-    }
-
     // タイマー設定は最低1つ存在するようにするため
     // マウント時に設定が空なら先頭に行を追加しておく
     onMount(() => {
@@ -148,6 +131,11 @@
     });
 
     timerSettings.subscribe(settings => {
+        // 空に変更されていたら最低一つ存在するようにするため、先頭に行を追加
+        if (settings.length === 0) {
+            addTimerSetting(0);
+        }
+
         // 全設定の合計時間を求める
         totalTime = calcTotalTime(settings);
     });
@@ -182,27 +170,6 @@
         position: sticky;
         top: 20px;
         z-index: 1;
-    }
-
-    /**
-     * Remove Allボタン
-     */
-    .remove-all-btn-wrapper {
-        width: 100%;
-        text-align: right;
-        margin-bottom: 32px;
-    }
-    .remove-all-btn {
-        color: #FFFFFF;
-        background-color: #DC3545;
-        width: 200px;
-    }
-    .remove-all-btn:hover {
-        background-color: #CB2434;
-    }
-    .remove-all-btn:disabled {
-        background-color: #999999;
-        cursor: default;
     }
 
     /**
@@ -323,13 +290,6 @@
     }
     input[type=range]:focus::-webkit-slider-runnable-track {
         background: #CCCCCC;
-    }
-
-    @media (max-width: 500px) {
-        .remove-all-btn {
-            width: 150px;
-            min-width: 150px;
-        }
     }
 
     @media (max-width: 550px) {
