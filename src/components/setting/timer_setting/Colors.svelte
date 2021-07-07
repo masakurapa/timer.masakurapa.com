@@ -1,35 +1,49 @@
 <div class="wrapper">
-    <h3>Color & Switching seconds</h3>
+    <label class="collapse-btn" for="color-setting-callapse">
+        <i class="fas {icon}"></i> Color Settings
+    </label>
+    <input
+        class="collapse-open"
+        type="checkbox"
+        id="color-setting-callapse"
+        aria-hidden="true"
+        hidden
+        bind:checked={open}
+    />
 
-    <div class="input-wrapper">
-        <div class="label">Running:</div>
-        <input type="text" class="color-input" bind:value="{$colorSetting.runningColor}" {disabled}>
-        <div class="color-preview" style="background-color: {$colorSetting.runningColor}"></div>
-    </div>
-    <div class="multi-input-wrapper">
-        <div class="input-color-wrapper">
-            <div class="label">Warning:</div>
-            <input type="text" class="color-input" bind:value="{$colorSetting.warning1Color}" {disabled}>
-            <div class="color-preview" style="background-color: {$colorSetting.warning1Color}"></div>
+    <div class="collapse-painel">
+        <div class="collapse-inner">
+            <div class="input-wrapper">
+                <div class="label">Running:</div>
+                <input type="text" class="color-input" bind:value="{$colorSetting.runningColor}" {disabled}>
+                <div class="color-preview" style="background-color: {$colorSetting.runningColor}"></div>
+            </div>
+            <div class="multi-input-wrapper">
+                <div class="input-color-wrapper">
+                    <div class="label">Warning:</div>
+                    <input type="text" class="color-input" bind:value="{$colorSetting.warning1Color}" {disabled}>
+                    <div class="color-preview" style="background-color: {$colorSetting.warning1Color}"></div>
+                </div>
+                <div class="input-seconds-wrapper">
+                    Switch with <input type="number" class="seconds-input" bind:value="{$colorSetting.warning1Seconds}" {disabled}> seconds remaining.
+                </div>
+            </div>
+            <div class="multi-input-wrapper">
+                <div class="input-color-wrapper">
+                    <div class="label">Danger:</div>
+                    <input type="text" class="color-input" bind:value="{$colorSetting.warning2Color}" {disabled}>
+                    <div class="color-preview" style="background-color: {$colorSetting.warning2Color}" {disabled}></div>
+                </div>
+                <div class="input-seconds-wrapper">
+                    Switch with <input type="number" class="seconds-input" bind:value="{$colorSetting.warning2Seconds}" {disabled}> seconds remaining.
+                </div>
+            </div>
+            <div class="input-wrapper">
+                <div class="label">Finish:</div>
+                <input type="text" class="color-input" bind:value="{$colorSetting.finishColor}" {disabled}>
+                <div class="color-preview" style="background-color: {$colorSetting.finishColor}" {disabled}></div>
+            </div>
         </div>
-        <div class="input-seconds-wrapper">
-            Switch with <input type="number" class="seconds-input" bind:value="{$colorSetting.warning1Seconds}" {disabled}> seconds remaining.
-        </div>
-    </div>
-    <div class="multi-input-wrapper">
-        <div class="input-color-wrapper">
-            <div class="label">Danger:</div>
-            <input type="text" class="color-input" bind:value="{$colorSetting.warning2Color}" {disabled}>
-            <div class="color-preview" style="background-color: {$colorSetting.warning2Color}" {disabled}></div>
-        </div>
-        <div class="input-seconds-wrapper">
-            Switch with <input type="number" class="seconds-input" bind:value="{$colorSetting.warning2Seconds}" {disabled}> seconds remaining.
-        </div>
-    </div>
-    <div class="input-wrapper">
-        <div class="label">Finish:</div>
-        <input type="text" class="color-input" bind:value="{$colorSetting.finishColor}" {disabled}>
-        <div class="color-preview" style="background-color: {$colorSetting.finishColor}" {disabled}></div>
     </div>
 </div>
 
@@ -37,17 +51,13 @@
     import { colorSetting } from '../../../store/setting';
     import { isTimerRunning } from '../../../store/state';
 
-    export const DEFAULT_BG_COLOR = {
+    const DEFAULT_BG_COLOR = {
         RUNNING: '#DDFFFF',
         WARNING: '#FFFFCC',
         DANGER: '#FFDDDD',
         FINISH: '#DDFFDD',
     } as const;
-
-    /**
-     * デフォルトの背景色を切り替える秒数
-     */
-    export const DEFAULT_SWITCH_SECONDS = {
+    const DEFAULT_SWITCH_SECONDS = {
         WARNING: 30,
         DANGER: 10,
     } as const;
@@ -66,6 +76,10 @@
         })
     });
 
+    // 設定の開閉管理フラグ
+    let open = false;
+
+    $: icon = open ? 'fa-chevron-down' : 'fa-chevron-up';
     $: disabled = $isTimerRunning === true;
 </script>
 
@@ -116,5 +130,36 @@
         margin-left: 4px;
         border: 1px solid #000000;
         border-radius: 8px;
+    }
+
+    /**
+     * 設定の開閉
+     */
+     .collapse-open {
+        display: none;
+    }
+    .collapse-painel {
+        visibility: hidden;
+        max-height: 0;
+        opacity: 0;
+        transition: max-height .1s,visibility .3s,opacity .3s;
+    }
+    .collapse-open:checked ~ .collapse-painel {
+        max-height: 100%;
+        opacity: 100;
+        visibility: visible;
+    }
+    .collapse-btn {
+        background: #FFFFFF;
+        border-radius: 2px;
+        cursor: pointer;
+        display: block;
+        padding: 5px 10px;
+        font-weight: bold;
+    }
+    .collapse-inner {
+        padding-top: 16px;
+        background: #FFFFFF;
+        /* border-top: dotted 1px #000000; */
     }
 </style>
