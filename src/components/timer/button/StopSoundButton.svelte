@@ -2,6 +2,7 @@
 
 <script lang="ts">
     import {
+        currentTimerPosition,
         isTimerRunning,
         isTimeUpAll,
     } from '../../../store/state';
@@ -9,6 +10,7 @@
     const onClick = (): void => {
         isTimerRunning.set(false);
         isTimeUpAll.set(false);
+        currentTimerPosition.set(0);
     };
 </script>
 
