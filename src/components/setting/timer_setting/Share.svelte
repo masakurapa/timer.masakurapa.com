@@ -5,35 +5,84 @@
     </div>
 
     <div class="button-wrapper">
-        <button class="save-btn">Save LocalStorage</button>
-        <div class="share-button-wrapper">
+        <button
+            class="save-btn"
+            on:click="{saveLocalStorage}"
+        >
+            {#if $settingKey === ''}
+                Save LocalStorage
+            {:else}
+                Overwrite LocalStorage
+            {/if}
+        </button>
+
+        <!-- <div class="share-button-wrapper">
             <button
                 class="save-btn"
-                on:click="{onClickShareBtn}"
             >
-                {#if shared}Update Shared Setting{:else}Share Setting{/if}
+                Share Setting
             </button>
-        </div>
+        </div> -->
     </div>
 
-    {#if shared}
-        <div class="share-url-wrapper">
-            <div class="label">Share URL:</div>
-            <input type="text" class="shere-url" value="https://timer.masakurapa.com/?sid=12345" disabled>
-            <button class="share-btn">COPY</button>
-        </div>
-    {/if}
+    <!-- <div class="share-url-wrapper">
+        <div class="label">Share URL:</div>
+        <input type="text" class="shere-url" value="https://timer.masakurapa.com/?sid=12345" disabled>
+        <button class="share-btn">COPY</button>
+    </div> -->
 </div>
 
 <script lang="ts">
-    import { settingName } from '../../../store/setting';
+    import { v4 as uuidv4 } from 'uuid';
+    import {
+        currentSettingPosition,
+        settingKey,
+        settingName,
+        colorSetting,
+        timerSettings,
+    } from '../../../store/setting';
+    import {
+        addTimerSetting,
+        saveTimerSetting,
+        saveTimerSettingKey,
+     } from '../../../storage';
 
-    // TODO: 以下は動作確認用のコードなので後で消す
-    let shared = false;
+    // ローカルストレージに保存する
+    const saveLocalStorage = (): void => {
+        if ($settingKey === '') {
+            const timerSettingKey = uuidv4();
+            settingKey.set(timerSettingKey);
+            if ($settingName === '') {
+                settingName.set(timerSettingKey);
+            }
 
-    const onClickShareBtn = (): void => {
-        shared = true;
-    }
+            const pos = addTimerSetting({
+                key: timerSettingKey,
+                name: $settingName,
+                colorSetting: $colorSetting,
+                timerSettings: $timerSettings,
+            });
+            saveTimerSettingKey(timerSettingKey);
+
+            currentSettingPosition.set(pos);
+        } else {
+            if ($settingName === '') {
+                settingName.set($settingKey);
+            }
+
+            saveTimerSetting($currentSettingPosition, {
+                key: $settingKey,
+                name: $settingName,
+                colorSetting: $colorSetting,
+                timerSettings: $timerSettings,
+            });
+        }
+
+        alert('Saved it!!');
+    };
+
+    // 設定が保存可能な状態ではないときにtrueになります
+    $: disabledSaveButton = $settingName === '';
 </script>
 
 <style>

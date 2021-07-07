@@ -2,6 +2,7 @@
  * ローカルタイマーの設定情報
  */
 export type LocalTimerSetting = {
+    key: string;
     name: string;
     colorSetting: ColorSetting;
     timerSettings: TimerSetting[];

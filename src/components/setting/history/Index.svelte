@@ -1,27 +1,32 @@
 <div class="wrapper">
     <h3>Local Settings</h3>
     <div>
-    {#each localSettings as data (data.id)}
-        <div class="setting-row">
-            <div class="icon-text-wrapper">
-                <div class="using-mark-wrapper">
-                    {#if using === data.id}
-                        <i class="fas fa-check-circle fa-2x"></i>
-                    {/if}
+        {#if localTimerSetting && localTimerSetting.settings.length > 0}
+            {#each localTimerSetting.settings as data, idx (data.key)}
+                <div class="setting-row">
+                    <div class="icon-text-wrapper">
+                        <div class="using-mark-wrapper">
+                            {#if idx === $currentSettingPosition}
+                                <i class="fas fa-check-circle fa-2x"></i>
+                            {/if}
+                        </div>
+                        <div class="setting-name-wrapper">{data.name}</div>
+                    </div>
+                    <div class="btn-wrapper">
+                        <button class="load-btn" on:click="{() => onClickLoadLocalSetting(idx)}">Load</button>
+                        <div class="trash-btn-wrapper" on:click="{() => onClickRemoveLocalSetting(idx)}">
+                            <i class="fas fa-trash-alt fa-2x"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="setting-name-wrapper">{data.name}</div>
-            </div>
-            <div class="btn-wrapper">
-                <button class="load-btn">Load</button>
-                <div class="trash-btn-wrapper">
-                    <i class="fas fa-trash-alt fa-2x"></i>
-                </div>
-            </div>
-        </div>
-    {/each}
+            {/each}
+        {:else}
+            <div class="no-settings">No Settings</div>
+        {/if}
     </div>
 </div>
 
+<!--
 <div class="wrapper">
     <h3>Shared Settings</h3>
     <div class="legend">
@@ -64,26 +69,68 @@
     {/each}
     </div>
 </div>
+-->
 
 <script lang="ts">
-    const using = '1';
+    import { onMount } from 'svelte';
+    import {
+        currentSettingPosition,
+        settingKey,
+        settingName,
+        colorSetting,
+        timerSettings,
+    } from '../../../store/setting';
+    import {
+        getTimerSetting,
+        removeTimerSetting,
+        saveTimerSettingKey,
+        getTimerSettingKey,
+     } from '../../../storage';
+    import type { StorageLocalTimerSetting } from '../../../types/local_timer';
 
-    const localSettings = [
-        {id: '1', name: 'Setting1'},
-        {id: '2', name: 'Setting2'},
-        {id: '3', name: 'Setting3'},
-    ];
-    const sharedSettings = [
-        {id: '4', name: 'Setting4', owner: true},
-        {id: '5', name: 'Setting5', owner: false},
-        {id: '6', name: 'Setting6', owner: true},
-    ];
+     // ローカルストレージに保存された設定
+    let localTimerSetting: StorageLocalTimerSetting;
+
+     onMount(() => {
+        localTimerSetting = getTimerSetting();
+     });
+
+     // ローカルストレージの設定を削除
+     const onClickRemoveLocalSetting = (no: number): void => {
+        const setting = localTimerSetting.settings[no];
+        if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
+            return;
+        }
+
+        removeTimerSetting(no);
+        currentSettingPosition.set(null);
+        localTimerSetting = getTimerSetting();
+     };
+
+     // ローカルストレージの設定を読み込み
+     const onClickLoadLocalSetting = (no: number): void => {
+        const setting = localTimerSetting.settings[no];
+        currentSettingPosition.set(no);
+        settingKey.set(setting.key);
+        settingName.set(setting.name);
+        colorSetting.set(setting.colorSetting);
+        timerSettings.set(setting.timerSettings);
+     };
+
 </script>
 
 <style>
     .wrapper {
         margin-bottom: 32px;
         max-width: 600px;
+    }
+
+    .no-settings {
+        min-height: 50px;
+        line-height: 50px;
+        border: 1px solid #000000;
+        padding: 12px;
+        border-radius: 8px;
     }
 
     .setting-row {
@@ -100,6 +147,9 @@
     }
     .setting-row:last-child {
         border-radius: 0 0 8px 8px;
+    }
+    .setting-row:only-child {
+        border-radius: 8px;
     }
 
     .icon-text-wrapper {
