@@ -4,14 +4,12 @@
         {#if localTimerSetting && localTimerSetting.settings.length > 0}
             {#each localTimerSetting.settings as data, idx (data.key)}
                 <div class="setting-row">
-                    <div class="icon-text-wrapper">
-                        <div class="using-mark-wrapper">
-                            {#if idx === $currentSettingPosition}
-                                <i class="fas fa-hand-point-right fa-2x"></i>
-                            {/if}
-                        </div>
-                        <div class="setting-name-wrapper">{data.name}</div>
+                    <div class="using-mark-wrapper">
+                        {#if idx === $currentSettingPosition}
+                            <i class="fas fa-hand-point-right fa-2x"></i>
+                        {/if}
                     </div>
+                    <div class="setting-name-wrapper">{data.name}</div>
                     <div class="btn-wrapper">
                         {#if !$isTimerRunning}
                             <button class="load-btn" on:click="{() => onClickLoadLocalSetting(idx)}">Load</button>
@@ -45,23 +43,23 @@
         {#if sharedTimerSetting && sharedTimerSetting.settings.length > 0}
             {#each sharedTimerSetting.settings as data, idx (data.key)}
                 <div class="setting-row">
-                    <div class="icon-text-wrapper">
-                        <div class="using-mark-wrapper">
+                    <div class="using-mark-wrapper">
+                        {#if idx === $currentSharedSettingPosition}
                             <i class="fas fa-hand-point-right fa-2x"></i>
-                        </div>
-                        <div class="owner-mark-wrapper">
-                            {#if data.owner}
-                                <i class="fas fa-user-edit fa-2x"></i>
-                            {:else}
-                                <i class="fas fa-history fa-2x"></i>
-                            {/if}
-                        </div>
-                        <div class="setting-name-wrapper">{data.name}</div>
+                        {/if}
                     </div>
+                    <div class="owner-mark-wrapper">
+                        {#if data.owner}
+                            <i class="fas fa-user-edit fa-2x"></i>
+                        {:else}
+                            <i class="fas fa-history fa-2x"></i>
+                        {/if}
+                    </div>
+                    <div class="setting-name-wrapper">{data.name}</div>
                     <div class="btn-wrapper">
-                        <button class="load-btn">Load</button>
-                        <button class="copy-btn">Copy URL</button>
-                        <div class="trash-btn-wrapper">
+                        <button class="copy-btn" on:click="{() => onClickCopyURL(idx)}">Copy URL</button>
+                        <button class="load-btn" on:click="{() => onClickLoadSharedSetting(idx)}">Load</button>
+                        <div class="trash-btn-wrapper" on:click="{() => onClickRemoveSharedSetting(idx)}">
                             <i class="fas fa-trash-alt fa-2x"></i>
                         </div>
                     </div>
@@ -73,6 +71,8 @@
     </div>
 </div>
 
+<MessageBox message="{message}" show={showMessageBox}/>
+
 <script lang="ts">
     import { onMount } from 'svelte';
     import type { StorageLocalTimerSetting } from '../../../types/local_timer';
@@ -80,6 +80,7 @@
 
     import {
         currentSettingPosition,
+        currentSharedSettingPosition,
         settingKey,
         settingName,
         colorSetting,
@@ -91,14 +92,24 @@
     import {
         getTimerSetting,
         removeTimerSetting,
+        getSharedTimerSetting,
+        removeSharedTimerSetting,
         saveTimerSettingKey,
      } from '../../../storage';
 
+    import CopyUrl from '../CopyURL.svelte';
+    import MessageBox from '../MessageBox.svelte';
+
+    // メッセージボックスに表示するメッセージ
+    let message = '';
+    // メッセージボックスの表示判定
+    let showMessageBox = false;
+
      // ローカルストレージに保存されたローカル設定
     let localTimerSetting: StorageLocalTimerSetting;
-     // ローカルストレージに保存されたシェア設定
-     let sharedTimerSetting: StorageSharedTimerSetting = {
-         settings: [
+    // ローカルストレージに保存されたシェア設定
+    let sharedTimerSetting: StorageSharedTimerSetting = {
+        settings: [
             {key: 'hoge1', name: '996da063-5b6e-42c6-8d87-acf464e95fa7', owner: true},
             {key: 'hoge2', name: '996da063-5b6e-42c6-8d87-acf464e95fa7', owner: false},
         ],
@@ -107,6 +118,16 @@
      onMount(() => {
         localTimerSetting = getTimerSetting();
      });
+
+    // メッセージを1秒表示させる
+    const showMessage = (text: string): void => {
+        message = text;
+        showMessageBox = true;
+        setTimeout((): void => {
+            showMessageBox = false;
+            message = '';
+        }, 1000);
+     };
 
      // ローカルストレージの設定を削除
      const onClickRemoveLocalSetting = (no: number): void => {
@@ -124,6 +145,7 @@
      const onClickLoadLocalSetting = (no: number): void => {
         const setting = localTimerSetting.settings[no];
         currentSettingPosition.set(no);
+        currentSharedSettingPosition.set(null);
         settingKey.set(setting.key);
         settingName.set(setting.name);
         colorSetting.set(setting.colorSetting);
@@ -131,6 +153,52 @@
 
         // 最後にアクセスした設定のキーを保存しておく
         saveTimerSettingKey(setting.key);
+
+        showMessage('Loaded !!!!!');
+     };
+
+     // シェア用のローカルストレージの設定を削除
+     const onClickRemoveSharedSetting = (no: number): void => {
+        const setting = sharedTimerSetting.settings[no];
+        if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
+            return;
+        }
+
+        removeSharedTimerSetting(no);
+        currentSettingPosition.set(null);
+        sharedTimerSetting = getSharedTimerSetting();
+     };
+
+     // シェア用のローカルストレージの設定を読み込み
+     const onClickLoadSharedSetting = (no: number): void => {
+        const setting = sharedTimerSetting.settings[no];
+        currentSettingPosition.set(null);
+        currentSharedSettingPosition.set(no);
+
+        // TODO: API通信して設定を持ってくる
+
+        settingKey.set(setting.key);
+        settingName.set(setting.name);
+        // colorSetting.set(setting.colorSetting);
+        // timerSettings.set(setting.timerSettings);
+
+        // 最後にアクセスした設定のキーを保存しておく
+        saveTimerSettingKey(setting.key);
+
+        showMessage('Loaded !!!!!');
+     };
+
+     // クリップボードにURLをコピーする
+     const onClickCopyURL = (no: number): void => {
+        const setting = sharedTimerSetting.settings[no];
+        const app = new CopyUrl({
+            target: document.getElementById('clipboard'),
+            props: { key: setting.key },
+        });
+        app.$destroy();
+
+        // メッセージを1秒表示させる
+        showMessage('Copied !!!!!');
      };
 </script>
 
@@ -150,6 +218,7 @@
 
     .setting-row {
         display: flex;
+        align-items: center;
         min-height: 50px;
         border: 1px solid #000000;
         background-color: #FFFFFF;
@@ -168,13 +237,8 @@
         border-radius: 8px;
     }
 
-    .icon-text-wrapper {
-        display: flex;
-        align-items: center;
-    }
-
     .using-mark-wrapper {
-        width: 32px;
+        width: 40px;
         margin-right: 12px;
         color: #00AE95;
     }

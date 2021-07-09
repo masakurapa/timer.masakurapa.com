@@ -13,6 +13,8 @@
 </div>
 
 <svelte:component this={components[activeBtnNo]}/>
+<!-- クリップボードコピーで使用する領域 -->
+<div id="clipboard"></div>
 
 <script lang="ts">
     import TimerSetting from './timer_setting/Index.svelte';
@@ -30,7 +32,7 @@
         [HISTORY]: History,
     };
 
-    let activeBtnNo = TIMER_SETTING;
+    let activeBtnNo = HISTORY;
 
     const onClick = (no: number): void => {
         // 現在アクティブな番号と同じならアクティブなボタンを無くす

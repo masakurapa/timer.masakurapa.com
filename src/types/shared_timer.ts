@@ -1,5 +1,5 @@
 /**
- * シェアタイマーの設定
+ * 共有タイマーの設定
  */
 export type SharedTimerSetting = {
     key: string;
@@ -8,7 +8,7 @@ export type SharedTimerSetting = {
 };
 
 /**
- * ローカルストレージに格納するシェアタイマーの設定
+ * ローカルストレージに格納する共有タイマーの設定
  */
 export type StorageSharedTimerSetting = {
     settings: SharedTimerSetting[];
