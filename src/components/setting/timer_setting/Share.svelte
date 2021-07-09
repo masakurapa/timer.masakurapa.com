@@ -1,36 +1,40 @@
-<div class="wrapper">
-    <div class="setting-name-wrapper">
-        <div class="label">Setting Name:</div>
-        <input type="text" class="setting-name" bind:value="{$settingName}" >
-    </div>
+<Collapse key="share-setting">
+    <span slot="header">Save Setting</span>
 
-    <div class="button-wrapper">
-        <button
-            class="save-btn"
-            on:click="{saveLocalStorage}"
-        >
-            {#if $settingKey === ''}
-                Save LocalStorage
-            {:else}
-                Overwrite LocalStorage
-            {/if}
-        </button>
+    <div slot="content">
+        <div class="setting-name-wrapper">
+            <div class="label">Setting Name:</div>
+            <input type="text" class="setting-name" bind:value="{$settingName}" >
+        </div>
 
-        <!-- <div class="share-button-wrapper">
+        <div class="button-wrapper">
             <button
                 class="save-btn"
+                on:click="{saveLocalStorage}"
             >
-                Share Setting
+                {#if $settingKey === ''}
+                    Save LocalStorage
+                {:else}
+                    Overwrite LocalStorage
+                {/if}
             </button>
+
+            <!-- <div class="share-button-wrapper">
+                <button
+                    class="save-btn"
+                >
+                    Share Setting
+                </button>
+            </div> -->
+        </div>
+
+        <!-- <div class="share-url-wrapper">
+            <div class="label">Share URL:</div>
+            <input type="text" class="shere-url" value="https://timer.masakurapa.com/?sid=12345" disabled>
+            <button class="share-btn">COPY</button>
         </div> -->
     </div>
-
-    <!-- <div class="share-url-wrapper">
-        <div class="label">Share URL:</div>
-        <input type="text" class="shere-url" value="https://timer.masakurapa.com/?sid=12345" disabled>
-        <button class="share-btn">COPY</button>
-    </div> -->
-</div>
+</Collapse>
 
 <script lang="ts">
     import { v4 as uuidv4 } from 'uuid';
@@ -46,6 +50,8 @@
         saveTimerSetting,
         saveTimerSettingKey,
      } from '../../../storage';
+
+     import Collapse from './Collapse.svelte';
 
     // ローカルストレージに保存する
     const saveLocalStorage = (): void => {
