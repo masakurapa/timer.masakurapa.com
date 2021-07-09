@@ -84,7 +84,6 @@
         getTimerSetting,
         removeTimerSetting,
         saveTimerSettingKey,
-        getTimerSettingKey,
      } from '../../../storage';
     import type { StorageLocalTimerSetting } from '../../../types/local_timer';
 
@@ -115,8 +114,10 @@
         settingName.set(setting.name);
         colorSetting.set(setting.colorSetting);
         timerSettings.set(setting.timerSettings);
-     };
 
+        // 最後にアクセスした設定のキーを保存しておく
+        saveTimerSettingKey(setting.key);
+     };
 </script>
 
 <style>
