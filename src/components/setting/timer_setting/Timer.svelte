@@ -15,10 +15,18 @@
         {#each $timerSettings as setting, idx (idx)}
             <div class="setting-row">
                 <div class="setting-row-number">#{idx + 1}</div>
-                <div class="setting-row-remove-btn-wrapper">
-                    <div class="setting-row-remove-btn" class:hide={disabled} on:click="{() => onClickRemoveSetting(idx)}">
-                        <i class="fas fa-times fa-2x"></i>
-                    </div>
+                <div class="setting-row-icon-wrapper">
+                    {#if !disabled}
+                        <div class="setting-row-remove-btn" on:click="{() => onClickRemoveSetting(idx)}">
+                            <i class="fas fa-times fa-2x"></i>
+                        </div>
+                    {:else}
+                        {#if idx === $currentTimerPosition}
+                            <div class="now-mark-wrapper">
+                                <i class="fas fa-hand-point-right fa-2x"></i>
+                            </div>
+                        {/if}
+                    {/if}
                 </div>
                 <div class="setting-row-input-wrapper">
                     <div class="clear-btn-wrapper" class:hide={disabled} on:click="{() => onClickEraseSetting(idx)}">
@@ -74,7 +82,7 @@
     import { onMount } from 'svelte';
     import type { TimerSetting, Timer } from '../../../types/local_timer';
     import { timerSettings } from '../../../store/setting';
-    import { isTimerRunning } from '../../../store/state';
+    import { isTimerRunning, currentTimerPosition } from '../../../store/state';
     import { padding, calcTotalTime } from '../../../util';
 
     // 全タイマーの合計時間
@@ -201,7 +209,7 @@
      */
     .setting-row {
         display: flex;
-        padding-left: 12px;
+        padding-left: 8px;
         margin-bottom: 12px;
         align-items: center;
         position: relative;
@@ -210,12 +218,15 @@
         position: absolute;
         top: 0;
     }
-    .setting-row-remove-btn-wrapper {
-        width: 32px;
+    .setting-row-icon-wrapper {
+        width: 36px;
     }
     .setting-row-remove-btn {
         color: #DC3545;
         cursor: pointer;
+    }
+    .now-mark-wrapper {
+        color: #00AE95;
     }
     .setting-row-input-wrapper {
         width: 100%;
