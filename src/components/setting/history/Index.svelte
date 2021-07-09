@@ -7,16 +7,18 @@
                     <div class="icon-text-wrapper">
                         <div class="using-mark-wrapper">
                             {#if idx === $currentSettingPosition}
-                                <i class="fas fa-check-circle fa-2x"></i>
+                                <i class="fas fa-hand-point-right fa-2x"></i>
                             {/if}
                         </div>
                         <div class="setting-name-wrapper">{data.name}</div>
                     </div>
                     <div class="btn-wrapper">
-                        <button class="load-btn" on:click="{() => onClickLoadLocalSetting(idx)}">Load</button>
-                        <div class="trash-btn-wrapper" on:click="{() => onClickRemoveLocalSetting(idx)}">
-                            <i class="fas fa-trash-alt fa-2x"></i>
-                        </div>
+                        {#if !$isTimerRunning}
+                            <button class="load-btn" on:click="{() => onClickLoadLocalSetting(idx)}">Load</button>
+                            <div class="trash-btn-wrapper" on:click="{() => onClickRemoveLocalSetting(idx)}">
+                                <i class="fas fa-trash-alt fa-2x"></i>
+                            </div>
+                        {/if}
                     </div>
                 </div>
             {/each}
@@ -80,6 +82,9 @@
         colorSetting,
         timerSettings,
     } from '../../../store/setting';
+    import {
+        isTimerRunning,
+    } from '../../../store/state';
     import {
         getTimerSetting,
         removeTimerSetting,
