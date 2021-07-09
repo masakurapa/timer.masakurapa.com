@@ -28,7 +28,6 @@
     </div>
 </div>
 
-<!--
 <div class="wrapper">
     <h3>Shared Settings</h3>
     <div class="legend">
@@ -43,38 +42,42 @@
     </div>
 
     <div>
-    {#each sharedSettings as data (data.id)}
-        <div class="setting-row">
-            <div class="icon-text-wrapper">
-                <div class="using-mark-wrapper">
-                    {#if using === data.id}
-                        <i class="fas fa-check-circle fa-2x"></i>
-                    {/if}
+        {#if sharedTimerSetting && sharedTimerSetting.settings.length > 0}
+            {#each sharedTimerSetting.settings as data, idx (data.key)}
+                <div class="setting-row">
+                    <div class="icon-text-wrapper">
+                        <div class="using-mark-wrapper">
+                            <i class="fas fa-hand-point-right fa-2x"></i>
+                        </div>
+                        <div class="owner-mark-wrapper">
+                            {#if data.owner}
+                                <i class="fas fa-user-edit fa-2x"></i>
+                            {:else}
+                                <i class="fas fa-history fa-2x"></i>
+                            {/if}
+                        </div>
+                        <div class="setting-name-wrapper">{data.name}</div>
+                    </div>
+                    <div class="btn-wrapper">
+                        <button class="load-btn">Load</button>
+                        <button class="copy-btn">Copy URL</button>
+                        <div class="trash-btn-wrapper">
+                            <i class="fas fa-trash-alt fa-2x"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="owner-mark-wrapper">
-                    {#if data.owner}
-                        <i class="fas fa-user-edit fa-2x"></i>
-                    {:else}
-                        <i class="fas fa-history fa-2x"></i>
-                    {/if}
-                </div>
-                <div class="setting-name-wrapper">{data.name}</div>
-            </div>
-            <div class="btn-wrapper">
-                <button class="load-btn">Load</button>
-                <button class="copy-btn">Copy URL</button>
-                <div class="trash-btn-wrapper">
-                    <i class="fas fa-trash-alt fa-2x"></i>
-                </div>
-            </div>
-        </div>
-    {/each}
+            {/each}
+        {:else}
+            <div class="no-settings">No Settings</div>
+        {/if}
     </div>
 </div>
--->
 
 <script lang="ts">
     import { onMount } from 'svelte';
+    import type { StorageLocalTimerSetting } from '../../../types/local_timer';
+    import type { StorageSharedTimerSetting } from '../../../types/shared_timer';
+
     import {
         currentSettingPosition,
         settingKey,
@@ -90,10 +93,16 @@
         removeTimerSetting,
         saveTimerSettingKey,
      } from '../../../storage';
-    import type { StorageLocalTimerSetting } from '../../../types/local_timer';
 
-     // ローカルストレージに保存された設定
+     // ローカルストレージに保存されたローカル設定
     let localTimerSetting: StorageLocalTimerSetting;
+     // ローカルストレージに保存されたシェア設定
+     let sharedTimerSetting: StorageSharedTimerSetting = {
+         settings: [
+            {key: 'hoge1', name: '996da063-5b6e-42c6-8d87-acf464e95fa7', owner: true},
+            {key: 'hoge2', name: '996da063-5b6e-42c6-8d87-acf464e95fa7', owner: false},
+        ],
+     };
 
      onMount(() => {
         localTimerSetting = getTimerSetting();
