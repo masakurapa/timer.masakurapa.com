@@ -222,6 +222,7 @@
         min-width: 300px;
         border: 1px solid #000000;
         border-radius: 8px;
+        background-color: #FFFFFF;
         margin-left: 12px;
         padding: 8px;
         position: relative;

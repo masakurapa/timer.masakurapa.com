@@ -137,6 +137,7 @@
         display: flex;
         min-height: 50px;
         border: 1px solid #000000;
+        background-color: #FFFFFF;
         padding: 12px;
     }
     .setting-row:first-child {

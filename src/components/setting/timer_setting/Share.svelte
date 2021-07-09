@@ -80,15 +80,13 @@
 
         alert('Saved it!!');
     };
-
-    // 設定が保存可能な状態ではないときにtrueになります
-    $: disabledSaveButton = $settingName === '';
 </script>
 
 <style>
     .wrapper {
         margin-bottom: 32px;
         border: 1px solid #000000;
+        background-color: #FFFFFF;
         border-radius: 8px;
         padding: 12px;
         max-width: 600px;
