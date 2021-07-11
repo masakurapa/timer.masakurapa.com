@@ -8,7 +8,7 @@
         </div>
 
         <div class="button-wrapper">
-            {#if $useLocalSetting && $currentPosition === null}
+            {#if !$useLocalSetting || $currentPosition === null}
                 <button
                     class="save-btn"
                     on:click="{onClickSaveLocalStorage}"
@@ -25,7 +25,7 @@
             {/if}
 
             <div class="share-button-wrapper">
-                {#if !$useLocalSetting && $currentPosition === null}
+                {#if $useLocalSetting || $currentPosition === null}
                     <button
                         class="save-btn"
                         on:click="{onClickSaveShareSetting}"
