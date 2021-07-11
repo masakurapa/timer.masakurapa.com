@@ -24,7 +24,7 @@
         text-align: center;
         margin: auto;
         z-index: 10;
-        position: absolute;
+        position: fixed;
         top: 20px;
         left: 50%;
         transform: translateX(-50%);

@@ -32,7 +32,7 @@
         [HISTORY]: History,
     };
 
-    let activeBtnNo = HISTORY;
+    let activeBtnNo = TIMER_SETTING;
 
     const onClick = (no: number): void => {
         // 現在アクティブな番号と同じならアクティブなボタンを無くす

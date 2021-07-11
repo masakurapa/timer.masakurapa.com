@@ -4,12 +4,14 @@
         {#if localTimerSetting && localTimerSetting.settings.length > 0}
             {#each localTimerSetting.settings as data, idx (data.key)}
                 <div class="setting-row">
-                    <div class="using-mark-wrapper">
-                        {#if idx === $currentSettingPosition}
-                            <i class="fas fa-hand-point-right fa-2x"></i>
-                        {/if}
+                    <div class="icon-text-wrapper">
+                        <div class="using-mark-wrapper">
+                            {#if idx === $currentSettingPosition}
+                                <i class="fas fa-hand-point-right fa-2x"></i>
+                            {/if}
+                        </div>
+                        <div class="setting-name-wrapper">{data.name}</div>
                     </div>
-                    <div class="setting-name-wrapper">{data.name}</div>
                     <div class="btn-wrapper">
                         {#if !$isTimerRunning}
                             <button class="load-btn" on:click="{() => onClickLoadLocalSetting(idx)}">Load</button>
@@ -43,19 +45,21 @@
         {#if sharedTimerSetting && sharedTimerSetting.settings.length > 0}
             {#each sharedTimerSetting.settings as data, idx (data.key)}
                 <div class="setting-row">
-                    <div class="using-mark-wrapper">
-                        {#if idx === $currentSharedSettingPosition}
-                            <i class="fas fa-hand-point-right fa-2x"></i>
-                        {/if}
+                    <div class="icon-text-wrapper">
+                        <div class="using-mark-wrapper">
+                            {#if idx === $currentSharedSettingPosition}
+                                <i class="fas fa-hand-point-right fa-2x"></i>
+                            {/if}
+                        </div>
+                        <div class="owner-mark-wrapper">
+                            {#if data.owner}
+                                <i class="fas fa-user-edit fa-2x"></i>
+                            {:else}
+                                <i class="fas fa-history fa-2x"></i>
+                            {/if}
+                        </div>
+                        <div class="setting-name-wrapper">{data.name}</div>
                     </div>
-                    <div class="owner-mark-wrapper">
-                        {#if data.owner}
-                            <i class="fas fa-user-edit fa-2x"></i>
-                        {:else}
-                            <i class="fas fa-history fa-2x"></i>
-                        {/if}
-                    </div>
-                    <div class="setting-name-wrapper">{data.name}</div>
                     <div class="btn-wrapper">
                         <button class="copy-btn" on:click="{() => onClickCopyURL(idx)}">Copy URL</button>
                         <button class="load-btn" on:click="{() => onClickLoadSharedSetting(idx)}">Load</button>
@@ -207,6 +211,9 @@
         margin-bottom: 32px;
         max-width: 600px;
     }
+    .hide {
+        display: none !important;
+    }
 
     .no-settings {
         min-height: 50px;
@@ -235,6 +242,11 @@
     }
     .setting-row:only-child {
         border-radius: 8px;
+    }
+
+    .icon-text-wrapper {
+        display: flex;
+        align-items: center;
     }
 
     .using-mark-wrapper {
@@ -312,6 +324,16 @@
         }
         .icon-text-wrapper {
             margin-bottom: 12px;
+        }
+        .using-mark-wrapper {
+            margin-right: 8px;
+        }
+        .owner-mark-wrapper {
+            margin-right: 8px;
+        }
+        .setting-name-wrapper {
+            /* width: 250px; */
+            margin-right: 0;
         }
         .btn-wrapper {
             justify-content: flex-end;
