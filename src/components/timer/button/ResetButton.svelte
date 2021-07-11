@@ -6,7 +6,7 @@
         isTimerRunning,
         currentTimerPosition,
         timerSecondsRemaining,
-    } from '../../../store/state';
+    } from '../../../store/timer';
     import { calcTotalSeconds } from '../../../util';
 
     const onClick = (): void => {

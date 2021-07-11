@@ -13,7 +13,7 @@
         isTimerRunning,
         isTimeUpAll,
         isTimeUp,
-     } from './store/state';
+     } from './store/timer';
 
     // 背景のデフォルト
     const defaultBgColor = '#FFFFFF';

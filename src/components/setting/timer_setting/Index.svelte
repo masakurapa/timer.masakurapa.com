@@ -9,14 +9,9 @@
 </div>
 
 <script lang="ts">
-    import { isTimerRunning } from '../../../store/state';
-    import {
-        currentSettingPosition,
-        settingKey,
-        settingName,
-        colorSetting,
-        timerSettings,
-     } from '../../../store/setting';
+    import { isTimerRunning } from '../../../store/timer';
+    import { resetSettings } from '../../../store/setting';
+     import { currentPosition } from '../../../store/storage';
 
     import Share from './Share.svelte';
     import Colors from './Colors.svelte';
@@ -30,11 +25,8 @@
             return;
         }
 
-        currentSettingPosition.set(null);
-        settingKey.set('');
-        settingName.set('');
-        colorSetting.set(null);
-        timerSettings.set([]);
+        currentPosition.set(null);
+        resetSettings();
     }
 
     $: disabled = $isTimerRunning === true;

@@ -1,3 +1,6 @@
+/**
+ * タイマーの状態管理を行います
+ */
 import { writable } from 'svelte/store';
 
 /**

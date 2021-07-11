@@ -7,7 +7,7 @@
         timerSecondsRemaining,
         isTimerRunning,
         isTimeUpAll,
-    } from '../../../store/state';
+    } from '../../../store/timer';
     import { calcTotalSeconds } from '../../../util';
 
     const onClick = (): void => {

@@ -24,7 +24,7 @@
 </div>
 
 <script lang="ts">
-    import { isTimerRunning, isTimeUpAll } from '../../store/state';
+    import { isTimerRunning, isTimeUpAll } from '../../store/timer';
 
     import Timer from './Timer.svelte';
     import Sound from './Sound.svelte';

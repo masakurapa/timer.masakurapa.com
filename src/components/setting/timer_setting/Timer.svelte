@@ -82,7 +82,7 @@
     import { onMount } from 'svelte';
     import type { TimerSetting, Timer } from '../../../types/local_timer';
     import { timerSettings } from '../../../store/setting';
-    import { isTimerRunning, currentTimerPosition } from '../../../store/state';
+    import { isTimerRunning, currentTimerPosition } from '../../../store/timer';
     import { padding, calcTotalTime } from '../../../util';
 
     // 全タイマーの合計時間

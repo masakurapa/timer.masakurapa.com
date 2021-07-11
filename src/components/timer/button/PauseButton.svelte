@@ -1,7 +1,7 @@
 <button on:click="{onClick}">PAUSE</button>
 
 <script lang="ts">
-    import { isTimerRunning } from '../../../store/state';
+    import { isTimerRunning } from '../../../store/timer';
 
     const onClick = (): void => {
         isTimerRunning.set(false);

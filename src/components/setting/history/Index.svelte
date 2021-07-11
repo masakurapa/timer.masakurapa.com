@@ -6,7 +6,7 @@
                 <div class="setting-row">
                     <div class="icon-text-wrapper">
                         <div class="using-mark-wrapper">
-                            {#if idx === $currentSettingPosition}
+                            {#if $useLocalSetting && idx === $currentPosition}
                                 <i class="fas fa-hand-point-right fa-2x"></i>
                             {/if}
                         </div>
@@ -47,7 +47,7 @@
                 <div class="setting-row">
                     <div class="icon-text-wrapper">
                         <div class="using-mark-wrapper">
-                            {#if idx === $currentSharedSettingPosition}
+                            {#if !$useLocalSetting && idx === $currentPosition}
                                 <i class="fas fa-hand-point-right fa-2x"></i>
                             {/if}
                         </div>
@@ -83,16 +83,19 @@
     import type { StorageSharedTimerSetting } from '../../../types/shared_timer';
 
     import {
-        currentSettingPosition,
-        currentSharedSettingPosition,
         settingKey,
         settingName,
         colorSetting,
         timerSettings,
     } from '../../../store/setting';
     import {
+        currentPosition,
+        useLocalSetting,
+    } from '../../../store/storage';
+
+    import {
         isTimerRunning,
-    } from '../../../store/state';
+    } from '../../../store/timer';
     import {
         getTimerSetting,
         removeTimerSetting,
@@ -136,20 +139,43 @@
             return;
         }
 
+        // 現在読み込まれている設定が削除対象の場合
+        // キーと設定名を削除しておく
+        if ($useLocalSetting && no === $currentPosition) {
+            settingKey.set('');
+            settingName.set('');
+        }
+
         removeTimerSetting(no);
-        currentSettingPosition.set(null);
         localTimerSetting = getTimerSetting();
+
+        // 個人設定を使っていれば現在位置を再設定
+        if (!$useLocalSetting) {
+            return;
+        }
+
+        const key = $settingKey;
+        let pos: number = null;
+        for (let i = 0; i < localTimerSetting.settings.length; i++) {
+            if (localTimerSetting.settings[i].key === key) {
+                pos = i;
+                break;
+            }
+        }
+
+        currentPosition.set(pos);
      };
 
      // ローカルストレージの設定を読み込み
      const onClickLoadLocalSetting = (no: number): void => {
         const setting = localTimerSetting.settings[no];
-        currentSettingPosition.set(no);
-        currentSharedSettingPosition.set(null);
         settingKey.set(setting.key);
         settingName.set(setting.name);
         colorSetting.set(setting.colorSetting);
         timerSettings.set(setting.timerSettings);
+
+        useLocalSetting.set(true);
+        currentPosition.set(no);
 
         // 最後にアクセスした設定のキーを保存しておく
         saveTimerSettingKey(setting.key);
@@ -164,16 +190,36 @@
             return;
         }
 
+        // 現在読み込まれている設定が削除対象の場合
+        // キーと設定名を削除しておく
+        if (!$useLocalSetting && no === $currentPosition) {
+            settingKey.set('');
+            settingName.set('');
+        }
+
         removeSharedTimerSetting(no);
-        currentSettingPosition.set(null);
         sharedTimerSetting = getSharedTimerSetting();
+
+        // 共有設定を使っていれば現在位置を再設定
+        if ($useLocalSetting) {
+            return;
+        }
+
+        const key = $settingKey;
+        let pos: number = null;
+        for (let i = 0; i < sharedTimerSetting.settings.length; i++) {
+            if (sharedTimerSetting.settings[i].key === key) {
+                pos = i;
+                break;
+            }
+        }
+
+        currentPosition.set(pos);
      };
 
      // シェア用のローカルストレージの設定を読み込み
      const onClickLoadSharedSetting = (no: number): void => {
         const setting = sharedTimerSetting.settings[no];
-        currentSettingPosition.set(null);
-        currentSharedSettingPosition.set(no);
 
         // TODO: API通信して設定を持ってくる
 
@@ -181,6 +227,9 @@
         settingName.set(setting.name);
         // colorSetting.set(setting.colorSetting);
         // timerSettings.set(setting.timerSettings);
+
+        useLocalSetting.set(false);
+        currentPosition.set(no);
 
         // 最後にアクセスした設定のキーを保存しておく
         saveTimerSettingKey(setting.key);
@@ -206,9 +255,6 @@
     .wrapper {
         margin-bottom: 32px;
         max-width: 600px;
-    }
-    .hide {
-        display: none !important;
     }
 
     .no-settings {

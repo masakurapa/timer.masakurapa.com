@@ -8,7 +8,7 @@
         </div>
 
         <div class="button-wrapper">
-            {#if $currentSettingPosition === null}
+            {#if $useLocalSetting && $currentPosition === null}
                 <button
                     class="save-btn"
                     on:click="{onClickSaveLocalStorage}"
@@ -25,7 +25,7 @@
             {/if}
 
             <div class="share-button-wrapper">
-                {#if $currentSharedSettingPosition === null}
+                {#if !$useLocalSetting && $currentPosition === null}
                     <button
                         class="save-btn"
                         on:click="{onClickSaveShareSetting}"
@@ -57,13 +57,15 @@
     import { v4 as uuidv4 } from 'uuid';
 
     import {
-        currentSettingPosition,
-        currentSharedSettingPosition,
         settingKey,
         settingName,
         colorSetting,
         timerSettings,
     } from '../../../store/setting';
+    import {
+        currentPosition,
+        useLocalSetting,
+    } from '../../../store/storage';
     import {
         addTimerSetting,
         saveTimerSetting,
@@ -104,7 +106,8 @@
         });
         saveTimerSettingKey(timerSettingKey);
 
-        currentSettingPosition.set(pos);
+        currentPosition.set(pos);
+        useLocalSetting.set(true);
 
         showMessage('Saved !!!!!');
     };
@@ -115,7 +118,7 @@
             settingName.set($settingKey);
         }
 
-        saveTimerSetting($currentSettingPosition, {
+        saveTimerSetting($currentPosition, {
             key: $settingKey,
             name: $settingName,
             colorSetting: $colorSetting,
@@ -143,7 +146,9 @@
         });
 
         saveTimerSettingKey(timerSettingKey);
-        currentSharedSettingPosition.set(pos);
+
+        currentPosition.set(pos);
+        useLocalSetting.set(false);
 
         showMessage('Shared !!!!!');
     };

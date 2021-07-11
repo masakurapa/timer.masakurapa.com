@@ -37,7 +37,7 @@
 
 <script lang="ts">
     import { colorSetting } from '../../../store/setting';
-    import { isTimerRunning } from '../../../store/state';
+    import { isTimerRunning } from '../../../store/timer';
 
     import Collapse from './Collapse.svelte';
 

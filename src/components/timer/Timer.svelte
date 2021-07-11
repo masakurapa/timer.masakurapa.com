@@ -27,7 +27,7 @@
         isTimeUpAll,
         currentTimerPosition,
         timerSecondsRemaining,
-    } from '../../store/state';
+    } from '../../store/timer';
     import {
         padding,
         calcTotalSeconds,

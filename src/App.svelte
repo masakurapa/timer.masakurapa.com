@@ -14,13 +14,15 @@
     import type { GetSharedTimerSettingResponse } from './types/api';
 
     import {
-        currentSettingPosition,
-        currentSharedSettingPosition,
         settingKey,
         settingName,
         colorSetting,
         timerSettings,
     } from './store/setting';
+    import {
+        currentPosition,
+        useLocalSetting,
+    } from './store/storage';
      import {
         getTimerSetting,
         getSharedTimerSetting,
@@ -33,6 +35,7 @@
     import Head from './Head.svelte';
     import Timer from './components/timer/Index.svelte';
     import Setting from './components/setting/Index.svelte';
+import { fade } from 'svelte/transition';
 
     // APIを実行し共有設定を取得
     // 設定が取得できない場合はnullを返却します
@@ -61,6 +64,7 @@
         for (let i = 0; i < timerSetting.settings.length; i++) {
             if (timerSetting.settings[i].key === key) {
                 no = i;
+                break;
             }
         }
 
@@ -68,7 +72,9 @@
             return false;
         }
 
-        currentSettingPosition.set(no);
+        currentPosition.set(no);
+        useLocalSetting.set(true);
+
         setSetting(timerSetting.settings[no])
         return true;
     };
@@ -86,6 +92,7 @@
         for (let i = 0; i < timerSetting.settings.length; i++) {
             if (timerSetting.settings[i].key === key) {
                 no = i;
+                break;
             }
         }
 
@@ -99,7 +106,9 @@
             });
         }
 
-        currentSharedSettingPosition.set(no);
+        currentPosition.set(no);
+        useLocalSetting.set(false);
+
         setSetting(resp.setting);
     };
 

@@ -2,7 +2,7 @@
 
 <script lang="ts">
     import { timerSettings } from '../../../store/setting';
-    import { currentTimerPosition } from '../../../store/state';
+    import { currentTimerPosition } from '../../../store/timer';
 
     const onClick = (): void => {
         const pos = $currentTimerPosition + 1;

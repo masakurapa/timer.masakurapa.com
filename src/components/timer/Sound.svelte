@@ -7,7 +7,7 @@
 <audio src="/warning1.mp3" loop bind:this={audio2}><track kind="captions"/></audio>
 
 <script lang="ts">
-    import { isTimeUp, isTimeUpAll } from '../../store/state';
+    import { isTimeUp, isTimeUpAll } from '../../store/timer';
 
     let isPlaySound = true;
 
