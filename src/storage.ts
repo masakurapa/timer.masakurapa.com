@@ -65,6 +65,22 @@ export const getTimerSetting = (): StorageLocalTimerSetting|null => {
     return settings;
 };
 
+
+/**
+ * 共有タイマーの設定をローカルストレージに追加する
+ * 設定を追加した位置を返します
+ */
+export const addSharedTimerSetting = (setting: SharedTimerSetting): number => {
+    let timerSetting = getSharedTimerSetting();
+    if (timerSetting === null) {
+        timerSetting = {settings: []};
+    }
+
+    timerSetting.settings.push(setting);
+    setItem(SHARED_TIMER_SETTING, JSON.stringify(timerSetting));
+    return timerSetting.settings.length - 1;
+};
+
 /**
  * シェア用のタイマーの設定リストをローカルストレージに保存する
  */

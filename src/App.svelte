@@ -36,7 +36,7 @@
 
     // APIを実行し共有設定を取得
     // 設定が取得できない場合はnullを返却します
-    const getSharedSetting = (key: string): GetSharedTimerSettingResponse|null => {
+    const getSharedSetting = (uid: string, key: string): GetSharedTimerSettingResponse|null => {
         // TODO: APIリクエスト処理
         return null;
     };
@@ -53,6 +53,10 @@
     // 個人設定を読み込めた場合はtrueを返します
     const loadLocalSetting = (key: string): boolean => {
         const timerSetting = getTimerSetting();
+        if (timerSetting === null) {
+            return false;
+        }
+
         let no = -1;
         for (let i = 0; i < timerSetting.settings.length; i++) {
             if (timerSetting.settings[i].key === key) {
@@ -72,7 +76,7 @@
     // 共有設定を読み込みます
     const loadSharedSetting = (uid: string, key: string): void => {
         // 共有設定を取得
-        const resp = getSharedSetting(key);
+        const resp = getSharedSetting(uid, key);
         if (resp === null) {
             return;
         }

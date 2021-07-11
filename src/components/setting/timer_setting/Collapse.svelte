@@ -21,9 +21,8 @@
 <script lang="ts">
     /** ユニークになるキー文字列 */
     export let key: string;
-
-    // 設定の開閉管理フラグ
-    let open = false;
+    /** 設定の開閉管理フラグ */
+    export let open = false;
 
     $: icon = open ? 'fa-chevron-down' : 'fa-chevron-up';
 </script>

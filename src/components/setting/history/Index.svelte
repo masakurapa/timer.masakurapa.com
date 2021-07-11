@@ -112,15 +112,11 @@
      // ローカルストレージに保存されたローカル設定
     let localTimerSetting: StorageLocalTimerSetting;
     // ローカルストレージに保存されたシェア設定
-    let sharedTimerSetting: StorageSharedTimerSetting = {
-        settings: [
-            {key: 'hoge1', name: '996da063-5b6e-42c6-8d87-acf464e95fa7', owner: true},
-            {key: 'hoge2', name: '996da063-5b6e-42c6-8d87-acf464e95fa7', owner: false},
-        ],
-     };
+    let sharedTimerSetting: StorageSharedTimerSetting;
 
      onMount(() => {
         localTimerSetting = getTimerSetting();
+        sharedTimerSetting = getSharedTimerSetting();
      });
 
     // メッセージを1秒表示させる

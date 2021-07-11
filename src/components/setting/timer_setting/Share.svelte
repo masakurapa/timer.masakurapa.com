@@ -1,4 +1,4 @@
-<Collapse key="share-setting">
+<Collapse key="share-setting" open>
     <span slot="header">Save Setting</span>
 
     <div slot="content">
@@ -8,24 +8,39 @@
         </div>
 
         <div class="button-wrapper">
-            <button
-                class="save-btn"
-                on:click="{saveLocalStorage}"
-            >
-                {#if $settingKey === ''}
-                    Save LocalStorage
-                {:else}
-                    Overwrite LocalStorage
-                {/if}
-            </button>
-
-            <!-- <div class="share-button-wrapper">
+            {#if $currentSettingPosition === null}
                 <button
                     class="save-btn"
+                    on:click="{onClickSaveLocalStorage}"
                 >
-                    Share Setting
+                    Save LocalStorage
                 </button>
-            </div> -->
+            {:else}
+                <button
+                    class="save-btn"
+                    on:click="{onClickOverwriteLocalStorage}"
+                >
+                    Overwrite LocalStorage
+                </button>
+            {/if}
+
+            <div class="share-button-wrapper">
+                {#if $currentSharedSettingPosition === null}
+                    <button
+                        class="save-btn"
+                        on:click="{onClickSaveShareSetting}"
+                    >
+                        Share Setting
+                    </button>
+                {:else}
+                <button
+                    class="save-btn"
+                    on:click="{onClickOverwriteSharedStorage}"
+                >
+                    Overwrite Shared Setting
+                </button>
+            {/if}
+            </div>
         </div>
 
         <!-- <div class="share-url-wrapper">
@@ -36,10 +51,14 @@
     </div>
 </Collapse>
 
+<MessageBox message="{message}" show="{showMessageBox}"></MessageBox>
+
 <script lang="ts">
     import { v4 as uuidv4 } from 'uuid';
+
     import {
         currentSettingPosition,
+        currentSharedSettingPosition,
         settingKey,
         settingName,
         colorSetting,
@@ -48,55 +67,93 @@
     import {
         addTimerSetting,
         saveTimerSetting,
+        addSharedTimerSetting,
         saveTimerSettingKey,
      } from '../../../storage';
 
      import Collapse from './Collapse.svelte';
+    import MessageBox from '../MessageBox.svelte';
 
-    // ローカルストレージに保存する
-    const saveLocalStorage = (): void => {
-        if ($settingKey === '') {
-            const timerSettingKey = uuidv4();
-            settingKey.set(timerSettingKey);
-            if ($settingName === '') {
-                settingName.set(timerSettingKey);
-            }
+    // メッセージボックスの制御用
+    let message = '';
+    let showMessageBox = false;
 
-            const pos = addTimerSetting({
-                key: timerSettingKey,
-                name: $settingName,
-                colorSetting: $colorSetting,
-                timerSettings: $timerSettings,
-            });
-            saveTimerSettingKey(timerSettingKey);
+    // メッセージを1秒表示させる
+    const showMessage = (text: string): void => {
+        message = text;
+        showMessageBox = true;
+        setTimeout((): void => {
+            showMessageBox = false;
+            message = '';
+        }, 1000);
+     };
 
-            currentSettingPosition.set(pos);
-        } else {
-            if ($settingName === '') {
-                settingName.set($settingKey);
-            }
-
-            saveTimerSetting($currentSettingPosition, {
-                key: $settingKey,
-                name: $settingName,
-                colorSetting: $colorSetting,
-                timerSettings: $timerSettings,
-            });
+    // ローカルストレージに新規保存する
+    const onClickSaveLocalStorage = (): void => {
+        const timerSettingKey = uuidv4();
+        settingKey.set(timerSettingKey);
+        if ($settingName === '') {
+            settingName.set(timerSettingKey);
         }
 
-        alert('Saved it!!');
+        const pos = addTimerSetting({
+            key: timerSettingKey,
+            name: $settingName,
+            colorSetting: $colorSetting,
+            timerSettings: $timerSettings,
+        });
+        saveTimerSettingKey(timerSettingKey);
+
+        currentSettingPosition.set(pos);
+
+        showMessage('Saved !!!!!');
+    };
+
+    // ローカルストレージの設定を上書きする
+    const onClickOverwriteLocalStorage = (): void => {
+        if ($settingName === '') {
+            settingName.set($settingKey);
+        }
+
+        saveTimerSetting($currentSettingPosition, {
+            key: $settingKey,
+            name: $settingName,
+            colorSetting: $colorSetting,
+            timerSettings: $timerSettings,
+        });
+
+        showMessage('Saved !!!!!');
+    };
+
+    // 設定をシェアする
+    const onClickSaveShareSetting = (): void => {
+        const timerSettingKey = uuidv4();
+        settingKey.set(timerSettingKey);
+        if ($settingName === '') {
+            settingName.set(timerSettingKey);
+        }
+
+        // TODO: API呼び出しして設定を保存
+
+        // ローカルストレージに追加
+        const pos = addSharedTimerSetting({
+            key: $settingKey,
+            name: $settingName,
+            owner: true,
+        });
+
+        saveTimerSettingKey(timerSettingKey);
+        currentSharedSettingPosition.set(pos);
+
+        showMessage('Shared !!!!!');
+    };
+
+    const onClickOverwriteSharedStorage = (): void => {
+
     };
 </script>
 
 <style>
-    .wrapper {
-        margin-bottom: 32px;
-        border: 1px solid #000000;
-        background-color: #FFFFFF;
-        border-radius: 8px;
-        padding: 12px;
-        max-width: 600px;
-    }
     .setting-name-wrapper {
         margin-bottom: 12px;
     }
