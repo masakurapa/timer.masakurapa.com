@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <h3>Local Settings</h3>
+    <h3>My Settings</h3>
     <div>
         {#if timerSetting && timerSetting.settings.length > 0}
             {#each timerSetting.settings as data, idx (data.key)}
@@ -19,7 +19,7 @@
                         <div
                             class="using-wrapper"
                             class:unclickable="{$isTimerRunning}"
-                            on:click="{() => onClickLoadLocalSetting(idx)}"
+                            on:click="{() => onClickLoadPersonalSetting(idx)}"
                         >
                             {#if $usePersonalSetting && idx === $currentPersonalSettingPosition}
                                 <i class="fas fa-check-square fa-2x"></i>
@@ -35,13 +35,17 @@
                         </div>
                     </div>
                     <div class="btn-wrapper">
-                        <div class="copy-url-wrapper" on:click="{() => onClickCopyPersonalSettingURL(idx)}">
-                            {#if data.shared}
+                        {#if data.shared}
+                            <div class="copy-url-wrapper" on:click="{() => onClickCopyPersonalSettingURL(idx)}">
                                 <i class="far fa-copy fa-2x"></i>
-                            {/if}
-                        </div>
+                            </div>
+                            <div class="unlink-wrapper" on:click="{() => onClickUnlinkPersonalSetting(idx)}">
+                                <i class="fas fa-unlink fa-2x"></i>
+                            </div>
+                        {/if}
+
                         {#if !$isTimerRunning}
-                            <div class="trash-btn-wrapper" on:click="{() => onClickRemoveLocalSetting(idx)}">
+                            <div class="trash-btn-wrapper" on:click="{() => onClickRemovePersonalSetting(idx)}">
                                 <i class="far fa-trash-alt fa-2x"></i>
                             </div>
                         {/if}
@@ -66,7 +70,7 @@
                             class:unclickable="{$isTimerRunning}"
                             on:click="{() => onClickLoadSharedSetting(idx)}"
                         >
-                            {#if $usePersonalSetting && idx === $currentPersonalSettingPosition}
+                            {#if !$usePersonalSetting && idx === $currentSharedSettingPosition}
                                 <i class="fas fa-check-square fa-2x"></i>
                             {:else}
                                 <i class="far fa-square fa-2x"></i>
@@ -102,8 +106,6 @@
     } from '../../../types/local_timer';
     import {
         settingName,
-        colorSetting,
-        timerSettings,
         setTimerSetting,
         resetSettings,
     } from '../../../store/setting';
@@ -123,6 +125,7 @@
         removeTimerSetting,
         removeSharedTimerHistory,
         saveTimerSettingKey,
+saveTimerSetting,
      } from '../../../storage';
 
     import CopyUrl from '../CopyURL.svelte';
@@ -151,7 +154,7 @@
      };
 
      // ローカルストレージの設定を削除
-     const onClickRemoveLocalSetting = (no: number): void => {
+     const onClickRemovePersonalSetting = (no: number): void => {
         const setting = timerSetting.settings[no];
         if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
             return;
@@ -184,7 +187,7 @@
      };
 
      // ローカルストレージの設定を読み込み
-     const onClickLoadLocalSetting = (no: number): void => {
+     const onClickLoadPersonalSetting = (no: number): void => {
         if ($isTimerRunning) {
             return;
         }
@@ -211,12 +214,40 @@
         showMessage('Loaded !!!!!');
      };
 
+     // シェア済みのURLを無効化する
+     const onClickUnlinkPersonalSetting = (no: number): void => {
+        if ($isTimerRunning) {
+            return;
+        }
+
+        const setting = timerSetting.settings[no];
+        if (!confirm(`Unlink '${setting.name}'.\nAre you sure?`)) {
+            return;
+        }
+
+        // TODO: APIを実行してURLを削除
+
+        // シェアフラグをoff
+        saveTimerSetting(no, {
+            key: setting.key,
+            name: setting.name,
+            colorSetting: setting.colorSetting,
+            timerSettings: setting.timerSettings,
+            shared: false,
+        });
+        timerSetting = getTimerSetting();
+
+        showMessage('Unlinked !!!!!');
+     };
+
      // 共有設定を削除
      const onClickRemoveSharedSetting = (no: number): void => {
         const setting = timerSetting.histories[no];
         if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
             return;
         }
+
+        // TODO シェア済みならAPIを実行して共有設定を削除
 
         // 共有設定を使っていれば現在位置を再設定
         if ($usePersonalSetting) {
@@ -250,7 +281,7 @@
         }
 
         // 現在の選択位置と同じなら設定解除する
-        if (no === $currentPersonalSettingPosition) {
+        if (no === $currentSharedSettingPosition) {
             resetSettings();
             resetAll();
             // 最後にアクセスした設定のキーを保存しておく
@@ -302,7 +333,7 @@
 <style>
     .wrapper {
         margin-bottom: 32px;
-        max-width: 600px;
+        max-width: 800px;
     }
 
     .no-settings {
@@ -358,6 +389,12 @@
         width: 28px;
         margin-right: 12px;
         color: #87ceeb;
+        cursor: pointer;
+    }
+    .unlink-wrapper {
+        width: 32px;
+        margin-right: 24px;
+        color: #DC143C;
         cursor: pointer;
     }
     .setting-name-wrapper {
