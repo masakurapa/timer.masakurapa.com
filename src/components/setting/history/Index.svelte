@@ -1,14 +1,5 @@
 <div class="wrapper">
-    <div class="legend">
-        <div class="legend-row">
-            <div class="legend-owner-mark-wrapper"><i class="fas fa-user-edit"></i></div>
-            <div class="legend-text">This is the setting you have shared. (editable)</div>
-        </div>
-        <div class="legend-row">
-            <div class="legend-owner-mark-wrapper"><i class="fas fa-history"></i></div>
-            <div class="legend-text">This is the access history of the settings managed by others.</div>
-        </div>
-    </div>
+    <Legend/>
 
     <h3>My Settings</h3>
     <div>
@@ -125,9 +116,10 @@
         removeTimerSetting,
         removeSharedTimerHistory,
         saveTimerSettingKey,
-saveTimerSetting,
-     } from '../../../storage';
+        saveTimerSetting,
+    } from '../../../storage';
 
+    import Legend from './Legend.svelte';
     import CopyUrl from '../CopyURL.svelte';
     import MessageBox from '../MessageBox.svelte';
 
@@ -410,27 +402,6 @@ saveTimerSetting,
     .trash-btn-wrapper {
         cursor: pointer;
         color: #DC143C;
-    }
-
-    /**
-     * 凡例
-     */
-    .legend {
-        margin-bottom: 12px;
-        font-size: 16px;
-    }
-    .legend-row {
-        display: flex;
-    }
-    .legend-row:first-child {
-        margin-bottom: 4px;
-    }
-    .legend-owner-mark-wrapper {
-        color: #87ceeb;
-        width: 24px;
-    }
-    .legend-text {
-        color: #666666;
     }
 
     @media (max-width: 500px) {
