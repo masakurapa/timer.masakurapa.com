@@ -1,22 +1,48 @@
 <div class="wrapper">
+    <div class="legend">
+        <div class="legend-row">
+            <div class="legend-owner-mark-wrapper"><i class="fas fa-user-edit"></i></div>
+            <div class="legend-text">This is the setting you have shared. (editable)</div>
+        </div>
+        <div class="legend-row">
+            <div class="legend-owner-mark-wrapper"><i class="fas fa-history"></i></div>
+            <div class="legend-text">This is the access history of the settings managed by others.</div>
+        </div>
+    </div>
+
     <h3>Local Settings</h3>
     <div>
-        {#if localTimerSetting && localTimerSetting.settings.length > 0}
-            {#each localTimerSetting.settings as data, idx (data.key)}
+        {#if timerSetting && timerSetting.settings.length > 0}
+            {#each timerSetting.settings as data, idx (data.key)}
                 <div class="setting-row">
                     <div class="icon-text-wrapper">
-                        <div class="using-mark-wrapper">
-                            {#if $useLocalSetting && idx === $currentPosition}
-                                <i class="fas fa-hand-point-right fa-2x"></i>
+                        <div
+                            class="using-wrapper"
+                            class:unclickable="{$isTimerRunning}"
+                            on:click="{() => onClickLoadLocalSetting(idx)}"
+                        >
+                            {#if $usePersonalSetting && idx === $currentPersonalSettingPosition}
+                                <i class="fas fa-check-square fa-2x"></i>
+                            {:else}
+                                <i class="far fa-square fa-2x"></i>
                             {/if}
                         </div>
                         <div class="setting-name-wrapper">{data.name}</div>
+                        <div class="shared-mark-wrapper">
+                            {#if data.shared}
+                                <i class="fas fa-users"></i>
+                            {/if}
+                        </div>
                     </div>
                     <div class="btn-wrapper">
+                        <div class="copy-url-wrapper" on:click="{() => onClickCopyPersonalSettingURL(idx)}">
+                            {#if data.shared}
+                                <i class="far fa-copy fa-2x"></i>
+                            {/if}
+                        </div>
                         {#if !$isTimerRunning}
-                            <button class="load-btn" on:click="{() => onClickLoadLocalSetting(idx)}">Load</button>
                             <div class="trash-btn-wrapper" on:click="{() => onClickRemoveLocalSetting(idx)}">
-                                <i class="fas fa-trash-alt fa-2x"></i>
+                                <i class="far fa-trash-alt fa-2x"></i>
                             </div>
                         {/if}
                     </div>
@@ -30,42 +56,33 @@
 
 <div class="wrapper">
     <h3>Shared Settings</h3>
-    <div class="legend">
-        <div class="legend-row">
-            <div class="legend-owner-mark-wrapper"><i class="fas fa-user-edit"></i></div>
-            <div class="legend-text">This is the setting you have shared. (editable)</div>
-        </div>
-        <div class="legend-row">
-            <div class="legend-owner-mark-wrapper"><i class="fas fa-history"></i></div>
-            <div class="legend-text">This is the access history of the settings managed by others.</div>
-        </div>
-    </div>
-
     <div>
-        {#if sharedTimerSetting && sharedTimerSetting.settings.length > 0}
-            {#each sharedTimerSetting.settings as data, idx (data.key)}
+        {#if timerSetting && timerSetting.histories.length > 0}
+            {#each timerSetting.histories as data, idx (data.key)}
                 <div class="setting-row">
                     <div class="icon-text-wrapper">
-                        <div class="using-mark-wrapper">
-                            {#if !$useLocalSetting && idx === $currentPosition}
-                                <i class="fas fa-hand-point-right fa-2x"></i>
-                            {/if}
-                        </div>
-                        <div class="owner-mark-wrapper">
-                            {#if data.owner}
-                                <i class="fas fa-user-edit fa-2x"></i>
+                        <div
+                            class="using-wrapper"
+                            class:unclickable="{$isTimerRunning}"
+                            on:click="{() => onClickLoadSharedSetting(idx)}"
+                        >
+                            {#if $usePersonalSetting && idx === $currentPersonalSettingPosition}
+                                <i class="fas fa-check-square fa-2x"></i>
                             {:else}
-                                <i class="fas fa-history fa-2x"></i>
+                                <i class="far fa-square fa-2x"></i>
                             {/if}
                         </div>
                         <div class="setting-name-wrapper">{data.name}</div>
                     </div>
                     <div class="btn-wrapper">
-                        <button class="copy-btn" on:click="{() => onClickCopyURL(idx)}">Copy URL</button>
-                        <button class="load-btn" on:click="{() => onClickLoadSharedSetting(idx)}">Load</button>
-                        <div class="trash-btn-wrapper" on:click="{() => onClickRemoveSharedSetting(idx)}">
-                            <i class="fas fa-trash-alt fa-2x"></i>
+                        <div class="copy-url-wrapper" on:click="{() => onClickCopySharedSettingURL(idx)}">
+                            <i class="far fa-copy fa-2x"></i>
                         </div>
+                        {#if !$isTimerRunning}
+                            <div class="trash-btn-wrapper" on:click="{() => onClickRemoveSharedSetting(idx)}">
+                                <i class="far fa-trash-alt fa-2x"></i>
+                            </div>
+                        {/if}
                     </div>
                 </div>
             {/each}
@@ -79,28 +96,32 @@
 
 <script lang="ts">
     import { onMount } from 'svelte';
-    import type { StorageLocalTimerSetting } from '../../../types/local_timer';
-    import type { StorageSharedTimerSetting } from '../../../types/shared_timer';
 
+    import type {
+        StorageTimerSetting,
+    } from '../../../types/local_timer';
     import {
-        settingKey,
         settingName,
         colorSetting,
         timerSettings,
+        setTimerSetting,
+        resetSettings,
     } from '../../../store/setting';
     import {
-        currentPosition,
-        useLocalSetting,
+        currentPersonalSettingKey,
+        currentPersonalSettingPosition,
+        currentSharedSettingKey,
+        currentSharedSettingPosition,
+        usePersonalSetting,
+        switchPersonalSetting,
+        switchSharedSetting,
+        resetAll,
     } from '../../../store/storage';
-
-    import {
-        isTimerRunning,
-    } from '../../../store/timer';
+    import { isTimerRunning } from '../../../store/timer';
     import {
         getTimerSetting,
         removeTimerSetting,
-        getSharedTimerSetting,
-        removeSharedTimerSetting,
+        removeSharedTimerHistory,
         saveTimerSettingKey,
      } from '../../../storage';
 
@@ -112,14 +133,11 @@
     // メッセージボックスの表示判定
     let showMessageBox = false;
 
-     // ローカルストレージに保存されたローカル設定
-    let localTimerSetting: StorageLocalTimerSetting;
-    // ローカルストレージに保存されたシェア設定
-    let sharedTimerSetting: StorageSharedTimerSetting;
+     // ローカルストレージに保存されたタイマー設定
+    let timerSetting: StorageTimerSetting;
 
      onMount(() => {
-        localTimerSetting = getTimerSetting();
-        sharedTimerSetting = getSharedTimerSetting();
+        timerSetting = getTimerSetting();
      });
 
     // メッセージを1秒表示させる
@@ -134,48 +152,58 @@
 
      // ローカルストレージの設定を削除
      const onClickRemoveLocalSetting = (no: number): void => {
-        const setting = localTimerSetting.settings[no];
+        const setting = timerSetting.settings[no];
         if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
+            return;
+        }
+
+        removeTimerSetting(no);
+        timerSetting = getTimerSetting();
+
+        // 個人設定を使っていれば現在位置を再設定
+        if (!$usePersonalSetting) {
             return;
         }
 
         // 現在読み込まれている設定が削除対象の場合
         // キーと設定名を削除しておく
-        if ($useLocalSetting && no === $currentPosition) {
-            settingKey.set('');
+        if (no === $currentPersonalSettingPosition) {
+            currentPersonalSettingKey.set(null);
             settingName.set('');
         }
 
-        removeTimerSetting(no);
-        localTimerSetting = getTimerSetting();
-
-        // 個人設定を使っていれば現在位置を再設定
-        if (!$useLocalSetting) {
-            return;
-        }
-
-        const key = $settingKey;
+        const key = $currentPersonalSettingKey;
         let pos: number = null;
-        for (let i = 0; i < localTimerSetting.settings.length; i++) {
-            if (localTimerSetting.settings[i].key === key) {
+        for (let i = 0; i < timerSetting.settings.length; i++) {
+            if (timerSetting.settings[i].key === key) {
                 pos = i;
                 break;
             }
         }
-
-        currentPosition.set(pos);
+        currentPersonalSettingPosition.set(pos);
      };
 
      // ローカルストレージの設定を読み込み
      const onClickLoadLocalSetting = (no: number): void => {
-        const setting = localTimerSetting.settings[no];
-        settingKey.set(setting.key);
-        settingName.set(setting.name);
-        colorSetting.set(setting.colorSetting);
-        timerSettings.set(setting.timerSettings);
+        if ($isTimerRunning) {
+            return;
+        }
 
-        useLocalSetting.set(true);
-        currentPosition.set(no);
+        // 現在の選択位置と同じなら設定解除する
+        if (no === $currentPersonalSettingPosition) {
+            resetSettings();
+            resetAll();
+            // 最後にアクセスした設定のキーを保存しておく
+            saveTimerSettingKey('');
+
+            showMessage('Removed !!!!!');
+            return;
+        }
+
+        const setting = timerSetting.settings[no];
+        setTimerSetting(setting);
+
+        switchPersonalSetting(no, setting.key);
 
         // 最後にアクセスした設定のキーを保存しておく
         saveTimerSettingKey(setting.key);
@@ -183,53 +211,62 @@
         showMessage('Loaded !!!!!');
      };
 
-     // シェア用のローカルストレージの設定を削除
+     // 共有設定を削除
      const onClickRemoveSharedSetting = (no: number): void => {
-        const setting = sharedTimerSetting.settings[no];
+        const setting = timerSetting.histories[no];
         if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
+            return;
+        }
+
+        // 共有設定を使っていれば現在位置を再設定
+        if ($usePersonalSetting) {
             return;
         }
 
         // 現在読み込まれている設定が削除対象の場合
         // キーと設定名を削除しておく
-        if (!$useLocalSetting && no === $currentPosition) {
-            settingKey.set('');
-            settingName.set('');
+        if (no === $currentSharedSettingPosition) {
+            currentSharedSettingKey.set(null);
         }
 
-        removeSharedTimerSetting(no);
-        sharedTimerSetting = getSharedTimerSetting();
+        removeSharedTimerHistory(no);
+        timerSetting = getTimerSetting();
 
-        // 共有設定を使っていれば現在位置を再設定
-        if ($useLocalSetting) {
-            return;
-        }
-
-        const key = $settingKey;
+        const key = $currentSharedSettingKey;
         let pos: number = null;
-        for (let i = 0; i < sharedTimerSetting.settings.length; i++) {
-            if (sharedTimerSetting.settings[i].key === key) {
+        for (let i = 0; i < timerSetting.histories.length; i++) {
+            if (timerSetting.histories[i].key === key) {
                 pos = i;
                 break;
             }
         }
-
-        currentPosition.set(pos);
+        currentSharedSettingPosition.set(pos);
      };
 
-     // シェア用のローカルストレージの設定を読み込み
+     // 共有設定を読み込み
      const onClickLoadSharedSetting = (no: number): void => {
-        const setting = sharedTimerSetting.settings[no];
+        if ($isTimerRunning) {
+            return;
+        }
+
+        // 現在の選択位置と同じなら設定解除する
+        if (no === $currentPersonalSettingPosition) {
+            resetSettings();
+            resetAll();
+            // 最後にアクセスした設定のキーを保存しておく
+            saveTimerSettingKey('');
+
+            showMessage('Removed !!!!!');
+            return;
+        }
+
+        const setting = timerSetting.histories[no];
 
         // TODO: API通信して設定を持ってくる
-
-        settingKey.set(setting.key);
+        // setTimerSetting();
         settingName.set(setting.name);
-        // colorSetting.set(setting.colorSetting);
-        // timerSettings.set(setting.timerSettings);
 
-        useLocalSetting.set(false);
-        currentPosition.set(no);
+        switchSharedSetting(no, setting.key);
 
         // 最後にアクセスした設定のキーを保存しておく
         saveTimerSettingKey(setting.key);
@@ -237,17 +274,28 @@
         showMessage('Loaded !!!!!');
      };
 
-     // クリップボードにURLをコピーする
-     const onClickCopyURL = (no: number): void => {
-        const setting = sharedTimerSetting.settings[no];
+     // URLをクリップボードにURLをコピーする
+     const copyURL = (key: string): void => {
         const app = new CopyUrl({
             target: document.getElementById('clipboard'),
-            props: { key: setting.key },
+            props: { key },
         });
         app.$destroy();
 
         // メッセージを1秒表示させる
         showMessage('Copied !!!!!');
+     };
+
+     // 個人設定のURLをクリップボードにURLをコピーする
+     const onClickCopyPersonalSettingURL = (no: number): void => {
+        const setting = timerSetting.settings[no];
+        copyURL(setting.key);
+     };
+
+     // 共有設定のURLをクリップボードにURLをコピーする
+     const onClickCopySharedSettingURL = (no: number): void => {
+        const setting = timerSetting.histories[no];
+        copyURL(setting.key);
      };
 </script>
 
@@ -289,17 +337,28 @@
     .icon-text-wrapper {
         display: flex;
         align-items: center;
+        margin-right: 12px;
     }
 
-    .using-mark-wrapper {
-        width: 40px;
+    .using-wrapper {
+        width: 28px;
         margin-right: 12px;
         color: #00AE95;
+        cursor: pointer;
     }
-    .owner-mark-wrapper {
-        width: 32px;
+    .unclickable {
+        cursor: default;
+    }
+
+    .shared-mark-wrapper {
+        width: 20px;
+        color: #87ceeb;
+    }
+    .copy-url-wrapper {
+        width: 28px;
         margin-right: 12px;
         color: #87ceeb;
+        cursor: pointer;
     }
     .setting-name-wrapper {
         margin-right: 12px;
@@ -314,29 +373,6 @@
     .trash-btn-wrapper {
         cursor: pointer;
         color: #DC143C;
-    }
-
-    .load-btn {
-        background-color: #FFFFFF;
-        color: #000000;
-        width: 60px;
-        height: 40px;
-        margin-right: 12px;
-    }
-    .copy-btn {
-        background-color: #FFFFFF;
-        color: #000000;
-        width: 80px;
-        height: 40px;
-        margin-right: 12px;
-    }
-
-    button:hover {
-        background-color: #DDDDDD;
-    }
-    button:disabled {
-        background-color: #999999;
-        cursor: default;
     }
 
     /**
@@ -366,16 +402,10 @@
         }
         .icon-text-wrapper {
             margin-bottom: 12px;
-        }
-        .using-mark-wrapper {
-            margin-right: 8px;
-        }
-        .owner-mark-wrapper {
-            margin-right: 8px;
-        }
-        .setting-name-wrapper {
-            /* width: 250px; */
             margin-right: 0;
+        }
+        .using-wrapper {
+            margin-right: 8px;
         }
         .btn-wrapper {
             justify-content: flex-end;

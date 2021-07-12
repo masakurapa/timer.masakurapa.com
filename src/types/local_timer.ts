@@ -1,11 +1,20 @@
 /**
- * ローカルタイマーの設定情報
+ * 個人タイマーの設定情報
  */
-export type LocalTimerSetting = {
+export type PersonalTimerSetting = {
     key: string;
     name: string;
     colorSetting: ColorSetting;
     timerSettings: TimerSetting[];
+    shared: boolean;
+};
+
+/**
+ * 共有タイマーのアクセス履歴
+ */
+export type SharedTimerHistory = {
+    key: string;
+    name: string;
 };
 
 /**
@@ -47,7 +56,7 @@ export type TimerSetting = {
 /**
  * ローカルストレージに格納する個人タイマーの設定
  */
-export type StorageLocalTimerSetting = {
-    settings: LocalTimerSetting[];
+export type StorageTimerSetting = {
+    settings: PersonalTimerSetting[];
+    histories: SharedTimerHistory[];
 };
-

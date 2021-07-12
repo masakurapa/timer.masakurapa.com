@@ -2,12 +2,11 @@
  * タイマーの設定情報を管理します
  */
 import { writable } from 'svelte/store';
-import type { ColorSetting, TimerSetting } from '../types/local_timer';
-
-/**
- * セッションで使用している設定のキー
- */
-export const settingKey = writable('');
+import type {
+    PersonalTimerSetting,
+    ColorSetting,
+    TimerSetting,
+} from '../types/local_timer';
 
 /**
  * ローカルストレージ保存時、シェア時の設定名
@@ -24,12 +23,19 @@ export const colorSetting = writable<ColorSetting>(null);
  */
 export const timerSettings = writable<TimerSetting[]>([]);
 
+/**
+ * タイマー設定を反映します
+ */
+export const setTimerSetting = (setting: PersonalTimerSetting): void => {
+    settingName.set(setting.name);
+    colorSetting.set(setting.colorSetting);
+    timerSettings.set(setting.timerSettings);
+};
 
 /**
  * 全設定をリセットします
  */
 export const resetSettings = (): void => {
-    settingKey.set('');
     settingName.set('');
     colorSetting.set(null);
     timerSettings.set([]);

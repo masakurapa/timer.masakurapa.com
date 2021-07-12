@@ -1,4 +1,4 @@
-import type { LocalTimerSetting } from "./local_timer";
+import type { PersonalTimerSetting } from "./local_timer";
 
 /**
  * 共有タイマーの取得リクエスト
@@ -12,7 +12,7 @@ export type GetSharedTimerSettingRequest = {
  * 共有タイマーの取得レスポンス
  */
 export type GetSharedTimerSettingResponse = {
-    setting: LocalTimerSetting;
+    setting: PersonalTimerSetting;
     owner: boolean;
 };
 
@@ -20,7 +20,7 @@ export type GetSharedTimerSettingResponse = {
  * 共有タイマーの保存リクエスト
  */
 export type SaveSharedTimerSettingRequest = {
-    setting: LocalTimerSetting;
+    setting: PersonalTimerSetting;
     uid: string;
 };
 

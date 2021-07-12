@@ -10,23 +10,17 @@
     import { onMount } from 'svelte';
     import { v4 as uuidv4 } from 'uuid';
 
-    import type { LocalTimerSetting } from './types/local_timer';
+    import type { PersonalTimerSetting } from './types/local_timer';
     import type { GetSharedTimerSettingResponse } from './types/api';
 
+    import { setTimerSetting } from './store/setting';
     import {
-        settingKey,
-        settingName,
-        colorSetting,
-        timerSettings,
-    } from './store/setting';
-    import {
-        currentPosition,
-        useLocalSetting,
+        switchPersonalSetting,
+        switchSharedSetting,
     } from './store/storage';
      import {
         getTimerSetting,
-        getSharedTimerSetting,
-        saveSharedTimerSetting,
+        addSharedTimerHistory,
         getTimerSettingKey,
         getUID,
         saveUID,
@@ -35,21 +29,12 @@
     import Head from './Head.svelte';
     import Timer from './components/timer/Index.svelte';
     import Setting from './components/setting/Index.svelte';
-import { fade } from 'svelte/transition';
 
     // APIを実行し共有設定を取得
     // 設定が取得できない場合はnullを返却します
     const getSharedSetting = (uid: string, key: string): GetSharedTimerSettingResponse|null => {
         // TODO: APIリクエスト処理
         return null;
-    };
-
-    // 設定をstoreに保存
-    const setSetting = (setting: LocalTimerSetting): void => {
-        settingKey.set(setting.key);
-        settingName.set(setting.name);
-        colorSetting.set(setting.colorSetting);
-        timerSettings.set(setting.timerSettings);
     };
 
     // ローカルストレージから個人設定を読み込みます
@@ -72,10 +57,8 @@ import { fade } from 'svelte/transition';
             return false;
         }
 
-        currentPosition.set(no);
-        useLocalSetting.set(true);
-
-        setSetting(timerSetting.settings[no])
+        switchPersonalSetting(no, timerSetting.settings[no].key)
+        setTimerSetting(timerSetting.settings[no])
         return true;
     };
 
@@ -87,7 +70,9 @@ import { fade } from 'svelte/transition';
             return;
         }
 
-        const timerSetting = getSharedTimerSetting();
+        const timerSetting = getTimerSetting();
+
+        // 個人設定からキーを探す
         let no = -1;
         for (let i = 0; i < timerSetting.settings.length; i++) {
             if (timerSetting.settings[i].key === key) {
@@ -96,20 +81,27 @@ import { fade } from 'svelte/transition';
             }
         }
 
-        // 設定がローカルストレージになければ初回アクセスとみなして、履歴を保存する
+        // 個人設定からキーが見つからなければ共有設定を探す
         if (no === -1) {
-            no = timerSetting.settings.length;
-            saveSharedTimerSetting(no, {
-                key: resp.setting.key,
-                name: resp.setting.name,
-                owner: resp.owner,
-            });
+            for (let i = 0; i < timerSetting.histories.length; i++) {
+                if (timerSetting.histories[i].key === key) {
+                    no = i;
+                    break;
+                }
+            }
+
+            // 共有設定にもキーが見つからなければ
+            // アクセス履歴を共有設定に保存する
+            if (no === -1) {
+                addSharedTimerHistory({
+                    key: resp.setting.key,
+                    name: resp.setting.name,
+                });
+            }
         }
 
-        currentPosition.set(no);
-        useLocalSetting.set(false);
-
-        setSetting(resp.setting);
+        switchSharedSetting(no, resp.setting.key)
+        setTimerSetting(resp.setting);
     };
 
     // ローカルストレージからuidを取得

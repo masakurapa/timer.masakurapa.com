@@ -11,7 +11,7 @@
 <script lang="ts">
     import { isTimerRunning } from '../../../store/timer';
     import { resetSettings } from '../../../store/setting';
-     import { currentPosition } from '../../../store/storage';
+    import { resetAll } from '../../../store/storage';
 
     import Share from './Share.svelte';
     import Colors from './Colors.svelte';
@@ -25,7 +25,7 @@
             return;
         }
 
-        currentPosition.set(null);
+        resetAll();
         resetSettings();
     }
 

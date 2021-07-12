@@ -1,52 +1,53 @@
-import type { LocalTimerSetting, StorageLocalTimerSetting } from './types/local_timer';
-import type { SharedTimerSetting,StorageSharedTimerSetting } from './types/shared_timer';
+import type {
+    PersonalTimerSetting,
+    SharedTimerHistory,
+    StorageTimerSetting,
+} from './types/local_timer';
 
 /** タイマー設定を保存するためのキー */
 const TIMER_SETTING = 'timer_setting';
-/** シェア用のタイマー設定を保存するためのキー */
-const SHARED_TIMER_SETTING = 'shared_timer_setting';
 /** 最後に使用したタイマー設定のキーを保存するためのキー */
 const TIMER_SETTING_KEY = 'timer_setting_key';
 /** タイマーを利用するユーザーを特定するためのID */
 const TIMER_UID = 'timer_uid';
 
 /**
+ * ローカルストレージからタイマーの設定情報を取得する
+ */
+export const getTimerSetting = (): StorageTimerSetting => {
+    const val = getItem(TIMER_SETTING);
+    if (val === null) {
+        return {settings: [], histories: []};
+    }
+    const settings: StorageTimerSetting = JSON.parse(val);
+    return settings;
+};
+
+/**
  * タイマーの設定リストをローカルストレージに保存する
  * 設定を追加した位置を返します
  */
-export const addTimerSetting = (setting: LocalTimerSetting): number => {
-    let timerSetting = getTimerSetting();
-    if (timerSetting === null) {
-        timerSetting = {settings: []};
-    }
-
+export const addTimerSetting = (setting: PersonalTimerSetting): number => {
+    const timerSetting = getTimerSetting();
     timerSetting.settings.push(setting);
     setItem(TIMER_SETTING, JSON.stringify(timerSetting));
     return timerSetting.settings.length - 1;
 };
 
 /**
- * タイマーの設定リストをローカルストレージに保存する
- */
-export const saveTimerSetting = (index: number, setting: LocalTimerSetting): boolean => {
-    let timerSetting = getTimerSetting();
-    if (timerSetting === null) {
-        timerSetting = {settings: []};
-    }
-
-    timerSetting.settings[index] = setting;
-    return setItem(TIMER_SETTING, JSON.stringify(timerSetting));
-};
-
-/**
  * タイマーの設定リストをローカルストレージに上書き保存する
  */
-export const removeTimerSetting = (index: number): boolean => {
-    let timerSetting = getTimerSetting();
-    if (timerSetting === null) {
-        timerSetting = {settings: []};
-    }
+export const saveTimerSetting = (index: number, setting: PersonalTimerSetting): boolean => {
+    const timerSetting = getTimerSetting();
+    timerSetting.settings[index] = setting;
+    return setItem(TIMER_SETTING, JSON.stringify(timerSetting));
+};
 
+/**
+ * タイマーの設定リストをローカルストレージから削除する
+ */
+export const removeTimerSetting = (index: number): boolean => {
+    const timerSetting = getTimerSetting();
     timerSetting.settings = timerSetting.settings.filter((_, idx): boolean => {
         return idx !== index;
     });
@@ -54,71 +55,34 @@ export const removeTimerSetting = (index: number): boolean => {
 };
 
 /**
- * ローカルストレージからタイマーの設定情報を取得する
- */
-export const getTimerSetting = (): StorageLocalTimerSetting|null => {
-    const val = getItem(TIMER_SETTING);
-    if (val === null) {
-        return null;
-    }
-    const settings: StorageLocalTimerSetting = JSON.parse(val);
-    return settings;
-};
-
-
-/**
- * 共有タイマーの設定をローカルストレージに追加する
+ * 共有タイマーのアクセス履歴をローカルストレージに追加する
  * 設定を追加した位置を返します
  */
-export const addSharedTimerSetting = (setting: SharedTimerSetting): number => {
-    let timerSetting = getSharedTimerSetting();
-    if (timerSetting === null) {
-        timerSetting = {settings: []};
-    }
-
-    timerSetting.settings.push(setting);
-    setItem(SHARED_TIMER_SETTING, JSON.stringify(timerSetting));
-    return timerSetting.settings.length - 1;
+export const addSharedTimerHistory = (setting: SharedTimerHistory): number => {
+    const timerSetting = getTimerSetting();
+    timerSetting.histories.push(setting);
+    setItem(TIMER_SETTING, JSON.stringify(timerSetting));
+    return timerSetting.histories.length - 1;
 };
 
 /**
- * シェア用のタイマーの設定リストをローカルストレージに保存する
+ * 共有タイマーのアクセス履歴をローカルストレージに上書き保存する
  */
-export const saveSharedTimerSetting = (index: number, setting: SharedTimerSetting): boolean => {
-    let timerSetting = getSharedTimerSetting();
-    if (timerSetting === null) {
-        timerSetting = {settings: []};
-    }
-
-    timerSetting.settings[index] = setting;
-    return setItem(SHARED_TIMER_SETTING, JSON.stringify(timerSetting));
+export const saveSharedTimerHistory = (index: number, setting: SharedTimerHistory): boolean => {
+    const timerSetting = getTimerSetting();
+    timerSetting.histories[index] = setting;
+    return setItem(TIMER_SETTING, JSON.stringify(timerSetting));
 };
 
 /**
- * シェア用のタイマーの設定リストをローカルストレージに上書き保存する
+ * 共有タイマーのアクセス履歴をローカルストレージから削除する
  */
-export const removeSharedTimerSetting = (index: number): boolean => {
-    let timerSetting = getSharedTimerSetting();
-    if (timerSetting === null) {
-        timerSetting = {settings: []};
-    }
-
-    timerSetting.settings = timerSetting.settings.filter((_, idx): boolean => {
+export const removeSharedTimerHistory = (index: number): boolean => {
+    const timerSetting = getTimerSetting();
+    timerSetting.histories = timerSetting.histories.filter((_, idx): boolean => {
         return idx !== index;
     });
-    return setItem(SHARED_TIMER_SETTING, JSON.stringify(timerSetting));
-};
-
-/**
- * ローカルストレージからシェア用のタイマーの設定情報を取得する
- */
-export const getSharedTimerSetting = (): StorageSharedTimerSetting|null => {
-    const val = getItem(SHARED_TIMER_SETTING);
-    if (val === null) {
-        return null;
-    }
-    const settings: StorageSharedTimerSetting = JSON.parse(val);
-    return settings;
+    return setItem(TIMER_SETTING, JSON.stringify(timerSetting));
 };
 
 /**

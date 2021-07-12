@@ -53,6 +53,7 @@
     } as const;
 
     colorSetting.subscribe(setting => {
+        console.log(setting);
         if (setting !== null) {
             return;
         }
