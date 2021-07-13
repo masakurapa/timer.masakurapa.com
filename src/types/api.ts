@@ -20,13 +20,21 @@ export type GetSharedTimerSettingResponse = {
  * 共有タイマーの保存リクエスト
  */
 export type SaveSharedTimerSettingRequest = {
-    setting: PersonalTimerSetting;
     uid: string;
+    setting: PersonalTimerSetting;
 };
 
 /**
- * 共有タイマーの保存時にエラーがあるときのレスポンス
+ * 共有タイマーの削除リクエスト
  */
-export type SaveSharedTimerSettingErrorRespons = {
+export type DeleteSharedTimerSettingRequest = {
+    uid: string;
+    key: string;
+};
+
+/**
+ * APIでエラーがあるときのレスポンス
+ */
+export type ErrorRespons = {
     errors: string[];
 };
