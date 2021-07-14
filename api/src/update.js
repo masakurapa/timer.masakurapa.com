@@ -1,4 +1,4 @@
-import * as aws from 'aws-sdk';
+const aws = require('aws-sdk');
 
 const validate = body => {
     const errors = [];
@@ -23,7 +23,18 @@ const validate = body => {
 exports.handler =  async function(event) {
     console.log(event);
 
-    const body = JSON.parse(event.body);
+    let body;
+    try {
+        body = JSON.parse(event.body);
+    } catch (ex) {
+        console.error(ex);
+        return {
+            statusCode: 422,
+            body: JSON.stringify({
+                errors: ['Invalid JSON format'],
+            }),
+        };
+    }
 
     const errors = validate(body);
     if (errors.length > 0) {
@@ -48,9 +59,9 @@ exports.handler =  async function(event) {
     } catch (ex) {
         if (ex.code === 'NotFound') {
             return {
-                "statusCode": 403,
+                "statusCode": 404,
                 "body": JSON.stringify({
-                    errors: ['Forbidden'],
+                    errors: ['The key setting does not exist'],
                 }),
             };
         }

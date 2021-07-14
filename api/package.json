@@ -5,7 +5,9 @@
   "engines": {
     "node": "14.17.1"
   },
-  "scripts": {},
+  "scripts": {
+    "server": "node server.js"
+  },
   "devDependencies": {
     "aws-sdk": "^2.944.0"
   },
