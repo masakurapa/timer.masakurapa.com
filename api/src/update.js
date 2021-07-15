@@ -21,8 +21,6 @@ const validate = body => {
 };
 
 exports.handler =  async function(event) {
-    console.log(event);
-
     let body;
     try {
         body = JSON.parse(event.body);
@@ -47,6 +45,10 @@ exports.handler =  async function(event) {
     const client = new aws.S3({
         apiVersion: '2006-03-01',
         region: process.env.REGION,
+        httpOptions: { timeout: 300 },
+        maxRetries: 3,
+        endpoint: process.env.ENDPOINT_URL ? process.env.ENDPOINT_URL : '',
+        s3ForcePathStyle: process.env.ENDPOINT_URL ? true : false,
     });
     const params = {
         Bucket: process.env.BUCKET_NAME,
