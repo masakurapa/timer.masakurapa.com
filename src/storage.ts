@@ -95,7 +95,7 @@ export const saveTimerSettingKey = (key: string): boolean => {
 /**
  * タイマー設定のキーをローカルストレージに保存する
  */
-export const getTimerSettingKey = (): string => {
+export const getTimerSettingKey = (): string | null => {
     return getItem(TIMER_SETTING_KEY);
 };
 
@@ -109,7 +109,7 @@ export const saveUID = (key: string): boolean => {
 /**
  * UIDをローカルストレージに保存する
  */
-export const getUID = (): string => {
+export const getUID = (): string | null => {
     return getItem(TIMER_UID);
 };
 

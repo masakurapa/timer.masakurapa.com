@@ -4,9 +4,14 @@
             background-color: ${bgColor};
         }
     </style>`}
+
+    <script>
+        const url = 'http://localhost:3000';
+    </script>
 </svelte:head>
 
 <script lang="ts">
+    import type { ColorSetting } from './types/local_timer';
     import { colorSetting } from './store/setting';
     import {
         timerSecondsRemaining,
@@ -21,7 +26,6 @@
 
     // タイマーの状態に応じたスタイルの切り替え
     const setTimerStatus = (): void => {
-        const setting = $colorSetting;
         const sec = $timerSecondsRemaining;
 
         bgColor = defaultBgColor;
@@ -45,6 +49,13 @@
             bgColor = setting.runningColor;
         }
     };
+
+    let setting: ColorSetting;
+    colorSetting.subscribe(val => {
+        if (val !== null) {
+            setting = val;
+        }
+    });
 
     timerSecondsRemaining.subscribe((): void => setTimerStatus());
     isTimerRunning.subscribe((): void => setTimerStatus());

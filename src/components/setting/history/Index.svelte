@@ -168,7 +168,7 @@
         }
 
         const key = $currentPersonalSettingKey;
-        let pos: number = null;
+        let pos: number|null = null;
         for (let i = 0; i < timerSetting.settings.length; i++) {
             if (timerSetting.settings[i].key === key) {
                 pos = i;
@@ -256,7 +256,7 @@
         timerSetting = getTimerSetting();
 
         const key = $currentSharedSettingKey;
-        let pos: number = null;
+        let pos: number|null = null;
         for (let i = 0; i < timerSetting.histories.length; i++) {
             if (timerSetting.histories[i].key === key) {
                 pos = i;
@@ -299,8 +299,13 @@
 
      // URLをクリップボードにURLをコピーする
      const copyURL = (key: string): void => {
+        const elm = document.getElementById('clipboard');
+        if (elm === null) {
+            return;
+        }
+
         const app = new CopyUrl({
-            target: document.getElementById('clipboard'),
+            target: elm,
             props: { key },
         });
         app.$destroy();

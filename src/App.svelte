@@ -30,6 +30,13 @@
     import Timer from './components/timer/Index.svelte';
     import Setting from './components/setting/Index.svelte';
 
+
+    import { getSetting } from './api/api';
+
+
+
+
+
     // APIを実行し共有設定を取得
     // 設定が取得できない場合はnullを返却します
     const getSharedSetting = (uid: string, key: string): GetSharedTimerSettingResponse|null => {
@@ -116,8 +123,10 @@
     };
 
     // マウント時にローカルストレージから設定情報を引っ張ってくる
-    onMount((): void => {
+    onMount(async (): Promise<void> => {
         const uid = getStorageUID();
+
+        console.log(await getSetting(uid, 'bbb'));
 
         // GETパラメータにsidが存在する場合は共有設定を読み込み
         const url = new URL(window.location.href);

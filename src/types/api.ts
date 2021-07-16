@@ -1,6 +1,20 @@
 import type { PersonalTimerSetting } from "./local_timer";
 
 /**
+ * APIの共通レスポンスの型
+ */
+export type ApiSuccessResponse = {
+    type: 'success';
+};
+
+/**
+ * APIの共通レスポンスの型
+ */
+export type ApiErrorResponse = {
+    type: 'error';
+};
+
+/**
  * 共有タイマーの取得リクエスト
  */
 export type GetSharedTimerSettingRequest = {
@@ -11,7 +25,7 @@ export type GetSharedTimerSettingRequest = {
 /**
  * 共有タイマーの取得レスポンス
  */
-export type GetSharedTimerSettingResponse = {
+export type GetSharedTimerSettingResponse = ApiSuccessResponse & {
     setting: PersonalTimerSetting;
     owner: boolean;
 };
@@ -35,6 +49,6 @@ export type DeleteSharedTimerSettingRequest = {
 /**
  * APIでエラーがあるときのレスポンス
  */
-export type ErrorRespons = {
+export type ErrorResponse = ApiErrorResponse & {
     errors: string[];
 };

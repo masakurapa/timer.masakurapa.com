@@ -16,7 +16,7 @@ export const settingName = writable('');
 /**
  * 色設定
  */
-export const colorSetting = writable<ColorSetting>(null);
+export const colorSetting = writable<ColorSetting|null>();
 
 /**
  * タイマー設定

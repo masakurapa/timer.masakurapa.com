@@ -4,38 +4,39 @@
     <div slot="content">
         <div class="input-wrapper">
             <div class="label">Running:</div>
-            <input type="text" class="color-input" bind:value="{$colorSetting.runningColor}" {disabled}>
-            <div class="color-preview" style="background-color: {$colorSetting.runningColor}"></div>
+            <input type="text" class="color-input" bind:value="{setting.runningColor}" {disabled}>
+            <div class="color-preview" style="background-color: {setting.runningColor}"></div>
         </div>
         <div class="multi-input-wrapper">
             <div class="input-color-wrapper">
                 <div class="label">Warning:</div>
-                <input type="text" class="color-input" bind:value="{$colorSetting.warning1Color}" {disabled}>
-                <div class="color-preview" style="background-color: {$colorSetting.warning1Color}"></div>
+                <input type="text" class="color-input" bind:value="{setting.warning1Color}" {disabled}>
+                <div class="color-preview" style="background-color: {setting.warning1Color}"></div>
             </div>
             <div class="input-seconds-wrapper">
-                Switch with <input type="number" class="seconds-input" bind:value="{$colorSetting.warning1Seconds}" {disabled}> seconds remaining.
+                Switch with <input type="number" class="seconds-input" bind:value="{setting.warning1Seconds}" {disabled}> seconds remaining.
             </div>
         </div>
         <div class="multi-input-wrapper">
             <div class="input-color-wrapper">
                 <div class="label">Danger:</div>
-                <input type="text" class="color-input" bind:value="{$colorSetting.warning2Color}" {disabled}>
-                <div class="color-preview" style="background-color: {$colorSetting.warning2Color}" {disabled}></div>
+                <input type="text" class="color-input" bind:value="{setting.warning2Color}" {disabled}>
+                <div class="color-preview" style="background-color: {setting.warning2Color}" {disabled}></div>
             </div>
             <div class="input-seconds-wrapper">
-                Switch with <input type="number" class="seconds-input" bind:value="{$colorSetting.warning2Seconds}" {disabled}> seconds remaining.
+                Switch with <input type="number" class="seconds-input" bind:value="{setting.warning2Seconds}" {disabled}> seconds remaining.
             </div>
         </div>
         <div class="input-wrapper">
             <div class="label">Finish:</div>
-            <input type="text" class="color-input" bind:value="{$colorSetting.finishColor}" {disabled}>
-            <div class="color-preview" style="background-color: {$colorSetting.finishColor}" {disabled}></div>
+            <input type="text" class="color-input" bind:value="{setting.finishColor}" {disabled}>
+            <div class="color-preview" style="background-color: {setting.finishColor}" {disabled}></div>
         </div>
     </div>
 </Collapse>
 
 <script lang="ts">
+    import type { ColorSetting } from '../../../types/local_timer';
     import { colorSetting } from '../../../store/setting';
     import { isTimerRunning } from '../../../store/timer';
 
@@ -52,9 +53,10 @@
         DANGER: 10,
     } as const;
 
-    colorSetting.subscribe(setting => {
-        console.log(setting);
-        if (setting !== null) {
+    let setting: ColorSetting;
+    colorSetting.subscribe(val => {
+        if (val !== null) {
+            setting = val;
             return;
         }
         colorSetting.set({
