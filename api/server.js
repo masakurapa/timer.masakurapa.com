@@ -43,9 +43,17 @@ http.createServer(
                         // 設定の更新リクエスト
                         resp = await updateRequest.handler(event);
                     }
+                } else if (req.method === 'OPTIONS') {
+                    // preflight対応
+                    res.writeHead(200, {
+                        'Access-Control-Allow-Headers': 'content-type',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'OPTIONS,POST,PUT',
+                    });
+                    res.end('');
+                    return;
                 }
             } catch (err) {
-                console.log(err);
                 resp = {
                     statusCode: 500,
                     body: {
@@ -54,7 +62,10 @@ http.createServer(
                 };
             }
 
-            res.writeHead(resp.statusCode, { 'Content-Type': 'application/json' });
+            res.writeHead(resp.statusCode, {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            });
             res.end(`${resp.body}\n`);
         });
     },

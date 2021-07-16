@@ -1,9 +1,20 @@
 version: "3"
 
 services:
+  api:
+    image: node:14.17.1-alpine
+    ports:
+      - 3000:3000
+    entrypoint: sh
+    command: -c "
+      npm install;
+      npm run server;"
+    working_dir: /api
+    volumes:
+      - ./api:/api
+
   minio:
     image: minio/minio:latest
-    container_name: 'minio'
     ports:
       - 9000:9000
       - 9001:9001
