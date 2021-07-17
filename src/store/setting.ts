@@ -24,12 +24,18 @@ export const colorSetting = writable<ColorSetting|null>();
 export const timerSettings = writable<TimerSetting[]>([]);
 
 /**
+ * 自分が管理者の設定の場合にtrueを返します
+ */
+export const owner = writable(true);
+
+/**
  * タイマー設定を反映します
  */
-export const setTimerSetting = (setting: PersonalTimerSetting): void => {
+export const setTimerSetting = (setting: PersonalTimerSetting, isOwner: boolean): void => {
     settingName.set(setting.name);
     colorSetting.set(setting.colorSetting);
     timerSettings.set(setting.timerSettings);
+    owner.set(isOwner);
 };
 
 /**
@@ -39,4 +45,5 @@ export const resetSettings = (): void => {
     settingName.set('');
     colorSetting.set(null);
     timerSettings.set([]);
+    owner.set(true);
 };

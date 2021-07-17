@@ -17,6 +17,7 @@
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-typescript": "^8.2.1",
     "@tsconfig/svelte": "^2.0.1",
+    "@types/axios": "^0.14.0",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",

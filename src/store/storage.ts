@@ -4,6 +4,11 @@
 import { writable } from 'svelte/store';
 
 /**
+ * UID
+ */
+export const uid = writable('');
+
+/**
  * セッションで使用している個人設定の保存位置
  * nullの場合は使用位置無し
  */

@@ -43,12 +43,17 @@
 <script lang="ts">
     import { v4 as uuidv4 } from 'uuid';
 
+    import type { PersonalTimerSetting } from '../../../types/local_timer';
+
+    import { saveSetting } from '../../../api/api';
+
     import {
         settingName,
         colorSetting,
         timerSettings,
     } from '../../../store/setting';
     import {
+        uid,
         currentPersonalSettingKey,
         currentPersonalSettingPosition,
         usePersonalSetting,
@@ -106,7 +111,7 @@
     };
 
     // ローカルストレージの設定を上書きする
-    const onClickOverwriteLocalStorage = (): void => {
+    const onClickOverwriteLocalStorage = async (): Promise<void> => {
         if ($settingName === '') {
             settingName.set($currentPersonalSettingKey);
         }
@@ -114,38 +119,50 @@
         const timer = getTimerSetting();
         const shared = timer.settings[$currentPersonalSettingPosition].shared;
 
-        saveTimerSetting($currentPersonalSettingPosition, {
+        const setting: PersonalTimerSetting = {
             shared,
             key: $currentPersonalSettingKey,
             name: $settingName,
             colorSetting: $colorSetting,
             timerSettings: $timerSettings,
-        });
+        };
+
+        saveTimerSetting($currentPersonalSettingPosition, setting);
 
         // 共有済みの設定も更新する
         if (shared) {
-            // TODO: API呼び出しして設定を保存
+            const resp = await saveSetting($uid, setting);
+            if (!resp.isSuccess()) {
+                alert(resp.error.errors.join('\n'));
+                return;
+            }
         }
 
         showMessage('Saved !!!!!');
     };
 
     // 設定をシェアする
-    const onClickSaveShareSetting = (): void => {
+    const onClickSaveShareSetting = async (): Promise<void> => {
         // ローカルストレージに未保存なら先に保存する
         if ($currentPersonalSettingKey === null) {
             addPersonalSetting();
         }
 
-        // TODO: API呼び出しして設定を保存
-
-        saveTimerSetting($currentPersonalSettingPosition, {
+        const setting: PersonalTimerSetting = {
             key: $currentPersonalSettingKey,
             name: $settingName,
             colorSetting: $colorSetting,
             timerSettings: $timerSettings,
             shared: true,
-        });
+        };
+
+        const resp = await saveSetting($uid, setting);
+        if (!resp.isSuccess()) {
+            alert(resp.error.errors.join('\n'));
+            return;
+        }
+
+        saveTimerSetting($currentPersonalSettingPosition, setting);
 
         showMessage('Shared !!!!!');
     };

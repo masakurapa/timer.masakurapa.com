@@ -10,11 +10,13 @@
     import { onMount } from 'svelte';
     import { v4 as uuidv4 } from 'uuid';
 
-    import type { PersonalTimerSetting } from './types/local_timer';
     import type { GetSharedTimerSettingResponse } from './types/api';
+
+    import { getSetting } from './api/api';
 
     import { setTimerSetting } from './store/setting';
     import {
+        uid,
         switchPersonalSetting,
         switchSharedSetting,
     } from './store/storage';
@@ -30,18 +32,15 @@
     import Timer from './components/timer/Index.svelte';
     import Setting from './components/setting/Index.svelte';
 
-
-    import { getSetting } from './api/api';
-
-
-
-
-
     // APIを実行し共有設定を取得
     // 設定が取得できない場合はnullを返却します
-    const getSharedSetting = (uid: string, key: string): GetSharedTimerSettingResponse|null => {
-        // TODO: APIリクエスト処理
-        return null;
+    const getSharedSetting = async (uid: string, key: string): Promise<GetSharedTimerSettingResponse|null> => {
+        const resp = await getSetting(uid, key);
+        if (!resp.isSuccess()) {
+            alert(resp.error.errors.join('\n'));
+            return null;
+        }
+        return resp.data;
     };
 
     // ローカルストレージから個人設定を読み込みます
@@ -65,14 +64,15 @@
         }
 
         switchPersonalSetting(no, timerSetting.settings[no].key)
-        setTimerSetting(timerSetting.settings[no])
+        // ローカルストレージの設定は常に管理者とみなす
+        setTimerSetting(timerSetting.settings[no], true)
         return true;
     };
 
     // 共有設定を読み込みます
-    const loadSharedSetting = (uid: string, key: string): void => {
+    const loadSharedSetting = async (uid: string, key: string): Promise<void> => {
         // 共有設定を取得
-        const resp = getSharedSetting(uid, key);
+        const resp = await getSharedSetting(uid, key);
         if (resp === null) {
             return;
         }
@@ -108,7 +108,7 @@
         }
 
         switchSharedSetting(no, resp.setting.key)
-        setTimerSetting(resp.setting);
+        setTimerSetting(resp.setting, resp.owner);
     };
 
     // ローカルストレージからuidを取得
@@ -119,6 +119,7 @@
             id = uuidv4();
             saveUID(id);
         }
+        uid.set(id);
         return id;
     };
 
@@ -126,13 +127,11 @@
     onMount(async (): Promise<void> => {
         const uid = getStorageUID();
 
-        console.log(await getSetting(uid, 'bbb'));
-
         // GETパラメータにsidが存在する場合は共有設定を読み込み
         const url = new URL(window.location.href);
         const sid = url.searchParams.get('sid');
         if (sid !== null &&  sid !== '') {
-            loadSharedSetting(uid, sid);
+            await loadSharedSetting(uid, sid);
             return;
         }
 
@@ -146,7 +145,7 @@
         if (loadLocalSetting(key)) {
             return;
         }
-        loadSharedSetting(uid, key);
+        await loadSharedSetting(uid, key);
     });
 </script>
 

@@ -92,6 +92,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
 
+    import {
+        getSetting,
+        deleteSetting,
+    } from '../../../api/api';
+
     import type {
         StorageTimerSetting,
     } from '../../../types/local_timer';
@@ -101,6 +106,7 @@
         resetSettings,
     } from '../../../store/setting';
     import {
+        uid,
         currentPersonalSettingKey,
         currentPersonalSettingPosition,
         currentSharedSettingKey,
@@ -146,10 +152,16 @@
      };
 
      // ローカルストレージの設定を削除
-     const onClickRemovePersonalSetting = (no: number): void => {
+     const onClickRemovePersonalSetting = async (no: number): Promise<void> => {
         const setting = timerSetting.settings[no];
         if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
             return;
+        }
+
+        // 共有済みの設定も削除する
+        // エラーは無視
+        if (setting.shared) {
+            await deleteSetting($uid, setting.key);
         }
 
         removeTimerSetting(no);
@@ -196,7 +208,7 @@
         }
 
         const setting = timerSetting.settings[no];
-        setTimerSetting(setting);
+        setTimerSetting(setting, true);
 
         switchPersonalSetting(no, setting.key);
 
@@ -207,7 +219,7 @@
      };
 
      // シェア済みのURLを無効化する
-     const onClickUnlinkPersonalSetting = (no: number): void => {
+     const onClickUnlinkPersonalSetting = async (no: number): Promise<void> => {
         if ($isTimerRunning) {
             return;
         }
@@ -217,7 +229,11 @@
             return;
         }
 
-        // TODO: APIを実行してURLを削除
+        const resp = await deleteSetting($uid, setting.key);
+        if (!resp.isSuccess()) {
+            alert(resp.error.errors.join('\n'));
+            return;
+        }
 
         // シェアフラグをoff
         saveTimerSetting(no, {
@@ -238,8 +254,6 @@
         if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
             return;
         }
-
-        // TODO シェア済みならAPIを実行して共有設定を削除
 
         // 共有設定を使っていれば現在位置を再設定
         if ($usePersonalSetting) {
@@ -267,7 +281,7 @@
      };
 
      // 共有設定を読み込み
-     const onClickLoadSharedSetting = (no: number): void => {
+     const onClickLoadSharedSetting = async (no: number): Promise<void> => {
         if ($isTimerRunning) {
             return;
         }
@@ -285,10 +299,14 @@
 
         const setting = timerSetting.histories[no];
 
-        // TODO: API通信して設定を持ってくる
-        // setTimerSetting();
-        settingName.set(setting.name);
+        const resp = await getSetting($uid, setting.key);
+        console.log(resp);
+        if (!resp.isSuccess()) {
+            alert(resp.error.errors.join('\n'));
+            return;
+        }
 
+        setTimerSetting(resp.data.setting, resp.data.owner);
         switchSharedSetting(no, setting.key);
 
         // 最後にアクセスした設定のキーを保存しておく

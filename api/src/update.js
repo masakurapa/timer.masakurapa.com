@@ -37,8 +37,8 @@ exports.handler =  async function(event) {
     const errors = validate(body);
     if (errors.length > 0) {
         return {
-            "statusCode": 422,
-            "body": JSON.stringify({ errors }),
+            'statusCode': 422,
+            'body': JSON.stringify({ errors }),
         };
     }
 
@@ -52,72 +52,56 @@ exports.handler =  async function(event) {
     });
     const params = {
         Bucket: process.env.BUCKET_NAME,
-        Key: `shared/${body.key}.json`,
+        Key: `shared/${body.setting.key}.json`,
     };
 
-    // Objectの存在チェック
+    // Objectの存在していれば、UIDのチェック
     try {
         await client.headObject(params).promise();
-    } catch (ex) {
-        if (ex.code === 'NotFound') {
-            return {
-                "statusCode": 404,
-                "body": JSON.stringify({
-                    errors: ['The key setting does not exist'],
-                }),
-            };
-        }
 
-        console.error(ex);
-        return {
-            "statusCode": 500,
-            "body": JSON.stringify({
-                errors: ['Server error'],
-            }),
-        };
-    }
-
-    try {
         const object = await client.getObject(params).promise();
         const setting = JSON.parse(object.Body);
 
         if (setting.uid !== body.uid) {
             return {
-                "statusCode": 403,
-                "body": JSON.stringify({
+                'statusCode': 403,
+                'body': JSON.stringify({
                     errors: ['Forbidden'],
                 }),
             };
         }
     } catch (ex) {
-        console.error(ex);
-        return {
-            "statusCode": 500,
-            "body": JSON.stringify({
-                errors: ['Server error'],
-            }),
-        };
+        // キーが存在しないエラーは無視
+        if (ex.code !== 'NotFound') {
+            console.error(ex);
+            return {
+                'statusCode': 500,
+                'body': JSON.stringify({
+                    errors: ['Server error'],
+                }),
+            };
+        }
     }
 
     try {
         await client.putObject({
             Bucket: process.env.BUCKET_NAME,
-            Key: `shared/${body.key}.json`,
+            Key: `shared/${body.setting.key}.json`,
             ContentType: 'application/json',
             Body: event.body,
         }).promise();
     } catch (ex) {
         console.error(ex);
         return {
-            "statusCode": 500,
-            "body": JSON.stringify({
+            'statusCode': 500,
+            'body': JSON.stringify({
                 errors: ['Server error'],
             }),
         };
     }
 
     return {
-        "statusCode": 200,
-        "body": {},
+        'statusCode': 200,
+        'body': JSON.stringify({}),
     };
 };
