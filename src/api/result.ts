@@ -1,15 +1,17 @@
+import type { ErrorResponse } from "../types/api";
+
 /**
  * APIの実行結果を返却します
  */
-export class ApiResult<T, E> {
+export class ApiResult<T> {
     /** ステータスコード */
     readonly status: number;
     /** 正常終了時のレスポンスボディ */
-    readonly data?: T;
+    readonly data: T|null;
     /** 異常終了時のレスポンスボディ */
-    readonly error?: E;
+    readonly error: ErrorResponse|null;
 
-    constructor(status: number, data?: T, error?: E) {
+    constructor(status: number, data: T|null, error: ErrorResponse|null) {
         this.status = status;
         this.data = data;
         this.error = error;
@@ -20,5 +22,12 @@ export class ApiResult<T, E> {
      */
     isSuccess(): boolean {
         return this.status === 200;
+    }
+
+    /**
+     * エラーメッセージを連結して返します
+     */
+    errors(): string[] {
+        return this.error === null ? [] : this.error.errors;
     }
 }

@@ -23,16 +23,16 @@
     // アクティブなボタンがない状態
     const NONE = 0;
     // タイマー設定がアクティブな状態
-    const TIMER_SETTING = 1;
+    const TIMER_SETTING  = 1;
     // 設定履歴がアクティブな状態
-    const HISTORY = 2;
+    const HISTORY  = 2;
 
-    const components = {
+    const components: { [key: number]: any } = {
         [TIMER_SETTING]: TimerSetting,
         [HISTORY]: History,
     };
 
-    let activeBtnNo = TimerSetting;
+    let activeBtnNo  = TIMER_SETTING;
 
     const onClick = (no: number): void => {
         // 現在アクティブな番号と同じならアクティブなボタンを無くす

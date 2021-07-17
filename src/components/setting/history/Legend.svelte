@@ -13,7 +13,7 @@
 </script>
 
 <style>
-    .wrapper {
+    /* .wrapper {
         margin-bottom: 12px;
         font-size: 16px;
     }
@@ -29,5 +29,5 @@
     }
     .legend-text {
         color: #666666;
-    }
+    } */
 </style>

@@ -52,9 +52,7 @@
 
     let setting: ColorSetting;
     colorSetting.subscribe(val => {
-        if (val !== null) {
-            setting = val;
-        }
+        setting = val;
     });
 
     timerSecondsRemaining.subscribe((): void => setTimerStatus());

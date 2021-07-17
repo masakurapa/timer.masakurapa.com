@@ -115,7 +115,7 @@
         // 現在行が設定に見つからなければ合計秒数をリセットして終わり
         if (typeof $timerSettings[pos] === 'undefined') {
             totalTime = { hour: 0, minute: 0, second: 0 };
-            timerSecondsRemaining.set(null);
+            timerSecondsRemaining.set(0);
             return;
         }
         timerSecondsRemaining.set(calcTotalSeconds($timerSettings[pos].timer));

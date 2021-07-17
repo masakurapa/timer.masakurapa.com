@@ -37,7 +37,7 @@
     const getSharedSetting = async (uid: string, key: string): Promise<GetSharedTimerSettingResponse|null> => {
         const resp = await getSetting(uid, key);
         if (!resp.isSuccess()) {
-            alert(resp.error.errors.join('\n'));
+            alert(resp.errors().join('\n'));
             return null;
         }
         return resp.data;

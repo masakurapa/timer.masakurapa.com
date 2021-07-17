@@ -18,7 +18,7 @@
 
         // ありえないはずだが、先頭要素が存在しない場合は残り時間をリセット
         if (typeof $timerSettings[0] === 'undefined') {
-            timerSecondsRemaining.set(null);
+            timerSecondsRemaining.set(0);
             return;
         }
 

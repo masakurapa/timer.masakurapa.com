@@ -42,31 +42,9 @@
 
     import Collapse from './Collapse.svelte';
 
-    const DEFAULT_BG_COLOR = {
-        RUNNING: '#DDFFFF',
-        WARNING: '#FFFFCC',
-        DANGER: '#FFDDDD',
-        FINISH: '#DDFFDD',
-    } as const;
-    const DEFAULT_SWITCH_SECONDS = {
-        WARNING: 30,
-        DANGER: 10,
-    } as const;
-
     let setting: ColorSetting;
     colorSetting.subscribe(val => {
-        if (val !== null) {
-            setting = val;
-            return;
-        }
-        colorSetting.set({
-            runningColor: DEFAULT_BG_COLOR.RUNNING,
-            warning1Color: DEFAULT_BG_COLOR.WARNING,
-            warning2Color: DEFAULT_BG_COLOR.DANGER,
-            finishColor: DEFAULT_BG_COLOR.FINISH,
-            warning1Seconds: DEFAULT_SWITCH_SECONDS.WARNING,
-            warning2Seconds: DEFAULT_SWITCH_SECONDS.DANGER,
-        })
+        setting = val;
     });
 
     $: disabled = $isTimerRunning === true;

@@ -175,12 +175,12 @@
         // 現在読み込まれている設定が削除対象の場合
         // キーと設定名を削除しておく
         if (no === $currentPersonalSettingPosition) {
-            currentPersonalSettingKey.set(null);
+            currentPersonalSettingKey.set('');
             settingName.set('');
         }
 
         const key = $currentPersonalSettingKey;
-        let pos: number|null = null;
+        let pos = -1;
         for (let i = 0; i < timerSetting.settings.length; i++) {
             if (timerSetting.settings[i].key === key) {
                 pos = i;
@@ -231,7 +231,7 @@
 
         const resp = await deleteSetting($uid, setting.key);
         if (!resp.isSuccess()) {
-            alert(resp.error.errors.join('\n'));
+            alert(resp.errors().join('\n'));
             return;
         }
 
@@ -263,14 +263,14 @@
         // 現在読み込まれている設定が削除対象の場合
         // キーと設定名を削除しておく
         if (no === $currentSharedSettingPosition) {
-            currentSharedSettingKey.set(null);
+            currentSharedSettingKey.set('');
         }
 
         removeSharedTimerHistory(no);
         timerSetting = getTimerSetting();
 
         const key = $currentSharedSettingKey;
-        let pos: number|null = null;
+        let pos = -1;
         for (let i = 0; i < timerSetting.histories.length; i++) {
             if (timerSetting.histories[i].key === key) {
                 pos = i;
@@ -301,8 +301,8 @@
 
         const resp = await getSetting($uid, setting.key);
         console.log(resp);
-        if (!resp.isSuccess()) {
-            alert(resp.error.errors.join('\n'));
+        if (!resp.isSuccess() || resp.data === null) {
+            alert(resp.errors().join('\n'));
             return;
         }
 

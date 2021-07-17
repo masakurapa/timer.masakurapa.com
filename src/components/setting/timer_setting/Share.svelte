@@ -133,7 +133,7 @@
         if (shared) {
             const resp = await saveSetting($uid, setting);
             if (!resp.isSuccess()) {
-                alert(resp.error.errors.join('\n'));
+                alert(resp.errors().join('\n'));
                 return;
             }
         }
@@ -158,7 +158,7 @@
 
         const resp = await saveSetting($uid, setting);
         if (!resp.isSuccess()) {
-            alert(resp.error.errors.join('\n'));
+            alert(resp.errors().join('\n'));
             return;
         }
 

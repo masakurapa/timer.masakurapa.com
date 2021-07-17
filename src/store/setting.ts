@@ -8,6 +8,16 @@ import type {
     TimerSetting,
 } from '../types/local_timer';
 
+// 色設定（デフォルト値）
+const defaultColorSetting: ColorSetting = {
+    runningColor: '#DDFFFF',
+    warning1Color: '#FFFFCC',
+    warning1Seconds: 30,
+    warning2Color: '#FFDDDD',
+    warning2Seconds: 10,
+    finishColor: '#DDFFDD',
+};
+
 /**
  * ローカルストレージ保存時、シェア時の設定名
  */
@@ -16,7 +26,7 @@ export const settingName = writable('');
 /**
  * 色設定
  */
-export const colorSetting = writable<ColorSetting|null>();
+export const colorSetting = writable<ColorSetting>(defaultColorSetting);
 
 /**
  * タイマー設定
@@ -43,7 +53,7 @@ export const setTimerSetting = (setting: PersonalTimerSetting, isOwner: boolean)
  */
 export const resetSettings = (): void => {
     settingName.set('');
-    colorSetting.set(null);
+    colorSetting.set(defaultColorSetting);
     timerSettings.set([]);
     owner.set(true);
 };
