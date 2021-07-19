@@ -300,7 +300,6 @@
         const setting = timerSetting.histories[no];
 
         const resp = await getSetting($uid, setting.key);
-        console.log(resp);
         if (!resp.isSuccess() || resp.data === null) {
             alert(resp.errors().join('\n'));
             return;

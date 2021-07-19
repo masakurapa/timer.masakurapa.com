@@ -39,7 +39,6 @@ export const saveSetting = async (uid: string, setting: PersonalTimerSetting): P
     };
 
     const resp = await makeClient().put<NoContentResponse|ErrorResponse>(url('/'), body, { headers });
-    console.log(resp);
     if ('errors' in resp.data) {
         return new ApiResult<NoContentResponse>(resp.status, null, resp.data);
     }
