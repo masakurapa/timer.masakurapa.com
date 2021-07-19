@@ -1,36 +1,52 @@
-<Collapse key="share-setting" open>
-    <span slot="header">Save Setting</span>
+<Collapse key="share-setting" open={$personalTimerSetting.owner}>
+    <span slot="header">設定の保存・共有</span>
 
     <div slot="content">
         <div class="setting-name-wrapper">
-            <div class="label">Setting Name:</div>
-            <div class="input-name-wrapper">
-                <input type="text" class="setting-name" bind:value="{$personalTimerSetting.name}" >
+            <input
+                type="text"
+                placeholder="設定名"
+                class="setting-name"
+                bind:value="{$personalTimerSetting.name}"
+            >
+        </div>
 
-                {#if showShareBtn }
-                    <div class="share-button-wrapper" on:click="{onClickSaveShareSetting}">
-                        <i class="fas fa-share-square fa-2x"></i>
+        <div class="button-group">
+            <div class="button-wrapper">
+                {#if showSaveBtn}
+                    <div
+                        class="btn"
+                        on:click="{onClickSaveLocalStorage}"
+                    >
+                        <i class="far fa-save fa-2x"></i>設定を保存
+                    </div>
+                {:else}
+                    <div
+                        class="btn"
+                        on:click="{onClickOverwriteLocalStorage}"
+                    >
+                        <i class="far fa-save fa-2x"></i>設定を上書き
                     </div>
                 {/if}
             </div>
-        </div>
+            <div class="button-wrapper">
+                {#if showShareBtn}
+                    <div
+                        class="btn"
+                        on:click="{onClickSaveShareSetting}"
+                    >
+                        <i class="far fa-share-square fa-2x"></i>設定の共有
+                    </div>
+                {:else}
+                    <div
+                        class="btn"
+                        on:click="{onClickCopyURL}"
+                    >
+                        <i class="fas fa-link fa-2x"></i>URLをコピー
+                    </div>
+                {/if}
 
-        <div class="button-wrapper">
-            {#if !saved}
-                <button
-                    class="save-btn"
-                    on:click="{onClickSaveLocalStorage}"
-                >
-                    Save Setting
-                </button>
-            {:else}
-                <button
-                    class="save-btn"
-                    on:click="{onClickOverwriteLocalStorage}"
-                >
-                    Overwrite Setting
-                </button>
-            {/if}
+            </div>
         </div>
     </div>
 </Collapse>
@@ -59,6 +75,7 @@
 
     import Collapse from './Collapse.svelte';
     import MessageBox from '../MessageBox.svelte';
+    import CopyUrl from '../CopyURL.svelte';
 
     // メッセージボックスの制御用
     let message = '';
@@ -133,62 +150,82 @@
 
         saveTimerSetting($currentPersonalSettingPosition, setting);
 
+        copyURL();
         showMessage('Shared !!!!!');
     };
 
-    //保存済みの設定の場合true
-    $: saved = !$usePersonalSetting || $personalTimerSetting.key !== '';
+     // URLをクリップボードにURLをコピーする
+    const copyURL = (): void => {
+        const elm = document.getElementById('clipboard');
+        if (elm === null) {
+            return;
+        }
 
-    // シェアボタンを表示する場合true
-    // 個人設定利用時で、ローカルストレージに保存済みの場合だけ
-    $: showShareBtn = $usePersonalSetting && $personalTimerSetting.key !== '';
+        const app = new CopyUrl({
+            target: elm,
+            props: {
+                key: $personalTimerSetting.key,
+            },
+        });
+        app.$destroy();
+     };
+
+     // 個人設定のURLをクリップボードにURLをコピーする
+     const onClickCopyURL = (): void => {
+        copyURL();
+        showMessage('Copied !!!!!');
+     };
+
+     // 新規保存可能な状態の場合true
+     $: showSaveBtn = !$usePersonalSetting || $personalTimerSetting.key === '';
+
+     // シェアボタンを表示する場合はtrue
+     $: showShareBtn = $usePersonalSetting
+        && $personalTimerSetting.key === ''
+        && $personalTimerSetting.shared === false;
 </script>
 
 <style>
     .setting-name-wrapper {
         margin-bottom: 12px;
     }
-    .button-wrapper {
-        display: flex;
-        margin-bottom: 12px;
-    }
-    .share-button-wrapper {
-        margin-left: 4px;
-        width: 32px;
-        color: #1E90FF;
-        cursor: pointer;
+
+    .setting-name {
+        height: 32px;
+        width: 90%;
     }
 
-    .input-name-wrapper {
+    .button-group {
         display: flex;
+        width: 100%;
+        padding: 4px 0;
+        border-top: 1px solid #AAAAAA;
+        border-bottom: 1px solid #AAAAAA;
+    }
+    .button-wrapper {
+        width: calc(100% / 2);
+        padding: 0 4px;
+    }
+
+    .btn i {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+
+    .btn {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        cursor: pointer;
+        justify-content: center;
         align-items: center;
     }
-
-    .save-btn {
-        background-color: #FFFFFF;
-        color: #000000;
-        width: 200px;
-    }
-
-    button:hover {
+    .btn:hover {
         background-color: #DDDDDD;
     }
-    button:disabled {
+    .btn:disabled {
         background-color: #999999;
         cursor: default;
-    }
-
-    .label {
-        margin-bottom: 4px;
-    }
-
-    @media (max-width: 500px) {
-        .save-btn {
-            width: 150px;
-            min-width: 150px;
-        }
-        .setting-name {
-            width: 250px;
-        }
     }
 </style>

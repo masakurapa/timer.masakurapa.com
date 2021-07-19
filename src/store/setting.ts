@@ -24,7 +24,7 @@ const defaultPersonalTimerSetting: PersonalTimerSetting = {
     colorSetting: defaultColorSetting,
     timerSettings: [],
     owner: true,
-    shared: true,
+    shared: false,
 };
 
 /**

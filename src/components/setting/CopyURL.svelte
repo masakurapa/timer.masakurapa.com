@@ -1,4 +1,4 @@
-<textarea bind:value={url} bind:this={textarea}></textarea>
+<textarea bind:value={copyText} bind:this={textarea}></textarea>
 
 <script lang="ts">
     import { onMount } from 'svelte';
@@ -6,7 +6,9 @@
     /** 設定のキー */
     export let key: string;
 
-    let url = `https://timer.masakurapa.com?sid=${key}`;
+    const url = new URL(window.location.href);
+
+    let copyText = `${url.origin}?sid=${key}`;
     let textarea: HTMLTextAreaElement;
 
     onMount(() => {
