@@ -1,4 +1,4 @@
-<button on:click="{onClick}">PAUSE</button>
+<button on:click="{onClick}">一時停止</button>
 
 <script lang="ts">
     import { isTimerRunning } from '../../../store/timer';

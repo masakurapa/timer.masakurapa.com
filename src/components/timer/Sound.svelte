@@ -1,6 +1,6 @@
 <div>
     <p on:click={onClick}>
-        Sound <i class="fas fa-2x" class:fa-toggle-on={isPlaySound} class:fa-toggle-off={!isPlaySound}></i>
+        サウンド <i class="fas fa-2x" class:fa-toggle-on={isPlaySound} class:fa-toggle-off={!isPlaySound}></i>
     </p>
 </div>
 <audio src="/decision4.mp3" bind:this={audio1}><track kind="captions"/></audio>
@@ -54,7 +54,7 @@
 <style>
     div {
         height: 32px;
-        width: 100px;
+        width: 150px;
     }
 
     p {

@@ -1,4 +1,4 @@
-<button on:click="{onClick}" {disabled}>RESET</button>
+<button on:click="{onClick}" {disabled}>リセット</button>
 
 <script lang="ts">
     import { personalTimerSetting } from '../../../store/setting';

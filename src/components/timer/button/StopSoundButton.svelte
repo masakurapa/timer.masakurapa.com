@@ -1,4 +1,4 @@
-<button on:click="{onClick}">STOP SOUND</button>
+<button on:click="{onClick}">サウンド停止</button>
 
 <script lang="ts">
     import { personalTimerSetting } from '../../..//store/setting';

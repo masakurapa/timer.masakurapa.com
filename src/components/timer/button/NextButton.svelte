@@ -1,4 +1,4 @@
-<button on:click="{onClick}" {disabled}>NEXT</button>
+<button on:click="{onClick}" {disabled}>次へ</button>
 
 <script lang="ts">
     import { personalTimerSetting } from '../../../store/setting';

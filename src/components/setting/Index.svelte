@@ -8,7 +8,7 @@
         <button
             class:active={activeBtnNo === HISTORY}
             on:click="{() => onClick(HISTORY)}"
-        >Setting History</button>
+        >個人設定・履歴</button>
     </div>
 </div>
 
