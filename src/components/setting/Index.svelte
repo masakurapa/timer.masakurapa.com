@@ -18,7 +18,7 @@
 
 <script lang="ts">
     import TimerSetting from './timer_setting/Index.svelte';
-    import History from './history/Index.svelte';
+    // import History from './history/Index.svelte';
 
     // アクティブなボタンがない状態
     const NONE = 0;
@@ -29,7 +29,7 @@
 
     const components: { [key: number]: any } = {
         [TIMER_SETTING]: TimerSetting,
-        [HISTORY]: History,
+        // [HISTORY]: History,
     };
 
     let activeBtnNo  = TIMER_SETTING;

@@ -1,7 +1,7 @@
 <button on:click="{onClick}">STOP SOUND</button>
 
 <script lang="ts">
-    import { timerSettings } from '../../..//store/setting';
+    import { personalTimerSetting } from '../../..//store/setting';
     import {
         currentTimerPosition,
         timerSecondsRemaining,
@@ -14,7 +14,7 @@
         isTimerRunning.set(false);
         isTimeUpAll.set(false);
         currentTimerPosition.set(0);
-        timerSecondsRemaining.set(calcTotalSeconds($timerSettings[0].timer));
+        timerSecondsRemaining.set(calcTotalSeconds($personalTimerSetting.timerSettings[0].timer));
     };
 </script>
 

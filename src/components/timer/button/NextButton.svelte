@@ -1,16 +1,16 @@
 <button on:click="{onClick}" {disabled}>NEXT</button>
 
 <script lang="ts">
-    import { timerSettings } from '../../../store/setting';
+    import { personalTimerSetting } from '../../../store/setting';
     import { currentTimerPosition } from '../../../store/timer';
 
     const onClick = (): void => {
         const pos = $currentTimerPosition + 1;
-        currentTimerPosition.set(pos >= $timerSettings.length ? 0 : pos);
+        currentTimerPosition.set(pos >= $personalTimerSetting.timerSettings.length ? 0 : pos);
     };
 
     // 次の位置に設定情報がある場合にtrueを返します
-    $: disabled = typeof $timerSettings[$currentTimerPosition + 1] === 'undefined';
+    $: disabled = typeof $personalTimerSetting.timerSettings[$currentTimerPosition + 1] === 'undefined';
 </script>
 
 <style>

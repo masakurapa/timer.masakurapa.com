@@ -12,7 +12,7 @@
 
 <script lang="ts">
     import type { ColorSetting } from './types/local_timer';
-    import { colorSetting } from './store/setting';
+    import { personalTimerSetting } from './store/setting';
     import {
         timerSecondsRemaining,
         isTimerRunning,
@@ -37,22 +37,22 @@
 
         // 全タイマーの終了
         if ($isTimeUpAll) {
-            bgColor = setting.finishColor;
+            bgColor = colorSetting.finishColor;
             return;
         }
 
-        if (sec <= setting.warning2Seconds) {
-            bgColor = setting.warning2Color;
-        } else if (sec <= setting.warning1Seconds) {
-            bgColor = setting.warning1Color;
+        if (sec <= colorSetting.warning2Seconds) {
+            bgColor = colorSetting.warning2Color;
+        } else if (sec <= colorSetting.warning1Seconds) {
+            bgColor = colorSetting.warning1Color;
         } else {
-            bgColor = setting.runningColor;
+            bgColor = colorSetting.runningColor;
         }
     };
 
-    let setting: ColorSetting;
-    colorSetting.subscribe(val => {
-        setting = val;
+    let colorSetting: ColorSetting;
+    personalTimerSetting.subscribe(setting => {
+        colorSetting = setting.colorSetting;
     });
 
     timerSecondsRemaining.subscribe((): void => setTimerStatus());

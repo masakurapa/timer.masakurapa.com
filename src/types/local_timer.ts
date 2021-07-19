@@ -6,6 +6,7 @@ export type PersonalTimerSetting = {
     name: string;
     colorSetting: ColorSetting;
     timerSettings: TimerSetting[];
+    owner: boolean;
     shared: boolean;
 };
 

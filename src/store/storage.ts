@@ -24,13 +24,13 @@ export const currentSharedSettingPosition = writable(-1);
  * セッションで使用している個人設定のキー
  * 空文字の場合は個人設定未使用
  */
-export const currentPersonalSettingKey = writable('');
+// export const currentPersonalSettingKey = writable('');
 
 /**
  * セッションで使用している共有設定のキー
  * 空文字の場合は共有設定未使用
  */
-export const currentSharedSettingKey = writable('');
+// export const currentSharedSettingKey = writable('');
 
 /**
  * 個人設定を使用している場合true
@@ -42,9 +42,9 @@ export const usePersonalSetting = writable(true);
  */
 export const switchPersonalSetting = (pos: number, key: string): void => {
     currentPersonalSettingPosition.set(pos);
-    currentPersonalSettingKey.set(key);
+    // currentPersonalSettingKey.set(key);
     currentSharedSettingPosition.set(-1);
-    currentSharedSettingKey.set('');
+    // currentSharedSettingKey.set('');
     usePersonalSetting.set(true);
 };
 
@@ -53,9 +53,9 @@ export const switchPersonalSetting = (pos: number, key: string): void => {
  */
 export const switchSharedSetting = (pos: number, key: string): void => {
     currentPersonalSettingPosition.set(-1);
-    currentPersonalSettingKey.set('');
+    // currentPersonalSettingKey.set('');
     currentSharedSettingPosition.set(pos);
-    currentSharedSettingKey.set(key);
+    // currentSharedSettingKey.set(key);
     usePersonalSetting.set(false);
 };
 
@@ -64,8 +64,8 @@ export const switchSharedSetting = (pos: number, key: string): void => {
  */
 export const resetAll = (): void => {
     currentPersonalSettingPosition.set(-1);
-    currentPersonalSettingKey.set('');
+    // currentPersonalSettingKey.set('');
     currentSharedSettingPosition.set(-1);
-    currentSharedSettingKey.set('');
+    // currentSharedSettingKey.set('');
     usePersonalSetting.set(true);
 };

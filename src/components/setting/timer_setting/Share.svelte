@@ -4,36 +4,33 @@
     <div slot="content">
         <div class="setting-name-wrapper">
             <div class="label">Setting Name:</div>
-            <input type="text" class="setting-name" bind:value="{$settingName}" >
+            <div class="input-name-wrapper">
+                <input type="text" class="setting-name" bind:value="{$personalTimerSetting.name}" >
+
+                {#if showShareBtn }
+                    <div class="share-button-wrapper" on:click="{onClickSaveShareSetting}">
+                        <i class="fas fa-share-square fa-2x"></i>
+                    </div>
+                {/if}
+            </div>
         </div>
 
         <div class="button-wrapper">
-            {#if !$usePersonalSetting || $currentPersonalSettingPosition === null}
+            {#if !saved}
                 <button
                     class="save-btn"
                     on:click="{onClickSaveLocalStorage}"
                 >
-                    Save LocalStorage
+                    Save Setting
                 </button>
             {:else}
                 <button
                     class="save-btn"
                     on:click="{onClickOverwriteLocalStorage}"
                 >
-                    Overwrite LocalStorage
+                    Overwrite Setting
                 </button>
             {/if}
-
-            <div class="share-button-wrapper">
-                {#if $usePersonalSetting}
-                    <button
-                        class="save-btn"
-                        on:click="{onClickSaveShareSetting}"
-                    >
-                        Share Setting
-                    </button>
-                {/if}
-            </div>
         </div>
     </div>
 </Collapse>
@@ -43,24 +40,18 @@
 <script lang="ts">
     import { v4 as uuidv4 } from 'uuid';
 
-    import type { PersonalTimerSetting } from '../../../types/local_timer';
-
     import { saveSetting } from '../../../api/api';
 
     import {
-        settingName,
-        colorSetting,
-        timerSettings,
+        personalTimerSetting,
     } from '../../../store/setting';
     import {
         uid,
-        currentPersonalSettingKey,
         currentPersonalSettingPosition,
         usePersonalSetting,
         switchPersonalSetting,
     } from '../../../store/storage';
     import {
-        getTimerSetting,
         addTimerSetting,
         saveTimerSetting,
         saveTimerSettingKey,
@@ -86,19 +77,12 @@
     // ローカルストレージに新規保存する
     const addPersonalSetting = (): void => {
         const timerSettingKey = uuidv4();
-        currentPersonalSettingKey.set(timerSettingKey);
-
-        if ($settingName === '') {
-            settingName.set(timerSettingKey);
+        $personalTimerSetting.key = timerSettingKey;
+        if ($personalTimerSetting.name === '') {
+            $personalTimerSetting.name = timerSettingKey;
         }
 
-        const pos = addTimerSetting({
-            key: timerSettingKey,
-            name: $settingName,
-            colorSetting: $colorSetting,
-            timerSettings: $timerSettings,
-            shared: false,
-        });
+        const pos = addTimerSetting($personalTimerSetting);
         saveTimerSettingKey(timerSettingKey);
 
         switchPersonalSetting(pos, timerSettingKey);
@@ -112,25 +96,15 @@
 
     // ローカルストレージの設定を上書きする
     const onClickOverwriteLocalStorage = async (): Promise<void> => {
-        if ($settingName === '') {
-            settingName.set($currentPersonalSettingKey);
+        if ($personalTimerSetting.name === '') {
+            $personalTimerSetting.name = $personalTimerSetting.key;
         }
 
-        const timer = getTimerSetting();
-        const shared = timer.settings[$currentPersonalSettingPosition].shared;
-
-        const setting: PersonalTimerSetting = {
-            shared,
-            key: $currentPersonalSettingKey,
-            name: $settingName,
-            colorSetting: $colorSetting,
-            timerSettings: $timerSettings,
-        };
-
+        const setting = $personalTimerSetting;
         saveTimerSetting($currentPersonalSettingPosition, setting);
 
         // 共有済みの設定も更新する
-        if (shared) {
+        if (setting.shared) {
             const resp = await saveSetting($uid, setting);
             if (!resp.isSuccess()) {
                 alert(resp.errors().join('\n'));
@@ -144,17 +118,12 @@
     // 設定をシェアする
     const onClickSaveShareSetting = async (): Promise<void> => {
         // ローカルストレージに未保存なら先に保存する
-        if ($currentPersonalSettingKey === null) {
+        if ($personalTimerSetting.key === '') {
             addPersonalSetting();
         }
 
-        const setting: PersonalTimerSetting = {
-            key: $currentPersonalSettingKey,
-            name: $settingName,
-            colorSetting: $colorSetting,
-            timerSettings: $timerSettings,
-            shared: true,
-        };
+        $personalTimerSetting.shared = true;
+        const setting = $personalTimerSetting;
 
         const resp = await saveSetting($uid, setting);
         if (!resp.isSuccess()) {
@@ -166,6 +135,13 @@
 
         showMessage('Shared !!!!!');
     };
+
+    //保存済みの設定の場合true
+    $: saved = !$usePersonalSetting || $personalTimerSetting.key !== '';
+
+    // シェアボタンを表示する場合true
+    // 個人設定利用時で、ローカルストレージに保存済みの場合だけ
+    $: showShareBtn = $usePersonalSetting && $personalTimerSetting.key !== '';
 </script>
 
 <style>
@@ -177,7 +153,15 @@
         margin-bottom: 12px;
     }
     .share-button-wrapper {
-        margin-left: 32px;
+        margin-left: 4px;
+        width: 32px;
+        color: #1E90FF;
+        cursor: pointer;
+    }
+
+    .input-name-wrapper {
+        display: flex;
+        align-items: center;
     }
 
     .save-btn {

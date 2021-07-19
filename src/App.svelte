@@ -14,7 +14,7 @@
 
     import { getSetting } from './api/api';
 
-    import { setTimerSetting } from './store/setting';
+    import { personalTimerSetting } from './store/setting';
     import {
         uid,
         switchPersonalSetting,
@@ -65,7 +65,7 @@
 
         switchPersonalSetting(no, timerSetting.settings[no].key)
         // ローカルストレージの設定は常に管理者とみなす
-        setTimerSetting(timerSetting.settings[no], true)
+        personalTimerSetting.set(timerSetting.settings[no])
         return true;
     };
 
@@ -108,7 +108,7 @@
         }
 
         switchSharedSetting(no, resp.setting.key)
-        setTimerSetting(resp.setting, resp.owner);
+        personalTimerSetting.set(resp.setting);
     };
 
     // ローカルストレージからuidを取得

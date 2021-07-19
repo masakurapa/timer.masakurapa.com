@@ -1,7 +1,7 @@
 <button on:click="{onClick}" {disabled}>RESET</button>
 
 <script lang="ts">
-    import { timerSettings } from '../../../store/setting';
+    import { personalTimerSetting } from '../../../store/setting';
     import {
         isTimerRunning,
         currentTimerPosition,
@@ -17,13 +17,13 @@
         }
 
         // ありえないはずだが、先頭要素が存在しない場合は残り時間をリセット
-        if (typeof $timerSettings[0] === 'undefined') {
+        if (typeof $personalTimerSetting.timerSettings[0] === 'undefined') {
             timerSecondsRemaining.set(0);
             return;
         }
 
         // 先頭の設定で残り時間をリセット
-        timerSecondsRemaining.set(calcTotalSeconds($timerSettings[0].timer));
+        timerSecondsRemaining.set(calcTotalSeconds($personalTimerSetting.timerSettings[0].timer));
     };
 
     // タイマー起動中は無効化する

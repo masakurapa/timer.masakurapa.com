@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        {#each $timerSettings as setting, idx (idx)}
+        {#each $personalTimerSetting.timerSettings as setting, idx (idx)}
             <div class="setting-row">
                 <div class="setting-row-number">#{idx + 1}</div>
                 <div class="setting-row-icon-wrapper">
@@ -81,7 +81,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import type { TimerSetting, Timer } from '../../../types/local_timer';
-    import { timerSettings } from '../../../store/setting';
+    import { personalTimerSetting } from '../../../store/setting';
     import { isTimerRunning, currentTimerPosition } from '../../../store/timer';
     import { padding, calcTotalTime } from '../../../util';
 
@@ -92,20 +92,20 @@
      * 指定位置にタイマーの設定を追加します
      */
     const addTimerSetting = (no: number): void => {
-        timerSettings.update(settings => {
+        personalTimerSetting.update(setting => {
             const defaultTimerSetting: TimerSetting = {
                 title: '',
                 timer: { hour: 0, minute: 0, second: 0 },
             };
 
             if (no === 0) {
-                settings.unshift(defaultTimerSetting);
-            } else if (no === settings.length) {
-                settings.push(defaultTimerSetting);
+                setting.timerSettings.unshift(defaultTimerSetting);
+            } else if (no === setting.timerSettings.length) {
+                setting.timerSettings.push(defaultTimerSetting);
             } else {
-                settings.splice(no, 0, defaultTimerSetting);
+                setting.timerSettings.splice(no, 0, defaultTimerSetting);
             }
-            return settings;
+            return setting;
         });
     };
 
@@ -113,10 +113,10 @@
      * 指定位置のタイマー設定をデフォルト値に戻します
      */
     const onClickEraseSetting = (no: number): void => {
-        timerSettings.update(settings => {
-            settings[no].title = '';
-            settings[no].timer = { hour: 0, minute: 0, second: 0 };
-            return settings;
+        personalTimerSetting.update(setting => {
+            setting.timerSettings[no].title = '';
+            setting.timerSettings[no].timer = { hour: 0, minute: 0, second: 0 };
+            return setting;
         });
     }
 
@@ -124,28 +124,28 @@
      * 指定位置のタイマー設定を削除します
      */
      const onClickRemoveSetting = (no: number): void => {
-        timerSettings.update(settings => {
-            settings.splice(no, 1);
-            return settings;
+        personalTimerSetting.update(setting => {
+            setting.timerSettings.splice(no, 1);
+            return setting;
         });
     }
 
     // タイマー設定は最低1つ存在するようにするため
     // マウント時に設定が空なら先頭に行を追加しておく
     onMount(() => {
-        if ($timerSettings.length === 0) {
+        if ($personalTimerSetting.timerSettings.length === 0) {
             addTimerSetting(0);
         }
     });
 
-    timerSettings.subscribe(settings => {
+    personalTimerSetting.subscribe(setting => {
         // 空に変更されていたら最低一つ存在するようにするため、先頭に行を追加
-        if (settings.length === 0) {
+        if (setting.timerSettings.length === 0) {
             addTimerSetting(0);
         }
 
         // 全設定の合計時間を求める
-        totalTime = calcTotalTime(settings);
+        totalTime = calcTotalTime(setting.timerSettings);
     });
 
     $: disabled = $isTimerRunning === true;

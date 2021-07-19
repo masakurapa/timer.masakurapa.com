@@ -1,7 +1,7 @@
 <div class="wrapper">
     <div class="phase-title">
         {#if hasCurrentSetting}
-            {getTitle($timerSettings[$currentTimerPosition].title, $currentTimerPosition)}
+            {getTitle($personalTimerSetting.timerSettings[$currentTimerPosition].title, $currentTimerPosition)}
         {/if}
     </div>
 
@@ -20,7 +20,7 @@
 
 <script lang="ts">
     import type { Timer } from '../../types/local_timer';
-    import { timerSettings } from '../../store/setting';
+    import { personalTimerSetting } from '../../store/setting';
     import {
         isTimerRunning,
         isTimeUp,
@@ -75,7 +75,7 @@
             // ここから時間切れの場合の処理
 
             // 次のタイマー設定が無い場合はタイマーを止めて終わり
-            if (index + 1 === $timerSettings.length) {
+            if (index + 1 === $personalTimerSetting.timerSettings.length) {
                 clearInterval(interval);
                 isTimeUpAll.set(true);
                 return;
@@ -99,27 +99,27 @@
     };
 
     // タイマー設定が更新されたら現在位置の設定秒数を計算用の変数に詰め直す
-    timerSettings.subscribe(settings => {
+    personalTimerSetting.subscribe(setting => {
         // 現在行が設定に見つからなければ先頭に戻してしまう
         // currentTimerPositionのsubscribeが処理を拾うので、処理の重複を避けるために現在位置だけ変える
-        if (typeof settings[$currentTimerPosition] === 'undefined') {
+        if (typeof setting.timerSettings[$currentTimerPosition] === 'undefined') {
             currentTimerPosition.set(0);
             return;
         }
-        timerSecondsRemaining.set(calcTotalSeconds(settings[$currentTimerPosition].timer));
-        totalTime = settings[$currentTimerPosition].timer;
+        timerSecondsRemaining.set(calcTotalSeconds(setting.timerSettings[$currentTimerPosition].timer));
+        totalTime = setting.timerSettings[$currentTimerPosition].timer;
     });
 
     // タイマー設定位置が更新されたら、更新後の設定位置の設定秒数を計算用の変数に詰め直す
     currentTimerPosition.subscribe(pos => {
         // 現在行が設定に見つからなければ合計秒数をリセットして終わり
-        if (typeof $timerSettings[pos] === 'undefined') {
+        if (typeof $personalTimerSetting.timerSettings[pos] === 'undefined') {
             totalTime = { hour: 0, minute: 0, second: 0 };
             timerSecondsRemaining.set(0);
             return;
         }
-        timerSecondsRemaining.set(calcTotalSeconds($timerSettings[pos].timer));
-        totalTime = $timerSettings[pos].timer;
+        timerSecondsRemaining.set(calcTotalSeconds($personalTimerSetting.timerSettings[pos].timer));
+        totalTime = $personalTimerSetting.timerSettings[pos].timer;
     });
 
     // タイマーの残り秒数が更新されたら、合計時間を再計算し直す
@@ -137,11 +137,11 @@
     })
 
     // 現在の位置に設定情報がある場合にtrueを返します
-    $: hasCurrentSetting = typeof $timerSettings[$currentTimerPosition] !== 'undefined';
+    $: hasCurrentSetting = typeof $personalTimerSetting.timerSettings[$currentTimerPosition] !== 'undefined';
     // 次の位置に設定情報がある場合にtrueを返します
-    $: hasNextSetting = typeof $timerSettings[$currentTimerPosition + 1] !== 'undefined';
+    $: hasNextSetting = typeof $personalTimerSetting.timerSettings[$currentTimerPosition + 1] !== 'undefined';
     // 次の位置の設定情報
-    $: nextSetting = $timerSettings[$currentTimerPosition + 1];
+    $: nextSetting = $personalTimerSetting.timerSettings[$currentTimerPosition + 1];
 </script>
 
 <style>

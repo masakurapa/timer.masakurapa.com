@@ -10,7 +10,7 @@
 
 <script lang="ts">
     import { isTimerRunning } from '../../../store/timer';
-    import { resetSettings } from '../../../store/setting';
+    import { resetPersonalTimerSetting } from '../../../store/setting';
     import { resetAll } from '../../../store/storage';
 
     import Share from './Share.svelte';
@@ -26,7 +26,7 @@
         }
 
         resetAll();
-        resetSettings();
+        resetPersonalTimerSetting();
     }
 
     $: disabled = $isTimerRunning === true;

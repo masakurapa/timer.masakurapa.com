@@ -101,15 +101,12 @@
         StorageTimerSetting,
     } from '../../../types/local_timer';
     import {
-        settingName,
-        setTimerSetting,
-        resetSettings,
+        personalTimerSetting,
+        resetPersonalTimerSetting,
     } from '../../../store/setting';
     import {
         uid,
-        currentPersonalSettingKey,
         currentPersonalSettingPosition,
-        currentSharedSettingKey,
         currentSharedSettingPosition,
         usePersonalSetting,
         switchPersonalSetting,
@@ -175,11 +172,11 @@
         // 現在読み込まれている設定が削除対象の場合
         // キーと設定名を削除しておく
         if (no === $currentPersonalSettingPosition) {
-            currentPersonalSettingKey.set('');
-            settingName.set('');
+            $personalTimerSetting.key = '';
+            $personalTimerSetting.name = '';
         }
 
-        const key = $currentPersonalSettingKey;
+        const key = $personalTimerSetting.key;
         let pos = -1;
         for (let i = 0; i < timerSetting.settings.length; i++) {
             if (timerSetting.settings[i].key === key) {
@@ -198,7 +195,7 @@
 
         // 現在の選択位置と同じなら設定解除する
         if (no === $currentPersonalSettingPosition) {
-            resetSettings();
+            resetPersonalTimerSetting();
             resetAll();
             // 最後にアクセスした設定のキーを保存しておく
             saveTimerSettingKey('');
@@ -208,7 +205,7 @@
         }
 
         const setting = timerSetting.settings[no];
-        setTimerSetting(setting, true);
+        personalTimerSetting.set(setting);
 
         switchPersonalSetting(no, setting.key);
 
@@ -236,13 +233,9 @@
         }
 
         // シェアフラグをoff
-        saveTimerSetting(no, {
-            key: setting.key,
-            name: setting.name,
-            colorSetting: setting.colorSetting,
-            timerSettings: setting.timerSettings,
-            shared: false,
-        });
+        setting.shared = false;
+        saveTimerSetting(no, setting);
+
         timerSetting = getTimerSetting();
 
         showMessage('Unlinked !!!!!');
@@ -288,7 +281,7 @@
 
         // 現在の選択位置と同じなら設定解除する
         if (no === $currentSharedSettingPosition) {
-            resetSettings();
+            resetPersonalTimerSetting();
             resetAll();
             // 最後にアクセスした設定のキーを保存しておく
             saveTimerSettingKey('');
@@ -305,7 +298,7 @@
             return;
         }
 
-        setTimerSetting(resp.data.setting, resp.data.owner);
+        personalTimerSetting.set(resp.data.setting);
         switchSharedSetting(no, setting.key);
 
         // 最後にアクセスした設定のキーを保存しておく
