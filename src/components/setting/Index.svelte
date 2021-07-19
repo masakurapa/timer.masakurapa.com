@@ -2,7 +2,7 @@
     <button
         class:active={activeBtnNo === TIMER_SETTING}
         on:click="{() => onClick(TIMER_SETTING)}"
-    >Settings</button>
+    >タイマー設定</button>
 
     <div class="hisotry-button-wrapper">
         <button

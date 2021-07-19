@@ -1,8 +1,8 @@
-<h2>Timer Setting</h2>
+<h2>タイマーの設定</h2>
 
 <div class="wrapper">
     <div class="total">
-        Tolal: {padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}
+        合計: {padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}
     </div>
 
     <div>
@@ -34,13 +34,13 @@
                     </div>
 
                     <div class="setting-row-input-group">
-                        <div class="setting-row-input-label">Title:</div>
+                        <div class="setting-row-input-label">タイトル:</div>
                         <div class="setting-row-input-text">
                             <input type="text" class="setting-row-input-title" bind:value="{setting.title}" {disabled}>
                         </div>
                     </div>
                     <div class="setting-row-input-group">
-                        <div class="setting-row-input-label">Hours:</div>
+                        <div class="setting-row-input-label">時:</div>
                         <div class="setting-row-input-number">
                             <input type="number" min="0" max="24" bind:value="{setting.timer.hour}" {disabled}>
                         </div>
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="setting-row-input-group">
-                        <div class="setting-row-input-label">Minutes:</div>
+                        <div class="setting-row-input-label">分:</div>
                         <div class="setting-row-input-number">
                             <input type="number" min="0" max="59" bind:value="{setting.timer.minute}" {disabled}>
                         </div>
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <div class="setting-row-input-group">
-                        <div class="setting-row-input-label">Seconds:</div>
+                        <div class="setting-row-input-label">秒:</div>
                         <div class="setting-row-input-number">
                             <input type="number" min="0" max="59" bind:value="{setting.timer.second}" {disabled}>
                         </div>
@@ -264,7 +264,7 @@
         margin-bottom: 0px;
     }
     .setting-row-input-label {
-        width: 100px;
+        width: 90px;
     }
     .setting-row-input-title {
         width: calc(100% - 40px);

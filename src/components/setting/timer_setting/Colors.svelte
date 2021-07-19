@@ -1,34 +1,34 @@
 <Collapse key="color-setting">
-    <span slot="header">Collor Settings</span>
+    <span slot="header">背景色の設定</span>
 
     <div slot="content">
         <div class="input-wrapper">
-            <div class="label">Running:</div>
+            <div class="label">起動中</div>
             <input type="text" class="color-input" bind:value="{colorSetting.runningColor}" {disabled}>
             <div class="color-preview" style="background-color: {colorSetting.runningColor}"></div>
         </div>
         <div class="multi-input-wrapper">
             <div class="input-color-wrapper">
-                <div class="label">Warning:</div>
+                <div class="label">警告1</div>
                 <input type="text" class="color-input" bind:value="{colorSetting.warning1Color}" {disabled}>
                 <div class="color-preview" style="background-color: {colorSetting.warning1Color}"></div>
             </div>
             <div class="input-seconds-wrapper">
-                Switch with <input type="number" class="seconds-input" bind:value="{colorSetting.warning1Seconds}" {disabled}> seconds remaining.
+                残り <input type="number" class="seconds-input" bind:value="{colorSetting.warning1Seconds}" {disabled}> 秒になったら変更
             </div>
         </div>
         <div class="multi-input-wrapper">
             <div class="input-color-wrapper">
-                <div class="label">Danger:</div>
+                <div class="label">警告2</div>
                 <input type="text" class="color-input" bind:value="{colorSetting.warning2Color}" {disabled}>
                 <div class="color-preview" style="background-color: {colorSetting.warning2Color}" {disabled}></div>
             </div>
             <div class="input-seconds-wrapper">
-                Switch with <input type="number" class="seconds-input" bind:value="{colorSetting.warning2Seconds}" {disabled}> seconds remaining.
+                残り <input type="number" class="seconds-input" bind:value="{colorSetting.warning2Seconds}" {disabled}> 秒になったら変更
             </div>
         </div>
         <div class="input-wrapper">
-            <div class="label">Finish:</div>
+            <div class="label">終了</div>
             <input type="text" class="color-input" bind:value="{colorSetting.finishColor}" {disabled}>
             <div class="color-preview" style="background-color: {colorSetting.finishColor}" {disabled}></div>
         </div>

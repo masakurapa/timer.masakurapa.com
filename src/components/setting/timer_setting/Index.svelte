@@ -1,5 +1,5 @@
 <div class="remove-all-btn-wrapper" class:hide={disabled}>
-    <button class="remove-all-btn" on:click="{onClickRemoveAll}">Remove All</button>
+    <button class="remove-all-btn" on:click="{onClickRemoveAll}">設定を初期化</button>
 </div>
 
 <div>
@@ -21,7 +21,7 @@
      * 全ての設定を削除します
      */
      const onClickRemoveAll = (): void => {
-        if (!confirm('Remove all settings.\nAre you sure?')) {
+        if (!confirm('設定を初期化します。\nよろしいですか？')) {
             return;
         }
 
