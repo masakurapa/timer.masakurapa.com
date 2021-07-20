@@ -102,7 +102,7 @@
         const pos = addTimerSetting($personalTimerSetting);
         saveTimerSettingKey(timerSettingKey);
 
-        switchPersonalSetting(pos, timerSettingKey);
+        switchPersonalSetting(pos);
     };
 
     // ローカルストレージに新規保存する
@@ -181,7 +181,6 @@
 
      // シェアボタンを表示する場合はtrue
      $: showShareBtn = $usePersonalSetting
-        && $personalTimerSetting.key === ''
         && $personalTimerSetting.shared === false;
 </script>
 
@@ -217,6 +216,7 @@
         display: flex;
         width: 100%;
         height: 50px;
+        border-radius: 8px;
         cursor: pointer;
         justify-content: center;
         align-items: center;

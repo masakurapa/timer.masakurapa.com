@@ -24,6 +24,7 @@
         getTimerSetting,
         addSharedTimerHistory,
         getTimerSettingKey,
+        saveTimerSettingKey,
         getUID,
         saveUID,
     } from './storage';
@@ -70,11 +71,11 @@
     };
 
     // 共有設定を読み込みます
-    const loadSharedSetting = async (uid: string, key: string): Promise<void> => {
+    const loadSharedSetting = async (uid: string, key: string): Promise<boolean> => {
         // 共有設定を取得
         const resp = await getSharedSetting(uid, key);
         if (resp === null) {
-            return;
+            return false;
         }
         personalTimerSetting.set(resp.setting);
 
@@ -91,7 +92,7 @@
 
         if (no !== -1) {
             switchPersonalSetting(no)
-            return;
+            return true;
         }
 
 
@@ -106,13 +107,14 @@
         // 共有設定にもキーが見つからなければ
         // アクセス履歴を共有設定に保存する
         if (no === -1) {
-            addSharedTimerHistory({
+            no = addSharedTimerHistory({
                 key: resp.setting.key,
                 name: resp.setting.name,
             });
         }
 
         switchSharedSetting(no)
+        return true;
     };
 
     // ローカルストレージからuidを取得
@@ -149,7 +151,10 @@
         if (loadLocalSetting(key)) {
             return;
         }
-        await loadSharedSetting(uid, key);
+        if (!await loadSharedSetting(uid, key)) {
+            // ローカルストレージのキーで取得に失敗したらキーを消しておく
+            saveTimerSettingKey('');
+        }
     });
 </script>
 

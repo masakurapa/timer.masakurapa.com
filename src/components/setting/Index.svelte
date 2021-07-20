@@ -2,13 +2,13 @@
     <button
         class:active={activeBtnNo === TIMER_SETTING}
         on:click="{() => onClick(TIMER_SETTING)}"
-    >タイマー設定</button>
+    ><i class="fas fa-cogs"></i> タイマー設定</button>
 
     <div class="hisotry-button-wrapper">
         <button
             class:active={activeBtnNo === HISTORY}
             on:click="{() => onClick(HISTORY)}"
-        >個人設定・履歴</button>
+        ><i class="fas fa-history"></i> 個人設定・履歴</button>
     </div>
 </div>
 
@@ -18,7 +18,7 @@
 
 <script lang="ts">
     import TimerSetting from './timer_setting/Index.svelte';
-    // import History from './history/Index.svelte';
+    import History from './history/Index.svelte';
 
     // アクティブなボタンがない状態
     const NONE = 0;
@@ -29,7 +29,7 @@
 
     const components: { [key: number]: any } = {
         [TIMER_SETTING]: TimerSetting,
-        // [HISTORY]: History,
+        [HISTORY]: History,
     };
 
     let activeBtnNo  = TIMER_SETTING;
