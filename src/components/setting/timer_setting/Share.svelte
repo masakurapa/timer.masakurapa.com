@@ -1,4 +1,4 @@
-<Collapse key="share-setting" open={$personalTimerSetting.owner}>
+<Collapse key="share-setting" open={setting.owner}>
     <span slot="header">設定の保存・共有</span>
 
     <div slot="content">
@@ -7,7 +7,7 @@
                 type="text"
                 placeholder="設定名"
                 class="setting-name"
-                bind:value="{$personalTimerSetting.name}"
+                bind:value="{setting.name}"
             >
         </div>
 
@@ -175,6 +175,8 @@
         copyURL();
         showMessage('Copied !!!!!');
      };
+
+     $: setting = $personalTimerSetting;
 
      // 新規保存可能な状態の場合true
      $: showSaveBtn = !$usePersonalSetting || $personalTimerSetting.key === '';
