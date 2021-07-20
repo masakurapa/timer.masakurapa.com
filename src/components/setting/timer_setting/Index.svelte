@@ -12,6 +12,7 @@
     import { isTimerRunning } from '../../../store/timer';
     import { resetPersonalTimerSetting } from '../../../store/setting';
     import { resetAll } from '../../../store/storage';
+    import { saveTimerSettingKey } from '../../../storage';
 
     import Share from './Share.svelte';
     import Colors from './Colors.svelte';
@@ -27,6 +28,7 @@
 
         resetAll();
         resetPersonalTimerSetting();
+        saveTimerSettingKey('');
     }
 
     $: disabled = $isTimerRunning === true;

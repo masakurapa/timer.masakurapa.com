@@ -63,7 +63,7 @@
             return false;
         }
 
-        switchPersonalSetting(no, timerSetting.settings[no].key)
+        switchPersonalSetting(no)
         // ローカルストレージの設定は常に管理者とみなす
         personalTimerSetting.set(timerSetting.settings[no])
         return true;
@@ -76,6 +76,7 @@
         if (resp === null) {
             return;
         }
+        personalTimerSetting.set(resp.setting);
 
         const timerSetting = getTimerSetting();
 
@@ -88,27 +89,30 @@
             }
         }
 
-        // 個人設定からキーが見つからなければ共有設定を探す
-        if (no === -1) {
-            for (let i = 0; i < timerSetting.histories.length; i++) {
-                if (timerSetting.histories[i].key === key) {
-                    no = i;
-                    break;
-                }
-            }
+        if (no !== -1) {
+            switchPersonalSetting(no)
+            return;
+        }
 
-            // 共有設定にもキーが見つからなければ
-            // アクセス履歴を共有設定に保存する
-            if (no === -1) {
-                addSharedTimerHistory({
-                    key: resp.setting.key,
-                    name: resp.setting.name,
-                });
+
+        // 個人設定からキーが見つからなければ共有設定を探す
+        for (let i = 0; i < timerSetting.histories.length; i++) {
+            if (timerSetting.histories[i].key === key) {
+                no = i;
+                break;
             }
         }
 
-        switchSharedSetting(no, resp.setting.key)
-        personalTimerSetting.set(resp.setting);
+        // 共有設定にもキーが見つからなければ
+        // アクセス履歴を共有設定に保存する
+        if (no === -1) {
+            addSharedTimerHistory({
+                key: resp.setting.key,
+                name: resp.setting.name,
+            });
+        }
+
+        switchSharedSetting(no)
     };
 
     // ローカルストレージからuidを取得
