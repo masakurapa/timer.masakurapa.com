@@ -4,32 +4,68 @@
     <div slot="content">
         <div class="input-wrapper">
             <div class="label">起動中</div>
-            <input type="text" class="color-input" bind:value="{colorSetting.runningColor}" {disabled}>
+            <input
+                type="text"
+                class="color-input"
+                value="{colorSetting.runningColor}"
+                on:change="{onChangeRunningColor}"
+                {disabled}
+            >
             <div class="color-preview" style="background-color: {colorSetting.runningColor}"></div>
         </div>
         <div class="multi-input-wrapper">
             <div class="input-color-wrapper">
                 <div class="label">警告1</div>
-                <input type="text" class="color-input" bind:value="{colorSetting.warning1Color}" {disabled}>
+                <input
+                    type="text"
+                    class="color-input"
+                    value="{colorSetting.warning1Color}"
+                    on:change="{onChangeWarning1Color}"
+                    {disabled}
+                >
                 <div class="color-preview" style="background-color: {colorSetting.warning1Color}"></div>
             </div>
             <div class="input-seconds-wrapper">
-                残り <input type="number" class="seconds-input" bind:value="{colorSetting.warning1Seconds}" {disabled}> 秒になったら変更
+                残り <input
+                    type="tel"
+                    class="seconds-input"
+                    value="{colorSetting.warning1Seconds}"
+                    on:change="{onChangeWarning1Seconds}"
+                    {disabled}
+                > 秒になったら変更
             </div>
         </div>
         <div class="multi-input-wrapper">
             <div class="input-color-wrapper">
                 <div class="label">警告2</div>
-                <input type="text" class="color-input" bind:value="{colorSetting.warning2Color}" {disabled}>
+                <input
+                    type="text"
+                    class="color-input"
+                    value="{colorSetting.warning2Color}"
+                    on:change="{onChangeWarning2Color}"
+                    {disabled}
+                >
                 <div class="color-preview" style="background-color: {colorSetting.warning2Color}" {disabled}></div>
             </div>
             <div class="input-seconds-wrapper">
-                残り <input type="number" class="seconds-input" bind:value="{colorSetting.warning2Seconds}" {disabled}> 秒になったら変更
+                残り <input
+                    type="tel"
+                    class="seconds-input"
+                    value="{colorSetting.warning2Seconds}"
+                    on:change="{onChangeWarning2Seconds}"
+                    {disabled}
+                > 秒になったら変更
             </div>
         </div>
         <div class="input-wrapper">
             <div class="label">終了</div>
-            <input type="text" class="color-input" bind:value="{colorSetting.finishColor}" {disabled}>
+            <input
+                type="text"
+                class="color-input"
+                value="{colorSetting.finishColor}"
+                on:change="{onChangeFinishColor}"
+                {disabled}
+            >
             <div class="color-preview" style="background-color: {colorSetting.finishColor}" {disabled}></div>
         </div>
     </div>
@@ -37,8 +73,11 @@
 
 <script lang="ts">
     import type { ColorSetting } from '../../../types/local_timer';
+    import type { InputEvent } from '../../../types/event';
+
     import { personalTimerSetting } from '../../../store/setting';
     import { isTimerRunning } from '../../../store/timer';
+    import { adjustNumber } from '../../../util';
 
     import Collapse from './Collapse.svelte';
 
@@ -46,6 +85,68 @@
     personalTimerSetting.subscribe(setting => {
         colorSetting = setting.colorSetting;
     });
+
+    const onChangeRunningColor = (event: InputEvent): void => {
+        // セミコロンはNG
+        if (event.currentTarget.value.indexOf(';') !== -1) {
+            event.currentTarget.value = colorSetting.runningColor;
+        }
+        personalTimerSetting.update(setting => {
+            setting.colorSetting.runningColor = event.currentTarget.value;
+            return setting;
+        });
+    };
+
+    const onChangeWarning1Color = (event: InputEvent): void => {
+        // セミコロンはNG
+        if (event.currentTarget.value.indexOf(';') !== -1) {
+            event.currentTarget.value = colorSetting.warning1Color;
+        }
+        personalTimerSetting.update(setting => {
+            setting.colorSetting.warning1Color = event.currentTarget.value;
+            return setting;
+        });
+    };
+
+    const onChangeWarning2Color = (event: InputEvent): void => {
+        // セミコロンはNG
+        if (event.currentTarget.value.indexOf(';') !== -1) {
+            event.currentTarget.value = colorSetting.warning2Color;
+        }
+        personalTimerSetting.update(setting => {
+            setting.colorSetting.warning2Color = event.currentTarget.value;
+            return setting;
+        });
+    };
+
+    const onChangeFinishColor = (event: InputEvent): void => {
+        // セミコロンはNG
+        if (event.currentTarget.value.indexOf(';') !== -1) {
+            event.currentTarget.value = colorSetting.finishColor;
+        }
+        personalTimerSetting.update(setting => {
+            setting.colorSetting.finishColor = event.currentTarget.value;
+            return setting;
+        });
+    };
+
+    const onChangeWarning1Seconds = (event: InputEvent): void => {
+        const sec = adjustNumber(event.currentTarget.value, $personalTimerSetting.colorSetting.warning2Seconds + 1);
+        event.currentTarget.value = sec.toString();
+        personalTimerSetting.update(setting => {
+            setting.colorSetting.warning1Seconds = sec;
+            return setting;
+        });
+    };
+
+    const onChangeWarning2Seconds = (event: InputEvent): void => {
+        const sec = adjustNumber(event.currentTarget.value, 1);
+        event.currentTarget.value = sec.toString();
+        personalTimerSetting.update(setting => {
+            setting.colorSetting.warning2Seconds = sec;
+            return setting;
+        });
+    };
 
     $: disabled = $isTimerRunning === true;
 </script>

@@ -33,3 +33,19 @@ export const calcTotalTime = (settings: TimerSetting[]): Timer => {
     }, 0);
     return totalSecondsToTimer(totalSeconds);
 };
+
+/**
+ * 文字列を数値に変換して最小・最大数の範囲に収まるように調整して返す
+ * 文字列が数値ではない場合は最小値を返します
+ * 最大値は指定がある場合のみ調整します
+ */
+export const adjustNumber = (value: string, min: number, max?: number): number => {
+    const num = Number(value);
+    if (Number.isNaN(value) || !Number.isInteger(value) || num < min) {
+        return min;
+    }
+    if (max === null || max === undefined) {
+        return num;
+    }
+    return num > max ? max : num;
+};

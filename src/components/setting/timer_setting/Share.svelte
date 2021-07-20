@@ -5,7 +5,8 @@
         <div class="setting-name-wrapper">
             <input
                 type="text"
-                placeholder="設定名"
+                placeholder="設定名 (50文字)"
+                maxlength="50"
                 class="setting-name"
                 bind:value="{setting.name}"
             >

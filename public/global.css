@@ -68,7 +68,7 @@ input[type="text"]:disabled {
     background-color: #EEEEEE;
 }
 
-input[type="number"] {
+input[type="tel"] {
     height: 24px;
     padding: 4px;
     width: 40px;
@@ -80,6 +80,6 @@ input[type="number"] {
     border-radius: 4px;
 }
 
-input[type="number"]:disabled {
+input[type="tel"]:disabled {
     background-color: #EEEEEE;
 }

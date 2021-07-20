@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        {#each $personalTimerSetting.timerSettings as setting, idx (idx)}
+        {#each $personalTimerSetting.timerSettings as data, idx}
             <div class="setting-row">
                 <div class="setting-row-number">#{idx + 1}</div>
                 <div class="setting-row-icon-wrapper">
@@ -36,34 +36,83 @@
                     <div class="setting-row-input-group">
                         <div class="setting-row-input-label">タイトル:</div>
                         <div class="setting-row-input-text">
-                            <input type="text" class="setting-row-input-title" bind:value="{setting.title}" {disabled}>
+                            <input
+                                type="text"
+                                class="setting-row-input-title"
+                                placeholder="タイトル (50文字)"
+                                maxlength="50"
+                                bind:value="{data.title}"
+                                {disabled}
+                            >
                         </div>
                     </div>
                     <div class="setting-row-input-group">
                         <div class="setting-row-input-label">時:</div>
                         <div class="setting-row-input-number">
-                            <input type="number" min="0" max="24" bind:value="{setting.timer.hour}" {disabled}>
+                            <input
+                                type="tel"
+                                min="0"
+                                max="24"
+                                value="{data.timer.hour}"
+                                on:change="{event => onChangeHour(event, idx) }"
+                                {disabled}
+                            >
                         </div>
                         <div class="setting-row-input-range">
-                            <input type="range" min="0" max="24" step="1" bind:value="{setting.timer.hour}" {disabled}>
+                            <input
+                                type="range"
+                                min="0"
+                                max="24"
+                                step="1"
+                                bind:value="{data.timer.hour}"
+                                {disabled}
+                            >
                         </div>
                     </div>
                     <div class="setting-row-input-group">
                         <div class="setting-row-input-label">分:</div>
                         <div class="setting-row-input-number">
-                            <input type="number" min="0" max="59" bind:value="{setting.timer.minute}" {disabled}>
+                            <input
+                                type="tel"
+                                min="0"
+                                max="59"
+                                bind:value="{data.timer.minute}"
+                                on:change="{event => onChangeMinute(event, idx) }"
+                                {disabled}
+                            >
                         </div>
                         <div class="setting-row-input-range">
-                            <input type="range" min="0" max="59" step="1" bind:value="{setting.timer.minute}" {disabled}>
+                            <input
+                                type="range"
+                                min="0"
+                                max="59"
+                                step="1"
+                                bind:value="{data.timer.minute}"
+                                {disabled}
+                            >
                         </div>
                     </div>
                     <div class="setting-row-input-group">
                         <div class="setting-row-input-label">秒:</div>
                         <div class="setting-row-input-number">
-                            <input type="number" min="0" max="59" bind:value="{setting.timer.second}" {disabled}>
+                            <input
+                                type="tel"
+                                min="0"
+                                max="59"
+                                bind:value="{data.timer.second}"
+                                on:change="{event => onChangeSecond(event, idx) }"
+                                {disabled}
+                            >
                         </div>
                         <div class="setting-row-input-range">
-                            <input type="range" min="0" max="59" step="1" bind:value="{setting.timer.second}" {disabled}>
+                            <input
+                                type="range"
+                                min="0"
+                                max="59"
+                                step="1"
+                                bind:value="{data.timer.second}"
+                                {disabled}
+                            >
                         </div>
                     </div>
                 </div>
@@ -80,10 +129,17 @@
 
 <script lang="ts">
     import { onMount } from 'svelte';
-    import type { TimerSetting, Timer } from '../../../types/local_timer';
+
+    import type {
+        TimerSetting,
+        Timer,
+        PersonalTimerSetting,
+    } from '../../../types/local_timer';
+    import type { InputEvent } from '../../../types/event';
+
     import { personalTimerSetting } from '../../../store/setting';
     import { isTimerRunning, currentTimerPosition } from '../../../store/timer';
-    import { padding, calcTotalTime } from '../../../util';
+    import { padding, calcTotalTime, adjustNumber } from '../../../util';
 
     // 全タイマーの合計時間
     let totalTime: Timer = { hour: 0, minute: 0, second: 0 };
@@ -129,6 +185,33 @@
             return setting;
         });
     }
+
+    const onChangeHour = (event: InputEvent, no: number): void => {
+        const hour = adjustNumber(event.currentTarget.value, 0, 24);
+        event.currentTarget.value = hour.toString();
+        personalTimerSetting.update(setting => {
+            setting.timerSettings[no].timer.hour = hour;
+            return setting;
+        });
+    };
+
+    const onChangeMinute = (event: InputEvent, no: number): void => {
+        const minute = adjustNumber(event.currentTarget.value, 0, 59);
+        event.currentTarget.value = minute.toString();
+        personalTimerSetting.update(setting => {
+            setting.timerSettings[no].timer.minute = minute;
+            return setting;
+        });
+    };
+
+    const onChangeSecond = (event: InputEvent, no: number): void => {
+        const second = adjustNumber(event.currentTarget.value, 0, 59);
+        event.currentTarget.value = second.toString();
+        personalTimerSetting.update(setting => {
+            setting.timerSettings[no].timer.second = second;
+            return setting;
+        });
+    };
 
     // タイマー設定は最低1つ存在するようにするため
     // マウント時に設定が空なら先頭に行を追加しておく
