@@ -1,4 +1,4 @@
-<h3>共有された設定へのアクセス履歴</h3>
+<h3>アクセス履歴</h3>
 <div>
     {#if timerHistories.length > 0}
         {#each timerHistories as data, idx (data.key)}
@@ -19,7 +19,7 @@
                 </div>
                 <div class="btn-wrapper">
                     <div class="copy-url-wrapper" on:click="{() => onClickCopyURL(data.key)}">
-                        <i class="far fa-copy fa-2x"></i>
+                        <i class="fas fa-link fa-2x"></i>
                     </div>
                     {#if !$isTimerRunning}
                         <div class="trash-btn-wrapper" on:click="{() => onClickRemoveSetting(idx)}">

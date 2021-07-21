@@ -9,11 +9,10 @@
         {padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}
     </div>
 
-    <div class="next-phase">
+    <div class="next-phase-wrapper">
         {#if hasNextSetting}
-            <div>Next:</div>
-            <div>({padding(nextSetting.timer.hour)}:{padding(nextSetting.timer.minute)}:{padding(nextSetting.timer.second)})</div>
-            {getTitle(nextSetting.title, $currentTimerPosition + 1)}
+            <div class="next-phase-title">{getTitle(nextSetting.title, $currentTimerPosition + 1)}</div>
+            <div>{padding(nextSetting.timer.hour)}:{padding(nextSetting.timer.minute)}:{padding(nextSetting.timer.second)}</div>
         {/if}
     </div>
 </div>
@@ -146,7 +145,7 @@
 
 <style>
     .wrapper {
-        margin-bottom: 32px;
+        margin-bottom: 12px;
     }
 
     .phase-title {
@@ -159,17 +158,16 @@
         font-size: 120px;
     }
 
-    .next-phase {
-        min-height: 32px;
-        font-size: 20px;
-        padding-left: 20px;
+    .next-phase-wrapper {
+        min-height: 80px;
+        font-size: 24px;
+        color: #808080;
+        padding: 8px 0 8px 24px;
         word-wrap: break-word;
-        display: flex;
-        align-items: center;
     }
 
-    .next-phase > div {
-        margin-right: 12px;
+    .next-phase-title {
+        min-height: 36px;
     }
 
     @media screen and (max-width: 550px) {
@@ -179,8 +177,8 @@
         .timer {
             font-size: 80px;
         }
-        .next-phase {
-            font-size: 16px;
+        .next-phase-wrapper {
+            font-size: 20px;
         }
     }
 </style>

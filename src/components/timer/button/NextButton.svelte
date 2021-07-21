@@ -2,7 +2,10 @@
 
 <script lang="ts">
     import { personalTimerSetting } from '../../../store/setting';
-    import { currentTimerPosition } from '../../../store/timer';
+    import {
+        currentTimerPosition,
+        isTimeUpAll,
+    } from '../../../store/timer';
 
     const onClick = (): void => {
         const pos = $currentTimerPosition + 1;
@@ -10,7 +13,8 @@
     };
 
     // 次の位置に設定情報がある場合にtrueを返します
-    $: disabled = typeof $personalTimerSetting.timerSettings[$currentTimerPosition + 1] === 'undefined';
+    $: disabled = $isTimeUpAll
+        || typeof $personalTimerSetting.timerSettings[$currentTimerPosition + 1] === 'undefined';
 </script>
 
 <style>

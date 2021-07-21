@@ -2,7 +2,8 @@
 
 <div class="wrapper">
     <div class="total">
-        合計: {padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}
+        <div>合計:</div>
+        <div>{padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}</div>
     </div>
 
     <div>
@@ -246,6 +247,8 @@
      * 合計時間
      */
     .total {
+        display: flex;
+        justify-content: space-between;
         height: 32px;
         line-height: 32px;
         width: 240px;
@@ -389,7 +392,7 @@
 
     @media (max-width: 550px) {
         input[type=range] {
-            width: 100px;
+            width: 160px;
         }
     }
 </style>

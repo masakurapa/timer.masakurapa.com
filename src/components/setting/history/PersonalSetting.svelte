@@ -25,7 +25,7 @@
                 <div class="btn-wrapper">
                     {#if data.shared}
                         <div class="copy-url-wrapper" on:click="{() => onClickCopyURL(data.key)}">
-                            <i class="far fa-copy fa-2x"></i>
+                            <i class="fas fa-link fa-2x"></i>
                         </div>
                         <div class="unlink-wrapper" on:click="{() => onClickUnlinkSetting(idx)}">
                             <i class="fas fa-unlink fa-2x"></i>
