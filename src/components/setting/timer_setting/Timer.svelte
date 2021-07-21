@@ -1,4 +1,5 @@
-<h2>タイマーの設定</h2>
+<h2>タイマーの設定 <span class="annotation">(最大{maxTimerSetting}件まで登録できます)</span></h2>
+
 
 <div class="wrapper">
     <div class="total">
@@ -8,7 +9,7 @@
 
     <div>
         <div class="setting-add-wrapper" class:hide={disabled}>
-            <div class="setting-add-btn-wrapper" on:click="{() => addTimerSetting(0)}">
+            <div class="setting-add-btn-wrapper" class:disable-add-btn="{!canAddSetting}" on:click="{() => addTimerSetting(0)}">
                 <i class="fas fa-plus-circle fa-2x"></i>
             </div>
         </div>
@@ -120,7 +121,7 @@
             </div>
 
             <div class="setting-add-wrapper" class:hide={disabled}>
-                <div class="setting-add-btn-wrapper" on:click="{() => addTimerSetting(idx + 1)}">
+                <div class="setting-add-btn-wrapper" class:disable-add-btn="{!canAddSetting}" on:click="{() => addTimerSetting(idx + 1)}">
                     <i class="fas fa-plus-circle fa-2x"></i>
                 </div>
             </div>
@@ -134,13 +135,15 @@
     import type {
         TimerSetting,
         Timer,
-        PersonalTimerSetting,
     } from '../../../types/local_timer';
     import type { InputEvent } from '../../../types/event';
 
     import { personalTimerSetting } from '../../../store/setting';
     import { isTimerRunning, currentTimerPosition } from '../../../store/timer';
     import { padding, calcTotalTime, adjustNumber } from '../../../util';
+
+    // タイマー設定の最大件数
+    const maxTimerSetting = 30;
 
     // 全タイマーの合計時間
     let totalTime: Timer = { hour: 0, minute: 0, second: 0 };
@@ -149,6 +152,10 @@
      * 指定位置にタイマーの設定を追加します
      */
     const addTimerSetting = (no: number): void => {
+        if (!canAddSetting) {
+            return;
+        }
+
         personalTimerSetting.update(setting => {
             const defaultTimerSetting: TimerSetting = {
                 title: '',
@@ -233,6 +240,9 @@
     });
 
     $: disabled = $isTimerRunning === true;
+
+    // タイマー設定が追加可能かのフラグ
+    $: canAddSetting = $personalTimerSetting.timerSettings.length < maxTimerSetting;
 </script>
 
 <style>
@@ -241,6 +251,10 @@
     }
     .hide {
         display: none !important;
+    }
+    .annotation {
+        font-size: 12px;
+        font-weight: normal;
     }
 
     /**
@@ -283,11 +297,14 @@
         flex-grow: 1;
         margin-left: 8px;
     }
-
      .setting-add-btn-wrapper {
         width: 32px;
         color: #1E90FF;
         cursor: pointer;
+    }
+    .disable-add-btn {
+        color: #DDDDDD;
+        cursor: default;
     }
 
     /**
