@@ -60,7 +60,7 @@ export const removeTimerSetting = (index: number): boolean => {
  */
 export const addSharedTimerHistory = (setting: SharedTimerHistory): number => {
     const timerSetting = getTimerSetting();
-    timerSetting.histories.push(setting);
+    timerSetting.histories.unshift(setting);
     setItem(TIMER_SETTING, JSON.stringify(timerSetting));
     return timerSetting.histories.length - 1;
 };
