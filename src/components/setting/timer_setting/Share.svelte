@@ -1,4 +1,4 @@
-<Collapse key="share-setting" open={setting.owner}>
+<Collapse key="share-setting">
     <span slot="header">設定の保存・共有</span>
 
     <div slot="content">

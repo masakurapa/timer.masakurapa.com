@@ -337,7 +337,7 @@
         border: 1px solid #000000;
         border-radius: 8px;
         background-color: #FFFFFF;
-        margin-left: 12px;
+        margin-left: 4px;
         padding: 8px;
         position: relative;
     }
@@ -409,7 +409,7 @@
 
     @media (max-width: 550px) {
         input[type=range] {
-            width: 160px;
+            width: calc(100% - 48px);
         }
     }
 </style>

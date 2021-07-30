@@ -10,7 +10,7 @@
 
 <script lang="ts">
     import { isTimerRunning } from '../../../store/timer';
-    import { personalTimerSetting, resetPersonalTimerSetting } from '../../../store/setting';
+    import { resetPersonalTimerSetting } from '../../../store/setting';
     import { resetAll } from '../../../store/storage';
     import { saveTimerSettingKey } from '../../../storage';
 
@@ -41,7 +41,7 @@
 
     .remove-all-btn-wrapper {
         max-width: 800px;
-        text-align: right;
+        /* text-align: right; */
         margin-bottom: 32px;
     }
     .remove-all-btn {

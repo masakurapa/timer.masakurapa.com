@@ -1,14 +1,18 @@
-<div class="button-wrapper">
-    <button
-        class:active={activeBtnNo === TIMER_SETTING}
-        on:click="{() => onClick(TIMER_SETTING)}"
-    ><i class="fas fa-cogs"></i> タイマー設定</button>
+<div class="wrapper">
+    <div class="button-wrapper">
+        <div
+            class="btn"
+            class:active={activeBtnNo === TIMER_SETTING}
+            on:click="{() => onClick(TIMER_SETTING)}"
+        ><i class="fas fa-cogs fa-2x"></i> タイマー設定</div>
+    </div>
 
-    <div class="hisotry-button-wrapper">
-        <button
+    <div class="button-wrapper">
+        <div
+            class="btn"
             class:active={activeBtnNo === HISTORY}
             on:click="{() => onClick(HISTORY)}"
-        ><i class="fas fa-history"></i> 個人設定・履歴</button>
+        ><i class="fas fa-history fa-2x"></i> 個人設定・履歴</div>
     </div>
 </div>
 
@@ -42,36 +46,44 @@
 </script>
 
 <style>
-    .button-wrapper {
+    .wrapper {
         display: flex;
+        width: 100%;
+        padding: 4px 0;
         margin-bottom: 32px;
+        border-top: 1px solid #AAAAAA;
+        border-bottom: 1px solid #AAAAAA;
     }
-    .hisotry-button-wrapper {
-        margin-left: 32px;
-    }
-
-    button {
-        background-color: #FFFFFF;
-        color: #000000;
-        width: 200px;
+    .button-wrapper {
+        width: calc(100% / 2);
+        padding: 0 4px;
     }
 
-    button:hover {
+    .btn i {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+
+    .btn {
+        display: flex;
+        width: 100%;
+        height: 50px;
+        border-radius: 8px;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn:hover {
         background-color: #DDDDDD;
     }
-    button:disabled {
+    .btn:disabled {
         background-color: #999999;
         cursor: default;
     }
 
     .active {
         background-color: #DDDDDD;
-    }
-
-    @media (max-width: 500px) {
-        button {
-            width: 150px;
-            min-width: 150px;
-        }
     }
 </style>

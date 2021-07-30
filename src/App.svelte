@@ -2,7 +2,6 @@
 
 <main>
     <Timer/>
-    <hr>
     <Setting/>
 </main>
 
