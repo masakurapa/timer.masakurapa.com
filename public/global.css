@@ -7,19 +7,14 @@ html, body {
 body {
     color: #333;
     margin: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; */
+    font-family: 'Hannotate SC','Chalkboard SE','ＭＳ 明朝', 'MS Mincho',sans-serif !important;
 }
 
 .content-wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-}
-
-header h1 {
-    margin: 0px;
-    padding-left: 12px;
 }
 
 footer {

@@ -1,5 +1,5 @@
-<Head/>
-
+<HeadStyle/>
+<Header/>
 <main>
     <Timer/>
     <Setting/>
@@ -28,7 +28,8 @@
         saveUID,
     } from './storage';
 
-    import Head from './Head.svelte';
+    import Header from './Header.svelte';
+    import HeadStyle from './HeadStyle.svelte';
     import Timer from './components/timer/Index.svelte';
     import Setting from './components/setting/Index.svelte';
 
@@ -159,6 +160,6 @@
 
 <style>
     main {
-        padding: 24px;
+        padding: 8px 24px;
     }
 </style>

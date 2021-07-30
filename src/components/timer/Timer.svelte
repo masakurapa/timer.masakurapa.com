@@ -155,7 +155,7 @@
     }
 
     .timer {
-        font-size: 120px;
+        font-size: 160px;
     }
 
     .next-phase-wrapper {
@@ -168,6 +168,12 @@
 
     .next-phase-title {
         min-height: 36px;
+    }
+
+    @media screen and (max-width: 800px) {
+        .timer {
+            font-size: 120px;
+        }
     }
 
     @media screen and (max-width: 550px) {
