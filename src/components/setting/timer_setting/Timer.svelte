@@ -3,7 +3,7 @@
 
 <div class="wrapper">
     <div class="total">
-        <div>合計:</div>
+        <div>合計</div>
         <div>{padding(totalTime.hour)}:{padding(totalTime.minute)}:{padding(totalTime.second)}</div>
     </div>
 
@@ -19,7 +19,11 @@
                 <div class="setting-row-number">#{idx + 1}</div>
                 <div class="setting-row-icon-wrapper">
                     {#if !disabled}
-                        <div class="setting-row-remove-btn" on:click="{() => onClickRemoveSetting(idx)}">
+                        <div
+                            class="setting-row-remove-btn"
+                            class:hide={$personalTimerSetting.timerSettings.length === 1}
+                            on:click="{() => onClickRemoveSetting(idx)}"
+                        >
                             <i class="fas fa-times fa-2x"></i>
                         </div>
                     {:else}
@@ -31,12 +35,16 @@
                     {/if}
                 </div>
                 <div class="setting-row-input-wrapper">
-                    <div class="clear-btn-wrapper" class:hide={disabled} on:click="{() => onClickEraseSetting(idx)}">
+                    <div
+                        class="clear-btn-wrapper"
+                        class:hide={disabled}
+                        on:click="{() => onClickEraseSetting(idx)}"
+                    >
                         <i class="fas fa-eraser fa-2x"></i>
                     </div>
 
                     <div class="setting-row-input-group">
-                        <div class="setting-row-input-label">タイトル:</div>
+                        <div class="setting-row-input-label">タイトル</div>
                         <div class="setting-row-input-text">
                             <input
                                 type="text"
@@ -49,7 +57,7 @@
                         </div>
                     </div>
                     <div class="setting-row-input-group">
-                        <div class="setting-row-input-label">時:</div>
+                        <div class="setting-row-input-label">時</div>
                         <div class="setting-row-input-number">
                             <input
                                 type="tel"
@@ -72,7 +80,7 @@
                         </div>
                     </div>
                     <div class="setting-row-input-group">
-                        <div class="setting-row-input-label">分:</div>
+                        <div class="setting-row-input-label">分</div>
                         <div class="setting-row-input-number">
                             <input
                                 type="tel"
@@ -95,7 +103,7 @@
                         </div>
                     </div>
                     <div class="setting-row-input-group">
-                        <div class="setting-row-input-label">秒:</div>
+                        <div class="setting-row-input-label">秒</div>
                         <div class="setting-row-input-number">
                             <input
                                 type="tel"
