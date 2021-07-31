@@ -1,6 +1,5 @@
 <h2>タイマーの設定 <span class="annotation">(最大{maxTimerSetting}件まで登録できます)</span></h2>
 
-
 <div class="wrapper">
     <div class="total">
         <div>合計</div>

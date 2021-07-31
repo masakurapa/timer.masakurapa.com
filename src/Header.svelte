@@ -1,5 +1,5 @@
 <header>
-    <h1 >ふぁしりたいまー</h1>
+    <h1>ふぁしりたいまー</h1>
 </header>
 
 <script lang="ts">
@@ -9,11 +9,14 @@
     header{
         width: 100%;
         text-align: center;
-        margin: 8px 0 16px 0;
+        margin-bottom: 16px;
+        padding: 4px 0;
+        background-color: #659AD2;
     }
 
     h1 {
-        font-size: 40px;
+        font-size: 20px;
+        color: #FFFFFF;
         margin: 0;
     }
 </style>

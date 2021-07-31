@@ -156,6 +156,7 @@
 
     .timer {
         font-size: 160px;
+        line-height: 160px;
     }
 
     .next-phase-wrapper {
@@ -173,6 +174,7 @@
     @media screen and (max-width: 800px) {
         .timer {
             font-size: 120px;
+            line-height: 120px;
         }
     }
 
@@ -182,6 +184,7 @@
         }
         .timer {
             font-size: 80px;
+            line-height: 80px;
         }
         .next-phase-wrapper {
             font-size: 20px;
