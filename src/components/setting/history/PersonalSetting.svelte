@@ -184,6 +184,11 @@
             return;
         }
 
+        // 今使っている設定のシェア解除の場合は、ストアも書き換える
+        if (no === $currentPersonalSettingPosition) {
+            $personalTimerSetting.shared = false;
+        }
+
         // シェアフラグをoff
         setting.shared = false;
         saveTimerSetting(no, setting);

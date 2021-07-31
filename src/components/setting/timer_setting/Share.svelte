@@ -1,4 +1,4 @@
-<Collapse key="share-setting">
+<Collapse key="share-setting" open={$usePersonalSetting}>
     <span slot="header">設定の保存・共有</span>
 
     <div slot="content">
@@ -98,6 +98,12 @@
         $personalTimerSetting.key = timerSettingKey;
         if ($personalTimerSetting.name === '') {
             $personalTimerSetting.name = timerSettingKey;
+        }
+
+        // 共有設定を使っている場合はshareフラグをOFFにする
+        if (!$usePersonalSetting) {
+            $personalTimerSetting.owner = true;
+            $personalTimerSetting.shared = false;
         }
 
         const pos = addTimerSetting($personalTimerSetting);
