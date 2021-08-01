@@ -28,7 +28,6 @@ jobs:
           zip update.zip update.js
           zip delete.zip delete.js
       - name: Deploy
-        if: steps.changes.outputs.src == 'true'
         env:
           S3_UPLOAD_BUCKET: ${{ secrets.API_S3_UPLOAD_BUCKET }}
         run: |
