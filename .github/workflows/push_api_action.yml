@@ -5,6 +5,7 @@ on:
     branches:
       - master
     paths:
+      - '.github/workflows/push_api_action.yml'
       - 'api/**'
 
 jobs:
