@@ -30,8 +30,8 @@ jobs:
       - name: Deploy
         if: steps.changes.outputs.src == 'true'
         env:
-          S3_UPLOAD_BUCKET: ${{ secrets.S3_UPLOAD_BUCKET }}
+          S3_UPLOAD_BUCKET: ${{ secrets.API_S3_UPLOAD_BUCKET }}
         run: |
-          aws s3 cp ./get.zip s3://$API_S3_UPLOAD_BUCKET/get.zip
-          aws s3 cp ./update.zip s3://$API_S3_UPLOAD_BUCKET/update.zip
-          aws s3 cp ./delete.zip s3://$API_S3_UPLOAD_BUCKET/delete.zip
+          aws s3 cp ./get.zip s3://$S3_UPLOAD_BUCKET/get.zip
+          aws s3 cp ./update.zip s3://$S3_UPLOAD_BUCKET/update.zip
+          aws s3 cp ./delete.zip s3://$S3_UPLOAD_BUCKET/delete.zip
