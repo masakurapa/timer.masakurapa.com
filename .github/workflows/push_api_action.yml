@@ -31,6 +31,7 @@ jobs:
         env:
           S3_UPLOAD_BUCKET: ${{ secrets.API_S3_UPLOAD_BUCKET }}
         run: |
+          cd api/src
           aws s3 cp ./get.zip s3://$S3_UPLOAD_BUCKET/get.zip
           aws s3 cp ./update.zip s3://$S3_UPLOAD_BUCKET/update.zip
           aws s3 cp ./delete.zip s3://$S3_UPLOAD_BUCKET/delete.zip
