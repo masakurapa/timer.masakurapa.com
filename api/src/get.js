@@ -26,6 +26,8 @@ exports.handler =  async function(event) {
         'Access-Control-Allow-Methods': 'POST',
     };
 
+    console.log(event);
+
     let body;
     try {
         body = JSON.parse(event.body);
