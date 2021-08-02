@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '.github/workflows/push_action.yml'
+      - 'src/**'
 
 jobs:
   install-dependency:
