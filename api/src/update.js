@@ -24,6 +24,8 @@ exports.handler =  async function(event) {
     const responseHeaders = {
         'Content-Type': 'application/json',
         'Access-Controll-Allow-Origin': process.env.ALLOW_ORGIN,
+        'Access-Control-Allow-Headers' : 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST',
     };
 
     let body;
