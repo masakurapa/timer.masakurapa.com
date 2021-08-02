@@ -56,7 +56,7 @@ exports.handler =  async function(event) {
         region: process.env.REGION,
         httpOptions: { timeout: 300 },
         maxRetries: 3,
-        endpoint: process.env.ENDPOINT_URL ? process.env.ENDPOINT_URL : '',
+        endpoint: process.env.ENDPOINT_URL ? process.env.ENDPOINT_URL : null,
         s3ForcePathStyle: process.env.ENDPOINT_URL ? true : false,
     });
     const params = {
@@ -68,7 +68,7 @@ exports.handler =  async function(event) {
     try {
         await client.headObject(params).promise();
 
-        const object = await client.getObject(params).promise();
+        const object = await client.getObject({params}).promise();
         const setting = JSON.parse(object.Body);
 
         if (setting.uid !== body.uid) {
