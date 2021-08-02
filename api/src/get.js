@@ -19,6 +19,11 @@ const validate = body => {
 };
 
 exports.handler =  async function(event) {
+    const responseHeaders = {
+        'Content-Type': 'application/json',
+        'Access-Controll-Allow-Origin': process.env.ALLOW_ORGIN,
+    };
+
     let body;
     try {
         body = JSON.parse(event.body);
@@ -26,6 +31,7 @@ exports.handler =  async function(event) {
         console.error(ex);
         return {
             statusCode: 422,
+            headers: responseHeaders,
             body: JSON.stringify({
                 errors: ['Invalid JSON format'],
             }),
@@ -36,6 +42,7 @@ exports.handler =  async function(event) {
     if (errors.length > 0) {
         return {
             statusCode: 422,
+            headers: responseHeaders,
             body: JSON.stringify({ errors }),
         };
     }
@@ -60,6 +67,7 @@ exports.handler =  async function(event) {
         if (ex.code === 'NotFound') {
             return {
                 statusCode: 404,
+                headers: responseHeaders,
                 body: JSON.stringify({
                     errors: ['The key setting does not exist'],
                 }),
@@ -69,6 +77,7 @@ exports.handler =  async function(event) {
         console.error(ex);
         return {
             statusCode: 500,
+            headers: responseHeaders,
             body: JSON.stringify({
                 errors: ['Server error'],
             }),
@@ -83,6 +92,7 @@ exports.handler =  async function(event) {
         console.error(ex);
         return {
             statusCode: 500,
+            headers: responseHeaders,
             body: JSON.stringify({
                 errors: ['Server error'],
             }),
@@ -91,10 +101,7 @@ exports.handler =  async function(event) {
 
     return {
         statusCode: 200,
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Controll-Allow-Origin': process.env.ALLOW_ORGIN,
-        },
+        headers: responseHeaders,
         body: JSON.stringify({
             setting: settingBody.setting,
             owner: settingBody.uid === body.uid,
