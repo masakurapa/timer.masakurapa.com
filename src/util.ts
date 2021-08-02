@@ -41,7 +41,7 @@ export const calcTotalTime = (settings: TimerSetting[]): Timer => {
  */
 export const adjustNumber = (value: string, min: number, max?: number): number => {
     const num = Number(value);
-    if (Number.isNaN(value) || !Number.isInteger(value) || num < min) {
+    if (Number.isNaN(num) || !Number.isInteger(num) || num < min) {
         return min;
     }
     if (max === null || max === undefined) {
