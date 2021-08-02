@@ -93,7 +93,7 @@ exports.handler =  async function(event) {
         statusCode: 200,
         headers: {
             'Content-Type': 'application/json',
-            'Access-Controll-Allow-Origin': 'https://timer.masakurapa.com',
+            'Access-Controll-Allow-Origin': process.env.ALLOW_ORGIN,
         },
         body: JSON.stringify({
             setting: settingBody.setting,
