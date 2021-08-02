@@ -49,14 +49,18 @@ exports.handler =  async function(event) {
         };
     }
 
-    const client = new aws.S3({
+    const s3Params = {
         apiVersion: '2006-03-01',
         region: process.env.REGION,
         httpOptions: { timeout: 300 },
         maxRetries: 3,
-        endpoint: process.env.ENDPOINT_URL ? process.env.ENDPOINT_URL : null,
-        s3ForcePathStyle: process.env.ENDPOINT_URL ? true : false,
-    });
+    };
+    if (process.env.ENDPOINT_URL) {
+        s3Params.endpoint = process.env.ENDPOINT_URL;
+        s3Params.s3ForcePathStyle = true;
+    }
+    const client = new aws.S3(s3Params);
+
     const params = {
         Bucket: process.env.BUCKET_NAME,
         Key: `shared/${body.key}.json`,
