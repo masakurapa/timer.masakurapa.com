@@ -70,7 +70,7 @@ exports.handler =  async function(event) {
     try {
         await client.headObject(params).promise();
     } catch (ex) {
-        if (ex.code === 'NotFound') {
+        if (ex.code === 'Forbidden') {
             return {
                 statusCode: 404,
                 headers: responseHeaders,
