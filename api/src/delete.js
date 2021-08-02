@@ -35,8 +35,8 @@ exports.handler =  async function(event) {
     const errors = validate(body);
     if (errors.length > 0) {
         return {
-            'statusCode': 422,
-            'body': JSON.stringify({ errors }),
+            statusCode: 422,
+            body: JSON.stringify({ errors }),
         };
     }
 
@@ -59,8 +59,8 @@ exports.handler =  async function(event) {
     } catch (ex) {
         if (ex.code === 'NotFound') {
             return {
-                'statusCode': 404,
-                'body': JSON.stringify({
+                statusCode: 404,
+                body: JSON.stringify({
                     errors: ['The key setting does not exist'],
                 }),
             };
@@ -68,8 +68,8 @@ exports.handler =  async function(event) {
 
         console.error(ex);
         return {
-            'statusCode': 500,
-            'body': JSON.stringify({
+            statusCode: 500,
+            body: JSON.stringify({
                 errors: ['Server error'],
             }),
         };
@@ -81,8 +81,8 @@ exports.handler =  async function(event) {
 
         if (setting.uid !== body.uid) {
             return {
-                'statusCode': 403,
-                'body': JSON.stringify({
+                statusCode: 403,
+                body: JSON.stringify({
                     errors: ['Forbidden'],
                 }),
             };
@@ -90,8 +90,8 @@ exports.handler =  async function(event) {
     } catch (ex) {
         console.error(ex);
         return {
-            'statusCode': 500,
-            'body': JSON.stringify({
+            statusCode: 500,
+            body: JSON.stringify({
                 errors: ['Server error'],
             }),
         };
@@ -102,15 +102,19 @@ exports.handler =  async function(event) {
     } catch (ex) {
         console.error(ex);
         return {
-            'statusCode': 500,
-            'body': JSON.stringify({
+            statusCode: 500,
+            body: JSON.stringify({
                 errors: ['Server error'],
             }),
         };
     }
 
     return {
-        'statusCode': 200,
-        'body': JSON.stringify({}),
+        statusCode: 200,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Controll-Allow-Origin': 'https://timer.masakurapa.com',
+        },
+        body: JSON.stringify({}),
     };
 };

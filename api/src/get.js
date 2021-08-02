@@ -91,6 +91,10 @@ exports.handler =  async function(event) {
 
     return {
         statusCode: 200,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Controll-Allow-Origin': 'https://timer.masakurapa.com',
+        },
         body: JSON.stringify({
             setting: settingBody.setting,
             owner: settingBody.uid === body.uid,
