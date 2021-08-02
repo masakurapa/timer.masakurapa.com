@@ -28,8 +28,6 @@ exports.handler =  async function(event) {
         'Access-Control-Allow-Methods': 'PUT',
     };
 
-    console.log(event);
-
     let body;
     try {
         body = JSON.parse(event.body);
