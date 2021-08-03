@@ -190,4 +190,11 @@
             font-size: 20px;
         }
     }
+
+    @media screen and (max-width: 380px) {
+        .timer {
+            font-size: 60px;
+            line-height: 60px;
+        }
+    }
 </style>

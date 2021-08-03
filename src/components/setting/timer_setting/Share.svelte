@@ -237,4 +237,10 @@
         background-color: #999999;
         cursor: default;
     }
+
+    @media (max-width: 380px) {
+        .button-wrapper {
+            font-size: 12px;
+        }
+    }
 </style>

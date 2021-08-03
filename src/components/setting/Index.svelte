@@ -86,4 +86,10 @@
     .active {
         background-color: #DDDDDD;
     }
+
+    @media (max-width: 380px) {
+        .button-wrapper {
+            font-size: 12px;
+        }
+    }
 </style>

@@ -30,4 +30,11 @@
         background-color: #999999;
         cursor: default;
     }
+
+    @media (max-width: 400px) {
+        button {
+            width: 70px;
+            font-size: 12px;
+        }
+    }
 </style>

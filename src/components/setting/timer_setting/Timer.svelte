@@ -1,4 +1,4 @@
-<h2>タイマーの設定 <span class="annotation">(最大{maxTimerSetting}件まで登録できます)</span></h2>
+<h2>タイマーの設定 <span class="annotation">(最大{maxTimerSetting}件)</span></h2>
 
 <div class="wrapper">
     <div class="total">
@@ -43,8 +43,8 @@
                     </div>
 
                     <div class="setting-row-input-group">
-                        <div class="setting-row-input-label">タイトル</div>
-                        <div class="setting-row-input-text">
+                        <div class="setting-row-input-label timer-title">タイトル</div>
+                        <div class="setting-row-input-text timer-title-input">
                             <input
                                 type="text"
                                 class="setting-row-input-title"
@@ -340,7 +340,7 @@
     }
     .setting-row-input-wrapper {
         width: 100%;
-        min-width: 300px;
+        /* min-width: 300px; */
         border: 1px solid #000000;
         border-radius: 8px;
         background-color: #FFFFFF;
@@ -415,6 +415,17 @@
     }
 
     @media (max-width: 550px) {
+        .timer-title {
+            display: none;
+        }
+        .timer-title-input {
+            margin-left: 30px;
+            width: 100%;
+        }
+
+        .setting-row-input-label {
+            width: 30px;
+        }
         input[type=range] {
             width: calc(100% - 48px);
         }

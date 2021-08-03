@@ -192,4 +192,10 @@
         border: 1px solid #000000;
         border-radius: 8px;
     }
+
+    @media (max-width: 400px) {
+        .color-input {
+            width: 100px;
+        }
+    }
 </style>

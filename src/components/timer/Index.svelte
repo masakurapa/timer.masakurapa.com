@@ -45,9 +45,6 @@
     .main-btn-wrapper {
         margin-right: 32px;
     }
-    .sub-btn-wrapper {
-        min-width: 400px;
-    }
 
     .sound-wrapper {
         margin-bottom: 20px;
