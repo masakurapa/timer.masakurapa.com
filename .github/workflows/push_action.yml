@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - '.github/workflows/push_action.yml'
+      - 'public/**'
       - 'src/**'
 
 jobs:
