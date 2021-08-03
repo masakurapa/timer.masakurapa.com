@@ -368,7 +368,7 @@
         width: 60px;
     }
     .setting-row-input-range {
-        width: 50%;
+        width: 60%;
     }
     .setting-row-input-group:last-child {
         margin-bottom: 0px;
@@ -384,7 +384,7 @@
      * スライダー
      */
     input[type=range] {
-        width: 100%;
+        width: calc(100% - 48px);
         -webkit-appearance: none;
         border: none;
     }
@@ -425,9 +425,6 @@
 
         .setting-row-input-label {
             width: 30px;
-        }
-        input[type=range] {
-            width: calc(100% - 48px);
         }
     }
 </style>
