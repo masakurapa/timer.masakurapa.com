@@ -48,8 +48,6 @@ export const switchSharedSetting = (pos: number): void => {
  */
 export const resetAll = (): void => {
     currentPersonalSettingPosition.set(-1);
-    // currentPersonalSettingKey.set('');
     currentSharedSettingPosition.set(-1);
-    // currentSharedSettingKey.set('');
     usePersonalSetting.set(true);
 };

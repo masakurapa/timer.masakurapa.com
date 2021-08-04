@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        {#each $personalTimerSetting.timerSettings as data, idx}
+        {#each $personalTimerSetting.timerSettings as data, idx (idx)}
             <div class="setting-row">
                 <div class="setting-row-number">#{idx + 1}</div>
                 <div class="setting-row-icon-wrapper">

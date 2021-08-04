@@ -17,26 +17,28 @@ const defaultColorSetting: ColorSetting = {
     finishColor: '#DDFFDD',
 };
 
-// 設定のデフォルト値
-const defaultPersonalTimerSetting: PersonalTimerSetting = {
+/**
+ * 個人タイマー設定
+ */
+export const personalTimerSetting = writable<PersonalTimerSetting>({
     key: '',
     name: '',
     colorSetting: defaultColorSetting,
     timerSettings: [],
     owner: true,
     shared: false,
-};
-
-/**
- * 個人タイマー設定
- */
-export const personalTimerSetting = writable<PersonalTimerSetting>(
-    Object.assign({}, defaultPersonalTimerSetting),
-);
+});
 
 /**
  * 設定をリセットします
  */
 export const resetPersonalTimerSetting = (): void => {
-    personalTimerSetting.set(Object.assign({}, defaultPersonalTimerSetting));
+    personalTimerSetting.set({
+        key: '',
+        name: '',
+        colorSetting: defaultColorSetting,
+        timerSettings: [],
+        owner: true,
+        shared: false,
+    });
 };
