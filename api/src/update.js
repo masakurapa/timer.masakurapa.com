@@ -72,7 +72,7 @@ exports.handler =  async function(event) {
     try {
         await client.headObject(params).promise();
 
-        const object = await client.getObject({params}).promise();
+        const object = await client.getObject(params).promise();
         const setting = JSON.parse(object.Body);
 
         if (setting.uid !== body.uid) {
