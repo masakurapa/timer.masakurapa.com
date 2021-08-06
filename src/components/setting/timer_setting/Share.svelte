@@ -89,7 +89,7 @@
         setTimeout((): void => {
             showMessageBox = false;
             message = '';
-        }, 1000);
+        }, 1500);
      };
 
     // ローカルストレージに新規保存する
@@ -115,7 +115,7 @@
     // ローカルストレージに新規保存する
     const onClickSaveLocalStorage = (): void => {
         addPersonalSetting();
-        showMessage('Saved !!!!!');
+        showMessage('保存しました！！');
     };
 
     // ローカルストレージの設定を上書きする
@@ -136,7 +136,7 @@
             }
         }
 
-        showMessage('Saved !!!!!');
+        showMessage('保存しました！！');
     };
 
     // 設定をシェアする
@@ -158,7 +158,7 @@
         saveTimerSetting($currentPersonalSettingPosition, setting);
 
         copyURL();
-        showMessage('Shared !!!!!');
+        showMessage('設定を公開しました！');
     };
 
      // URLをクリップボードにURLをコピーする
@@ -180,7 +180,7 @@
      // 個人設定のURLをクリップボードにURLをコピーする
      const onClickCopyURL = (): void => {
         copyURL();
-        showMessage('Copied !!!!!');
+        showMessage('コピーしました！！');
      };
 
      $: setting = $personalTimerSetting;

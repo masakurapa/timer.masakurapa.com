@@ -80,7 +80,7 @@
         setTimeout((): void => {
             showMessageBox = false;
             message = '';
-        }, 1000);
+        }, 1500);
      };
 
      // 共有設定を読み込み
@@ -96,7 +96,7 @@
             // 最後にアクセスした設定のキーを保存しておく
             saveTimerSettingKey('');
 
-            showMessage('Removed !!!!!');
+            showMessage('削除しました！！');
             return;
         }
 
@@ -114,13 +114,13 @@
         // 最後にアクセスした設定のキーを保存しておく
         saveTimerSettingKey(setting.key);
 
-        showMessage('Loaded !!!!!');
+        showMessage('設定を反映しました！');
      };
 
      // 共有設定を削除
      const onClickRemoveSetting = (no: number): void => {
         const setting = timerHistories[no];
-        if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
+        if (!confirm(`履歴から'${setting.name}'を削除します。\nよろしいですか？`)) {
             return;
         }
 
@@ -167,7 +167,7 @@
         app.$destroy();
 
         // メッセージを1秒表示させる
-        showMessage('Copied !!!!!');
+        showMessage('コピーしました！！');
      };
 </script>
 

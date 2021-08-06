@@ -91,7 +91,7 @@
         setTimeout((): void => {
             showMessageBox = false;
             message = '';
-        }, 1000);
+        }, 1500);
      };
 
      // 設定を読み込み
@@ -107,7 +107,7 @@
             // 最後にアクセスした設定のキーを保存しておく
             saveTimerSettingKey('');
 
-            showMessage('Removed !!!!!');
+            showMessage('削除しました！！');
             return;
         }
 
@@ -119,13 +119,13 @@
         // 最後にアクセスした設定のキーを保存しておく
         saveTimerSettingKey(setting.key);
 
-        showMessage('Loaded !!!!!');
+        showMessage('設定を反映しました！');
      };
 
      // 設定を削除
      const onClickRemoveSetting = async (no: number): Promise<void> => {
         const setting = personalTimerSettings[no];
-        if (!confirm(`Delete '${setting.name}'.\nAre you sure?`)) {
+        if (!confirm(`'${setting.name}'を削除します。\nシェア済みの場合はシェアしたURLも使用できなくなります。\nよろしいですか？`)) {
             return;
         }
 
@@ -174,7 +174,7 @@
         }
 
         const setting = personalTimerSettings[no];
-        if (!confirm(`Unlink '${setting.name}'.\nAre you sure?`)) {
+        if (!confirm(`'${setting.name}'のシェア済みのURLを削除します。\nよろしいですか？`)) {
             return;
         }
 
@@ -196,7 +196,7 @@
         // ローカルストレージの情報を上書き
         personalTimerSettings = getTimerSetting().settings;
 
-        showMessage('Unlinked !!!!!');
+        showMessage('URLを削除しました！！');
      };
 
      // URLをクリップボードにURLをコピーする
@@ -213,7 +213,7 @@
         app.$destroy();
 
         // メッセージを1秒表示させる
-        showMessage('Copied !!!!!');
+        showMessage('コピーしました！！');
      };
 </script>
 
