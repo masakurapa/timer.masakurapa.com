@@ -33,6 +33,7 @@
         border: 1px solid #000000;
         background-color: #FFFFFF;
         border-radius: 8px;
+        box-shadow: 4px 4px 8px 0 rgb(50, 50, 50, 0.5);
         padding: 12px;
         max-width: 600px;
     }

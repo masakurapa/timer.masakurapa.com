@@ -1,5 +1,5 @@
 <h3>アクセス履歴</h3>
-<div>
+<div class="wrapper">
     {#if timerHistories.length > 0}
         {#each timerHistories as data, idx (data.key)}
             <div class="setting-row">
@@ -172,10 +172,16 @@
 </script>
 
 <style>
+    .wrapper {
+        box-shadow: 4px 4px 8px 0 rgb(50, 50, 50, 0.5);
+        border: 1px solid #000000;
+        background-color: #FFFFFF;
+        border-radius: 8px;
+    }
+
     .no-settings {
         min-height: 50px;
         line-height: 50px;
-        border: 1px solid #000000;
         padding: 12px;
         border-radius: 8px;
     }
@@ -184,21 +190,10 @@
         display: flex;
         align-items: center;
         min-height: 50px;
-        border: 1px solid #000000;
-        background-color: #FFFFFF;
         padding: 12px;
     }
-    .setting-row:first-child {
-        border-radius: 8px 8px 0 0;
-    }
     .setting-row:not(:first-child) {
-        border-top: none;
-    }
-    .setting-row:last-child {
-        border-radius: 0 0 8px 8px;
-    }
-    .setting-row:only-child {
-        border-radius: 8px;
+        border-top: 1px solid #000000;
     }
 
     .icon-text-wrapper {

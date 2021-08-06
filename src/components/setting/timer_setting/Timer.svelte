@@ -340,13 +340,13 @@
     }
     .setting-row-input-wrapper {
         width: 100%;
-        /* min-width: 300px; */
         border: 1px solid #000000;
         border-radius: 8px;
         background-color: #FFFFFF;
         margin-left: 4px;
         padding: 8px;
         position: relative;
+        box-shadow: 4px 4px 8px 0 rgb(50, 50, 50, 0.5);
     }
     .clear-btn-wrapper {
         position: absolute;
