@@ -231,6 +231,7 @@
     .trash-btn-wrapper {
         cursor: pointer;
         color: #DC143C;
+        margin-left: 24px;
     }
 
     @media (max-width: 500px) {
