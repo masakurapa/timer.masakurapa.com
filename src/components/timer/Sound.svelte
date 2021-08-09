@@ -9,7 +9,7 @@
 <script lang="ts">
     import { isTimeUp, isTimeUpAll } from '../../store/timer';
 
-    let isPlaySound = true;
+    let isPlaySound = false;
 
     const onClick = () => {
         isPlaySound = !isPlaySound;
