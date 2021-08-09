@@ -41,12 +41,12 @@
 
     .remove-all-btn-wrapper {
         max-width: 800px;
-        /* text-align: right; */
         margin-bottom: 32px;
     }
     .remove-all-btn {
         color: #FFFFFF;
         background-color: #DC3545;
+        border-bottom: 5px solid #AB013C;
         width: 200px;
     }
     .remove-all-btn:hover {
@@ -54,6 +54,7 @@
     }
     .remove-all-btn:disabled {
         background-color: #999999;
+        border-bottom: 5px solid #666666;
         cursor: default;
     }
 

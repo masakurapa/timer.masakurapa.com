@@ -10,7 +10,8 @@
 
 <style>
     button {
-        background-color: #DC143C;
+        background-color: #DC343C;
+        border-bottom: 5px solid #AB013C;
         width: 200px;
     }
 

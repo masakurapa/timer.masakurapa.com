@@ -33,6 +33,7 @@
 <style>
     button {
         background-color: #FFBB33;
+        border-bottom: 5px solid #CC9933;
         width: 100px;
     }
 
@@ -41,6 +42,7 @@
     }
     button:disabled {
         background-color: #999999;
+        border-bottom: 5px solid #666666;
         cursor: default;
     }
 </style>
