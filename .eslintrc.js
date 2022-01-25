@@ -21,6 +21,21 @@ module.exports = {
         indent: ['error', 4],
         'comma-dangle': ['error', 'always-multiline'],
         'semi': ['error', 'always'],
+        "@typescript-eslint/ban-types": ["error",
+            {
+                "types": {
+                    "String": false,
+                    "Boolean": false,
+                    "Number": false,
+                    "Symbol": false,
+                    "{}": false,
+                    "Object": false,
+                    "object": false,
+                    "Function": false,
+                },
+                "extendDefaults": true,
+            },
+        ],
     },
     settings: {
         'import/core-modules': ['svelte'],
