@@ -3,9 +3,13 @@ version: "3"
 services:
   api:
     build: .
+    depends_on:
+      - minio
     ports:
       - 3000:3000
     entrypoint: sh
+    env_file:
+      - .env
     command: -c "
       npm install;
       npm run server;"
@@ -21,3 +25,15 @@ services:
     command: server /data --console-address ":9001"
     volumes:
       - ./minio/data:/data
+
+  mc:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    env_file:
+      - .env
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set myminio http://minio:9000 ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
+      mc mb myminio/${BUCKET_NAME};
+      "

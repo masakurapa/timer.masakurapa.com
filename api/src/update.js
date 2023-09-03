@@ -86,7 +86,7 @@ exports.handler =  async function(event) {
         }
     } catch (ex) {
         // キーが存在しないエラーは無視
-        if (ex.code !== 'Forbidden') {
+        if (ex.code !== 'Forbidden' && ex.code !== 'NotFound') {
             console.error(ex);
             return {
                 statusCode: 500,

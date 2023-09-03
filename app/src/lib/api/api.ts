@@ -66,7 +66,8 @@ export const deleteSetting = async (uid: string, key: string): Promise<ApiResult
 
 // URLを生成して返す
 const url = (path: string): string => {
-    return `https://api.timer.masakurapa.com${path}`;
+    const url = import.meta.env.VITE_API_URL ?? 'https://api.timer.masakurapa.com';
+    return `${url}${path}`;
 };
 
 // apiのリクエスト用のクライアントを返す
