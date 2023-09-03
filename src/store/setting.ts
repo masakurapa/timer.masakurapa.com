@@ -18,6 +18,11 @@ const defaultColorSetting: ColorSetting = {
 };
 
 /**
+ * 背景色
+ */
+export const backgroundColor = writable('#FFFFFF');
+
+/**
  * 個人タイマー設定
  */
 export const personalTimerSetting = writable<PersonalTimerSetting>({

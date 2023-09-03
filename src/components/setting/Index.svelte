@@ -51,7 +51,6 @@
         width: 100%;
         padding: 4px 0;
         margin-bottom: 32px;
-        border-top: 1px solid #AAAAAA;
         border-bottom: 1px solid #AAAAAA;
     }
     .button-wrapper {

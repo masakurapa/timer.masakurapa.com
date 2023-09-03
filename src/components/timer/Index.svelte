@@ -1,30 +1,37 @@
-<Timer/>
+<div class="wrapper" style="
+    position: {$isTimerRunning ? 'sticky' : 'unset'};
+    top: {$isTimerRunning ? '8px' : 'unset'};
+    background-color: {$backgroundColor};
+">
+    <Timer/>
 
-<div class="btn-wrapper">
-    <div class="main-btn-wrapper">
-        {#if $isTimerRunning === true}
-            {#if $isTimeUpAll === true}
-                <StopSoundButton/>
+    <div class="btn-wrapper">
+        <div class="main-btn-wrapper">
+            {#if $isTimerRunning === true}
+                {#if $isTimeUpAll === true}
+                    <StopSoundButton/>
+                {:else}
+                    <PauseButton/>
+                {/if}
             {:else}
-                <PauseButton/>
+                <StartButton/>
             {/if}
-        {:else}
-            <StartButton/>
-        {/if}
+        </div>
+        <div class="sub-btn-wrapper">
+            <PrevButton/>
+            <NextButton/>
+            <ResetButton/>
+        </div>
     </div>
-    <div class="sub-btn-wrapper">
-        <PrevButton/>
-        <NextButton/>
-        <ResetButton/>
-    </div>
-</div>
 
-<div class="sound-wrapper">
-    <Sound/>
+    <div class="sound-wrapper">
+        <Sound/>
+    </div>
 </div>
 
 <script lang="ts">
     import { isTimerRunning, isTimeUpAll } from '../../store/timer';
+    import { backgroundColor } from '../../store/setting';
 
     import Timer from './Timer.svelte';
     import Sound from './Sound.svelte';
@@ -38,6 +45,11 @@
 </script>
 
 <style>
+    .wrapper {
+        border-bottom: 1px solid #AAAAAA;
+        height: 450px;
+    }
+
     .btn-wrapper {
         display: flex;
         margin-bottom: 20px;

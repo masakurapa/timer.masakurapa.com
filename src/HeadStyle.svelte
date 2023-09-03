@@ -12,7 +12,7 @@
 
 <script lang="ts">
     import type { ColorSetting } from './types/local_timer';
-    import { personalTimerSetting } from './store/setting';
+    import { personalTimerSetting, backgroundColor } from './store/setting';
     import {
         timerSecondsRemaining,
         isTimerRunning,
@@ -32,12 +32,14 @@
 
         // タイマーが動いてない
         if (!$isTimerRunning || sec === null) {
+            backgroundColor.set(bgColor);
             return;
         }
 
         // 全タイマーの終了
         if ($isTimeUpAll) {
             bgColor = colorSetting.finishColor;
+            backgroundColor.set(bgColor);
             return;
         }
 
@@ -48,6 +50,7 @@
         } else {
             bgColor = colorSetting.runningColor;
         }
+        backgroundColor.set(bgColor);
     };
 
     let colorSetting: ColorSetting;
