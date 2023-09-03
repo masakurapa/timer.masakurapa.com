@@ -18,6 +18,7 @@
                     <div
                         class="btn"
                         on:click="{onClickSaveLocalStorage}"
+                        aria-hidden="true"
                     >
                         <i class="far fa-save fa-2x"></i>設定を保存
                     </div>
@@ -25,6 +26,7 @@
                     <div
                         class="btn"
                         on:click="{onClickOverwriteLocalStorage}"
+                        aria-hidden="true"
                     >
                         <i class="far fa-save fa-2x"></i>設定を上書き
                     </div>
@@ -35,6 +37,7 @@
                     <div
                         class="btn"
                         on:click="{onClickSaveShareSetting}"
+                        aria-hidden="true"
                     >
                         <i class="far fa-share-square fa-2x"></i>設定の共有
                     </div>
@@ -42,6 +45,7 @@
                     <div
                         class="btn"
                         on:click="{onClickCopyURL}"
+                        aria-hidden="true"
                     >
                         <i class="fas fa-link fa-2x"></i>URLをコピー
                     </div>

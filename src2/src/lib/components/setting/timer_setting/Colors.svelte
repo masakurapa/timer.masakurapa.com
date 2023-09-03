@@ -45,7 +45,7 @@
                     on:change="{onChangeWarning2Color}"
                     {disabled}
                 >
-                <div class="color-preview" style="background-color: {colorSetting.warning2Color}" {disabled}></div>
+                <div class="color-preview" style="background-color: {colorSetting.warning2Color}"></div>
             </div>
             <div class="input-seconds-wrapper">
                 残り <input
@@ -66,7 +66,7 @@
                 on:change="{onChangeFinishColor}"
                 {disabled}
             >
-            <div class="color-preview" style="background-color: {colorSetting.finishColor}" {disabled}></div>
+            <div class="color-preview" style="background-color: {colorSetting.finishColor}"></div>
         </div>
     </div>
 </Collapse>

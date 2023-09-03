@@ -12,6 +12,7 @@
     <div
         class="menu-bar"
         on:click="{onClickMenu}"
+        aria-hidden="true"
     >
         {#if isOpenMenu}
             <i class="fas fa-times fa-2x"></i>
@@ -23,8 +24,9 @@
         class="menu"
         class:hide-menu="{!isOpenMenu}"
         on:click="{onClickMenu}"
+        aria-hidden="true"
     >
-        <div class="menu-content-wrapper" on:click="{(e) => e.stopPropagation() }">
+        <div class="menu-content-wrapper" on:click="{(e) => e.stopPropagation() }" aria-hidden="true">
             <div class="menu-content-title">その他のツール</div>
             <a href="https://gensei.masakurapa.com/" target="_blank" rel="noopener">
                 <div class="menu-content">

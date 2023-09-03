@@ -8,6 +8,7 @@
                         class="using-wrapper"
                         class:unclickable="{$isTimerRunning}"
                         on:click="{() => onClickLoadSetting(idx)}"
+                        aria-hidden="true"
                     >
                         {#if !$usePersonalSetting && idx === $currentSharedSettingPosition}
                             <i class="fas fa-check-square fa-2x"></i>
@@ -18,11 +19,19 @@
                     <div class="setting-name-wrapper">{data.name}</div>
                 </div>
                 <div class="btn-wrapper">
-                    <div class="copy-url-wrapper" on:click="{() => onClickCopyURL(data.key)}">
+                    <div
+                        class="copy-url-wrapper"
+                        on:click="{() => onClickCopyURL(data.key)}"
+                        aria-hidden="true"
+                    >
                         <i class="fas fa-link fa-2x"></i>
                     </div>
                     {#if !$isTimerRunning}
-                        <div class="trash-btn-wrapper" on:click="{() => onClickRemoveSetting(idx)}">
+                        <div
+                            class="trash-btn-wrapper"
+                            on:click="{() => onClickRemoveSetting(idx)}"
+                            aria-hidden="true"
+                        >
                             <i class="far fa-trash-alt fa-2x"></i>
                         </div>
                     {/if}

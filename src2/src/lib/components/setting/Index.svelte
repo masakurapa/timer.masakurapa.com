@@ -4,6 +4,7 @@
             class="btn"
             class:active={activeBtnNo === TIMER_SETTING}
             on:click="{() => onClick(TIMER_SETTING)}"
+            aria-hidden="true"
         ><i class="fas fa-cogs fa-2x"></i> タイマー設定</div>
     </div>
 
@@ -12,6 +13,7 @@
             class="btn"
             class:active={activeBtnNo === HISTORY}
             on:click="{() => onClick(HISTORY)}"
+            aria-hidden="true"
         ><i class="fas fa-history fa-2x"></i> 個人設定・履歴</div>
     </div>
 </div>

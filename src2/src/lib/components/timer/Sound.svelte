@@ -1,5 +1,5 @@
 <div>
-    <p on:click={onClick}>
+    <p on:click={onClick} aria-hidden="true">
         サウンド <i class="fas fa-2x" class:fa-toggle-on={isPlaySound} class:fa-toggle-off={!isPlaySound}></i>
     </p>
 </div>

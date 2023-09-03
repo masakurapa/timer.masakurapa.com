@@ -8,7 +8,12 @@
 
     <div>
         <div class="setting-add-wrapper" class:hide={disabled}>
-            <div class="setting-add-btn-wrapper" class:disable-add-btn="{!canAddSetting}" on:click="{() => addTimerSetting(0)}">
+            <div
+                class="setting-add-btn-wrapper"
+                class:disable-add-btn="{!canAddSetting}"
+                on:click="{() => addTimerSetting(0)}"
+                aria-hidden="true"
+            >
                 <i class="fas fa-plus-circle fa-2x"></i>
             </div>
         </div>
@@ -22,6 +27,7 @@
                             class="setting-row-remove-btn"
                             class:hide={$personalTimerSetting.timerSettings.length === 1}
                             on:click="{() => onClickRemoveSetting(idx)}"
+                            aria-hidden="true"
                         >
                             <i class="fas fa-times fa-2x"></i>
                         </div>
@@ -38,6 +44,7 @@
                         class="clear-btn-wrapper"
                         class:hide={disabled}
                         on:click="{() => onClickEraseSetting(idx)}"
+                        aria-hidden="true"
                     >
                         <i class="fas fa-eraser fa-2x"></i>
                     </div>
@@ -128,7 +135,12 @@
             </div>
 
             <div class="setting-add-wrapper" class:hide={disabled}>
-                <div class="setting-add-btn-wrapper" class:disable-add-btn="{!canAddSetting}" on:click="{() => addTimerSetting(idx + 1)}">
+                <div
+                    class="setting-add-btn-wrapper"
+                    class:disable-add-btn="{!canAddSetting}"
+                    on:click="{() => addTimerSetting(idx + 1)}"
+                    aria-hidden="true"
+                >
                     <i class="fas fa-plus-circle fa-2x"></i>
                 </div>
             </div>
