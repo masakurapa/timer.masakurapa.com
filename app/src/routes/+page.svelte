@@ -157,9 +157,3 @@
         }
     });
 </script>
-
-<style>
-    main {
-        padding: 8px 24px;
-    }
-</style>

@@ -1,6 +1,6 @@
 <div class="wrapper" style="
     position: {$isTimerRunning ? 'sticky' : 'unset'};
-    top: {$isTimerRunning ? '8px' : 'unset'};
+    top: {$isTimerRunning ? '0' : 'unset'};
     background-color: {$backgroundColor};
 ">
     <Timer/>
@@ -48,6 +48,8 @@
     .wrapper {
         border-bottom: 1px solid #AAAAAA;
         height: 450px;
+        padding: 8px 24px;
+        z-index: 10;
     }
 
     .btn-wrapper {

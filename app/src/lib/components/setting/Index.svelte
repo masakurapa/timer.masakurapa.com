@@ -18,7 +18,11 @@
     </div>
 </div>
 
-<svelte:component this={components[activeBtnNo]}/>
+
+<div class="component-wrapper">
+    <svelte:component this={components[activeBtnNo]}/>
+</div>
+
 <!-- クリップボードコピーで使用する領域 -->
 <div id="clipboard"></div>
 
@@ -55,6 +59,11 @@
         margin-bottom: 32px;
         border-bottom: 1px solid #AAAAAA;
     }
+
+    .component-wrapper {
+        padding: 8px 24px;
+    }
+
     .button-wrapper {
         width: calc(100% / 2);
         padding: 0 4px;
