@@ -53,6 +53,7 @@ jobs:
       - name: svelte-check
         run: |
           cd app
+          yarn
           yarn check
 
   deploy:
@@ -83,6 +84,7 @@ jobs:
       - name: Build
         run: |
           cd app
+          yarn
           yarn build
           sed -i -e "s/LASTMOD_DATE/`date +%Y-%m-%d`/" public/sitemap.xml
       - uses: dorny/paths-filter@v2
