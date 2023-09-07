@@ -47,7 +47,6 @@
 <style>
     .wrapper {
         border-bottom: 1px solid #AAAAAA;
-        height: 450px;
         padding: 8px 24px;
         z-index: 10;
     }
