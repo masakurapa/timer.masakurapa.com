@@ -49,7 +49,7 @@ jobs:
         id: node_modules_cache_id
         with:
           path: node_modules
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/yarn.lock') }}
       - name: svelte-check
         run: |
           cd app
@@ -79,7 +79,7 @@ jobs:
         id: node_modules_cache_id
         with:
           path: node_modules
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/yarn.lock') }}
       - name: Build
         run: |
           cd app
