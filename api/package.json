@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "license": "MIT",
   "engines": {
-    "node": "14.17.1"
+    "node": "18.17.1"
   },
   "scripts": {
     "server": "node server.js"
   },
   "devDependencies": {
-    "aws-sdk": "^2.944.0",
-    "dotenv": "^10.0.0"
+    "aws-sdk": "^2.1450.0"
   },
   "dependencies": {}
 }

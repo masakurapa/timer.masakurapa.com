@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const http = require("http");
 const getRequest = require('./src/get');
 const updateRequest = require('./src/update');
