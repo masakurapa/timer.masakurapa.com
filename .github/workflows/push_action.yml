@@ -24,7 +24,7 @@ jobs:
         id: node_modules_cache_id
         with:
           path: node_modules
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/yarn.lock') }}
       # cache hit時はinstallをスキップ
       - name: Install dependencies
         if: steps.node_modules_cache_id.outputs.cache-hit != 'true'
